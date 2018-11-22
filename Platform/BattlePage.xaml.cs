@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -138,9 +139,19 @@ namespace Platform
 
                     case MsgType.PVE_RESULT:
                         {
-                            if (message.data.StartsWith("WINNER"))
+                            /* 设置比赛结果对话 */
+                            if (message.data.StartsWith("F"))
                             {
+                                MessageDialog msg = new MessageDialog("获胜") { Title = "提示" };
 
+                                string[] infos = message.data.Split('\n');
+                                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                    () => OnHandleResultCallBack(infos[1], infos[2])
+                                    );
+                            }
+                            else if (message.data.StartsWith("S"))
+                            {
+                                MessageDialog msg = new MessageDialog("惨败") { Title = "提示" };
                             }
                             App.Client.IsOnBattle = false;
                         }
@@ -150,6 +161,11 @@ namespace Platform
                         break;
                 }
             }
+        }
+
+        private void OnHandleResultCallBack(string pokemenId, string displays)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
