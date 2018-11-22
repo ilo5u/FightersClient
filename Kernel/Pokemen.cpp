@@ -294,6 +294,14 @@ namespace Pokemen
 			return this->m_instance->GetExp();
 	}
 
+	bool Pokemen::Upgrade(int exp)
+	{
+		if (this->m_instance == nullptr)
+			throw std::exception("CPokemenManager is not implement.");
+		else
+			return this->m_instance->Upgrade(exp);
+	}
+
 	bool Pokemen::SetPrimarySkill(int skill)
 	{
 		if (skill < 0 || skill > 2)
@@ -476,27 +484,27 @@ namespace Pokemen
 
 	void BattleStage::_RunBattle_()
 	{
-		int break_of_first  = m_firstPlayer.GetInterval();
-		int break_of_second = m_secondPlayer.GetInterval();
+		int intervalOfFirst  = m_firstPlayer.GetInterval();
+		int intervalOfSecond = m_secondPlayer.GetInterval();
 
-		m_roundsCnt = 0;
+		this->m_roundsCnt = 0;
 		String message;
 		while (!m_firstPlayer.InState(BasePlayer::State::DEAD)
 			&& !m_secondPlayer.InState(BasePlayer::State::DEAD)
 			&& m_isBattleRunnig)
 		{
-			++m_roundsCnt;
+			++this->m_roundsCnt;
 
-			int min_span = std::min<int>(break_of_first, break_of_second);
+			int min_span = std::min<int>(intervalOfFirst, intervalOfSecond);
 			Sleep(min_span);
 
-			break_of_first  -= min_span;
-			break_of_second -= min_span;
+			intervalOfFirst  -= min_span;
+			intervalOfSecond -= min_span;
 
-			if (break_of_first == 0)
+			if (intervalOfFirst == 0)
 			{
 				message = "FIRST=" + m_firstPlayer.Attack(m_secondPlayer);
-				break_of_first = m_firstPlayer.GetInterval();
+				intervalOfFirst = m_firstPlayer.GetInterval();
 
 				m_messagesMutex.lock();
 
@@ -505,10 +513,10 @@ namespace Pokemen
 
 				m_messagesMutex.unlock();
 			}
-			if (break_of_second == 0)
+			if (intervalOfSecond == 0)
 			{
 				message = "SECOND=" + m_secondPlayer.Attack(m_firstPlayer);
-				break_of_second = m_secondPlayer.GetInterval();
+				intervalOfSecond = m_secondPlayer.GetInterval();
 
 				m_messagesMutex.lock();
 
@@ -517,7 +525,7 @@ namespace Pokemen
 
 				m_messagesMutex.unlock();
 			}	// 将小精灵的所有属性值打包发送
-			sprintf(m_battleMessage, "RENEW:FIRST=%d,%d,%d,%d,%d,%d,%d,%d,%d\nSECOND=%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+			sprintf(m_battleMessage, "RENEW=%d,%d,%d,%d,%d,%d,%d,%d,%d\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 				m_firstPlayer.GetHpoints(), m_firstPlayer.GetAttack(), m_firstPlayer.GetDefense(), m_firstPlayer.GetAgility(),
 				m_firstPlayer.GetInterval(), m_firstPlayer.GetCritical(), m_firstPlayer.GetHitratio(), m_firstPlayer.GetParryratio(), m_firstPlayer.GetAnger(),
 				m_secondPlayer.GetHpoints(), m_secondPlayer.GetAttack(), m_secondPlayer.GetDefense(), m_secondPlayer.GetAgility(),
@@ -533,11 +541,16 @@ namespace Pokemen
 			WaitForSingleObject(m_stateControl, INFINITE);
 		}
 
-		message = "GAME END WITH ";
 		if (m_firstPlayer.InState(BasePlayer::State::DEAD))
-			message += "0";
+			message = "F\n";
 		else
-			message += "1";
+			message = "S\n";
+		char szTemp[0xF];
+		sprintf(szTemp, "%d\n", this->m_firstPlayer.GetId());
+		message.append(szTemp);
+
+		sprintf(szTemp, "%d\n", this->m_roundsCnt);
+		message.append(szTemp);
 
 		m_messagesMutex.lock();
 

@@ -42,6 +42,7 @@ namespace Pokemen
 		int GetExp() const;
 
 	public:
+		bool Upgrade(int exp);
 		bool SetPrimarySkill(int skill);
 		bool Promote(int career);
 		void RenewProperty(const ::Pokemen::Property& prop, int carrer);

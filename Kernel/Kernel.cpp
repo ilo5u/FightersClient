@@ -150,10 +150,47 @@ namespace Kernel
 				};
 				
 			case BattleMessage::Type::RESULT:
+			{
+				/* 向服务器回传战斗结果 */
+				Packet packet;
+				packet.type = PacketType::PVE_RESULT;
+				sprintf(packet.data, "%s", msg.options.c_str());
+
+				/* 升级对应小精灵 */
+				int pokemenId;
+				int raiseExp = 0;
+				if (msg.options[0] == 'F')
+					sscanf(msg.options.c_str(), "F\n%d\n%d\n", &pokemenId, &raiseExp);
+				else if (msg.options[1] == 'S')
+					sscanf(msg.options.c_str(), "S\n%d\n%d\n", &pokemenId, &raiseExp);
+				Pokemens::iterator it = std::find_if(
+					pokemens.begin(), pokemens.end(), [&pokemenId](const HPokemen& pokemen) {
+						return pokemen->GetId() == pokemenId;
+					}
+				);
+				if (it != pokemens.end())
+				{
+					/* 向UI回传UPDATE信息 */
+					(*it)->Upgrade(raiseExp);
+
+					sprintf(packet.data + std::strlen(packet.data),
+						"%d\n%d\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",
+						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName(),
+						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
+						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
+						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
+					);
+					msg.options.append(packet.data);
+
+					/* 向服务器回传UPDATE信息 */
+					netDriver.SendPacket(packet);
+				}
+
 				return Message{
 					MsgType::PVE_RESULT,
 					ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
 				};
+			}
 
 			default:
 				break;
