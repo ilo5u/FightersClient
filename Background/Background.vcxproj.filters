@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>ca04f11a-15be-481b-ac72-d2b65b016498</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{08658351-95fa-4808-847b-dde8ed0c6017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{5e7c2c8d-fc2e-44ea-9dac-176daf4c0b5e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Assassin.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Guardian.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Knight.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Master.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="NetIO.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Pokemen.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Background.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="NetIO.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Pokemen.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomGenerator.hpp">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

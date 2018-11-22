@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="Platform.LogonPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Platform"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <ScrollViewer HorizontalScrollMode="Disabled" 
+                      VerticalScrollMode="Auto">
+            <RelativePanel>
+                <TextBox Name="Username"
+                         PlaceholderText="a-z,A-Z,0-9"
+                         KeyDown="Username_KeyDown"
+                         KeyUp="Username_KeyUp"
+                         Header="用户名："
+                         FontSize="36"
+                         FontWeight="Light"
+                         Width="300"
+                         Margin="20,20,0,0" Text=""/>
+
+                <PasswordBox Name="Password"
+                             PlaceholderText="a-z,A-Z,0-9"
+                             KeyDown="Password_KeyDown"
+                             KeyUp="Password_KeyUp"
+                             Header="密码："
+                             FontSize="36"
+                             FontWeight="Light"
+                             Width="500"
+                             Margin="20,20,0,0"
+                             RelativePanel.Below="Username"/>
+
+                <Button Name="Logon"
+                        Content="注册"
+                        FontSize="36"
+                        Margin="20,20,0,0"
+                        RelativePanel.Below="Password" 
+                        BorderThickness="0"
+                        Click="Logon_Click" >
+                </Button>
+
+                <ProgressRing Name="LogonProgress"
+                              RelativePanel.AlignVerticalCenterWith="Logon"
+                              RelativePanel.RightOf="Logon"
+                              Height="48"
+                              Width="48"
+                              Margin="40,20,0,0"/>
+            </RelativePanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

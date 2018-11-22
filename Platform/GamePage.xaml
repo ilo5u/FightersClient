@@ -1,0 +1,82 @@
+﻿<Page
+    x:Class="Platform.GamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Platform"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <RelativePanel Name="GameTag" Grid.Row="0">
+            <TextBlock Name="LobbyTag"
+                       Text="Lobby"
+                       FontFamily="Conaloas"
+                       FontSize="24"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       Margin="40,0,40,0"
+                       Foreground="#36648B"
+                       Tapped="LobbyTag_Tapped"/>
+
+            <Rectangle Name="LobbyHint"
+                       RelativePanel.AlignBottomWithPanel="True"
+                       RelativePanel.AlignHorizontalCenterWith="LobbyTag"
+                       Height="4"
+                       Width="80"
+                       Fill="#36648B"
+                       Margin="0,30,0,0"/>
+
+            <TextBlock Name="ProfileTag"
+                       Text="Profile"
+                       FontFamily="Consolas"
+                       FontSize="24"
+                       RelativePanel.RightOf="LobbyTag"
+                       Margin="40,0,40,0"
+                       Tapped="ProfileTag_Tapped" />
+
+            <Rectangle Name="ProfileHint"
+                       RelativePanel.RightOf="LobbyHint"
+                       RelativePanel.AlignBottomWithPanel="True"
+                       RelativePanel.AlignHorizontalCenterWith="ProfileTag"
+                       Height="4"
+                       Width="100"
+                       Fill="White"
+                       Margin="0,30,0,0"/>
+
+            <TextBlock Name="RankTag"
+                       Text="Rank"
+                       FontFamily="Consolas"
+                       FontSize="24"
+                       RelativePanel.RightOf="ProfileTag"
+                       Margin="40,0,40,0"
+                       Tapped="RankTag_Tapped"/>
+
+            <Rectangle Name="RankHint"
+                       RelativePanel.AlignBottomWithPanel="True"
+                       RelativePanel.AlignHorizontalCenterWith="RankTag"
+                       Height="4"
+                       Width="60"
+                       Fill="White"
+                       Margin="0,30,0,0"/>
+
+            <TextBlock Name="DebugPrint"
+                       RelativePanel.RightOf="RankTag"
+                       FontFamily="Consolas"
+                       FontSize="24"
+                       Margin="40,0,40,0"
+                       TextWrapping="Wrap" />
+
+        </RelativePanel>
+
+        <Frame Grid.Row="1"
+               Name="GameFrame">
+
+        </Frame>
+    </Grid>
+</Page>
