@@ -500,7 +500,7 @@ namespace Pokemen
 
 				m_messagesMutex.lock();
 
-				m_messages.push(message);
+				m_messages.push({ BattleMessage::Type::DISPLAY, message });
 				SetEvent(m_messagesAvailable);
 
 				m_messagesMutex.unlock();
@@ -512,7 +512,7 @@ namespace Pokemen
 
 				m_messagesMutex.lock();
 
-				m_messages.push(message);
+				m_messages.push({ BattleMessage::Type::DISPLAY, message });
 				SetEvent(m_messagesAvailable);
 
 				m_messagesMutex.unlock();
@@ -525,7 +525,7 @@ namespace Pokemen
 
 			m_messagesMutex.lock();
 
-			m_messages.push({ m_battleMessage });
+			m_messages.push({ BattleMessage::Type::DISPLAY, message });
 			SetEvent(m_messagesAvailable);
 
 			m_messagesMutex.unlock();
@@ -541,7 +541,7 @@ namespace Pokemen
 
 		m_messagesMutex.lock();
 
-		m_messages.push(message);
+		m_messages.push({ BattleMessage::Type::RESULT, message });
 		SetEvent(m_messagesAvailable);
 
 		m_messagesMutex.unlock();
@@ -549,8 +549,8 @@ namespace Pokemen
 		m_isBattleRunnig = false;
 	}
 
-	BattleMessage::BattleMessage(const String& message) :
-		options(message)
+	BattleMessage::BattleMessage(BattleMessage::Type type, const String& message) :
+		type(type), options(message)
 	{
 	}
 }

@@ -138,7 +138,28 @@ namespace Kernel
 
 	Message Core::ReadOfflineMessage()
 	{
-		return Message();
+		if (stage.IsRunning())
+		{
+			::Pokemen::BattleMessage msg = stage.ReadMessage();
+			switch (msg.type)
+			{
+			case BattleMessage::Type::DISPLAY:
+				return Message{
+					MsgType::PVE_MESSAGE,
+					ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
+				};
+				
+			case BattleMessage::Type::RESULT:
+				return Message{
+					MsgType::PVE_RESULT,
+					ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
+				};
+
+			default:
+				break;
+			}
+		}
+		return { };
 	}
 
 	Message Core::ReadOnlineMessage()

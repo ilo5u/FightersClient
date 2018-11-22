@@ -58,10 +58,16 @@ namespace Pokemen
 
 	struct BattleMessage
 	{
+		enum class Type
+		{
+			DISPLAY,
+			RESULT
+		};
+		Type type;
 		String options;
 
 		BattleMessage() = default;
-		BattleMessage(const String& message);
+		BattleMessage(BattleMessage::Type type, const String& message);
 	};
 	typedef std::queue<BattleMessage> BattleMessages;
 

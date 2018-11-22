@@ -3,6 +3,7 @@
 namespace Kernel
 {
 	typedef ::Pokemen::BattleStage Battle;
+	typedef ::Pokemen::BattleMessage BattleMessage;
 	typedef ::Pokemen::Pokemen * HPokemen;
 	typedef std::list<HPokemen> Pokemens;
 	typedef Packet::Type       PacketType;
