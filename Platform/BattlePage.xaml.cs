@@ -83,6 +83,8 @@ namespace Platform
 
             SecondPlayerExp.Value = SecondPlayer.Exp;
             SecondPlayerLevel.Text = SecondPlayer.Level.ToString();
+
+            App.Client.Core.StartBattle();
         }
 
         async private void BattleTask()
@@ -91,47 +93,33 @@ namespace Platform
             while (App.Client.IsOnBattle)
             {
                 message = App.Client.Core.ReadOfflineMessage();
-                Debug.WriteLine(message.data);
-
+                string[] infos = message.data.Split('\n');
                 switch (message.type)
                 {
                     case MsgType.PVE_MESSAGE:
                         {
-                            if (message.data.StartsWith("RENEW="))
+                            if (infos[0] == "R")
                             {
                                 // 更新属性值
-                                message.data = message.data.Remove(0, 6);
-                                string[] players = message.data.Split('\n');
-
-                                Debug.WriteLine(players[0]);
-                                Debug.WriteLine(players[1]);
-
-                                players[0] = players[0].Remove(0, 6);
-                                players[1] = players[1].Remove(0, 7);
-
                                 await Dispatcher.RunAsync(
                                     Windows.UI.Core.CoreDispatcherPriority.Normal, 
-                                    () => OnRenewDisplayCallBack(players[0], players[1])
+                                    () => OnRenewDisplayCallBack(infos[1], infos[2])
                                     );
                             }
-                            else if (message.data.StartsWith("FIRST="))
+                            else if (infos[0] == "F")
                             {
                                 // 上方小精灵攻击
-                                message.data = message.data.Remove(0, 6);
-                                string[] messages = message.data.Split('\n');
                                 await Dispatcher.RunAsync(
                                     Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                    () => OnDisplayFirstPlayerCallBack(messages[0])
+                                    () => OnDisplayFirstPlayerCallBack(infos[1])
                                     );
                             }
-                            else if (message.data.StartsWith("SECOND="))
+                            else if (infos[0] == "S")
                             {
                                 // 下方小精灵攻击
-                                message.data = message.data.Remove(0, 7);
-                                string[] messages = message.data.Split('\n');
                                 await Dispatcher.RunAsync(
                                     Windows.UI.Core.CoreDispatcherPriority.Normal, 
-                                    () => OnDisplaySecondPlayerCallBack(messages[0])
+                                    () => OnDisplaySecondPlayerCallBack(infos[1])
                                     );
                             }
                         }
@@ -140,16 +128,15 @@ namespace Platform
                     case MsgType.PVE_RESULT:
                         {
                             /* 设置比赛结果对话 */
-                            if (message.data.StartsWith("F"))
+                            if (infos[0] == "F")
                             {
                                 MessageDialog msg = new MessageDialog("获胜") { Title = "提示" };
 
-                                string[] infos = message.data.Split('\n');
                                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
                                     () => OnHandleResultCallBack(infos[1], infos[2])
                                     );
                             }
-                            else if (message.data.StartsWith("S"))
+                            else if (infos[0] == "S")
                             {
                                 MessageDialog msg = new MessageDialog("惨败") { Title = "提示" };
                             }
@@ -170,6 +157,9 @@ namespace Platform
 
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
         {
+            Debug.WriteLine(firstPlayer);
+            Debug.WriteLine(secondPlayer);
+
             string[] firstProperties = firstPlayer.Split(',');
 
             FirstHpoints.Text = firstProperties[0];

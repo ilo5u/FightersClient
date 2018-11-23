@@ -157,31 +157,27 @@ namespace Pokemen
 				if (this->m_property.m_hpoints / (this->m_angriedCnt * this->m_angriedCnt) == 0)
 				{
 					// 治愈系技能使用过度 强制使用攻击增益BUFF
-					sprintf(m_battleMessage + std::strlen(m_battleMessage),
-						"发动狂暴技能：强攻，增加%d点攻击力。", static_cast<Value>((double)this->m_property.m_attack / 20.0));
+					int inc = 0;
 					switch (this->m_career.type)
 					{
 					case Career::Type::Normal:
-					{
-						this->m_property.m_attack += static_cast<Value>((double)this->m_property.m_attack / 20.0);
-					}
+						inc = static_cast<Value>((double)this->m_property.m_attack / 20.0);
 					break;
 
 					case Career::Type::GreatMasterOfLight:
-					{
-						this->m_property.m_attack += static_cast<Value>((double)this->m_property.m_attack / 50.0);
-					}
+						inc = static_cast<Value>((double)this->m_property.m_attack / 50.0);
 					break;
 
 					case Career::Type::GreatMasterOfDark:
-					{
-						this->m_property.m_attack += static_cast<Value>((double)this->m_property.m_attack / 10.0);
-					}
+						inc = static_cast<Value>((double)this->m_property.m_attack / 10.0);
 					break;
 
 					default:
 						break;
 					}
+					sprintf(m_battleMessage + std::strlen(m_battleMessage),
+						"发动狂暴技能：强攻，增加%d点攻击力。", inc);
+					this->m_property.m_attack += inc;
 				}
 				else
 				{
@@ -196,21 +192,15 @@ namespace Pokemen
 					switch (this->m_career.type)
 					{
 					case Career::Type::Normal:
-					{
 						this->m_angriedCnt += 3;
-					}
 					break;
 
 					case Career::Type::GreatMasterOfLight:
-					{
 						this->m_angriedCnt += 2;
-					}
 					break;
 
 					case Career::Type::GreatMasterOfDark:
-					{
 						this->m_angriedCnt += 4;
-					}
 					break;
 
 					default:

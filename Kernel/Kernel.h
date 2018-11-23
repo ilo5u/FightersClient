@@ -100,6 +100,7 @@ namespace Kernel
 
 	public:
 		void SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type);
+		void StartBattle();
 		void SetBattleOn();
 		void SetBattlePasue();
 

@@ -293,7 +293,7 @@ namespace Pokemen
 	private:
 		Skill  m_skill;
 		Career m_career;
-		Value  m_angriedCnt;
+		Value  m_angriedCnt = 1;
 		char   m_battleMessage[BUFLEN];
 
 	private:

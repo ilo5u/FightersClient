@@ -175,7 +175,7 @@ namespace Kernel
 
 					sprintf(packet.data + std::strlen(packet.data),
 						"%d\n%d\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",
-						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName(),
+						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
 						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
 						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
 						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
@@ -356,6 +356,11 @@ namespace Kernel
 				break;
 			}
 		}
+	}
+
+	void Core::StartBattle()
+	{
+		stage.Start();
 	}
 
 	void Core::SetBattleOn()

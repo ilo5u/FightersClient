@@ -418,7 +418,6 @@ namespace Pokemen
 
 	void BattleStage::Start()
 	{
-		SetEvent(m_stateControl);
 		ResetEvent(m_messagesAvailable);
 		m_isBattleRunnig = true;
 
@@ -487,13 +486,15 @@ namespace Pokemen
 		int intervalOfFirst  = m_firstPlayer.GetInterval();
 		int intervalOfSecond = m_secondPlayer.GetInterval();
 
-		this->m_roundsCnt = 0;
-		String message;
+		m_roundsCnt = 0;
 		while (!m_firstPlayer.InState(BasePlayer::State::DEAD)
 			&& !m_secondPlayer.InState(BasePlayer::State::DEAD)
 			&& m_isBattleRunnig)
 		{
-			++this->m_roundsCnt;
+			WaitForSingleObject(m_stateControl, INFINITE);
+			SetEvent(m_stateControl);
+
+			++m_roundsCnt;
 
 			int min_span = std::min<int>(intervalOfFirst, intervalOfSecond);
 			Sleep(min_span);
@@ -503,60 +504,48 @@ namespace Pokemen
 
 			if (intervalOfFirst == 0)
 			{
-				message = "FIRST=" + m_firstPlayer.Attack(m_secondPlayer);
+				sprintf(m_battleMessage, 
+					"F\n%s\n",
+					m_firstPlayer.Attack(m_secondPlayer).c_str());
 				intervalOfFirst = m_firstPlayer.GetInterval();
 
 				m_messagesMutex.lock();
-
-				m_messages.push({ BattleMessage::Type::DISPLAY, message });
+				m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
 				SetEvent(m_messagesAvailable);
-
 				m_messagesMutex.unlock();
 			}
 			if (intervalOfSecond == 0)
 			{
-				message = "SECOND=" + m_secondPlayer.Attack(m_firstPlayer);
+				sprintf(m_battleMessage,
+					"S\n%s\n",
+					m_secondPlayer.Attack(m_firstPlayer).c_str());
 				intervalOfSecond = m_secondPlayer.GetInterval();
 
 				m_messagesMutex.lock();
-
-				m_messages.push({ BattleMessage::Type::DISPLAY, message });
+				m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
 				SetEvent(m_messagesAvailable);
-
 				m_messagesMutex.unlock();
 			}	// 将小精灵的所有属性值打包发送
-			sprintf(m_battleMessage, "RENEW=%d,%d,%d,%d,%d,%d,%d,%d,%d\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+			sprintf(m_battleMessage, "R\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 				m_firstPlayer.GetHpoints(), m_firstPlayer.GetAttack(), m_firstPlayer.GetDefense(), m_firstPlayer.GetAgility(),
 				m_firstPlayer.GetInterval(), m_firstPlayer.GetCritical(), m_firstPlayer.GetHitratio(), m_firstPlayer.GetParryratio(), m_firstPlayer.GetAnger(),
 				m_secondPlayer.GetHpoints(), m_secondPlayer.GetAttack(), m_secondPlayer.GetDefense(), m_secondPlayer.GetAgility(),
 				m_secondPlayer.GetInterval(), m_secondPlayer.GetCritical(), m_secondPlayer.GetHitratio(), m_secondPlayer.GetParryratio(), m_secondPlayer.GetAnger());
 
 			m_messagesMutex.lock();
-
-			m_messages.push({ BattleMessage::Type::DISPLAY, message });
+			m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
 			SetEvent(m_messagesAvailable);
-
 			m_messagesMutex.unlock();
-
-			WaitForSingleObject(m_stateControl, INFINITE);
 		}
 
 		if (m_firstPlayer.InState(BasePlayer::State::DEAD))
-			message = "F\n";
+			sprintf(m_battleMessage, "F\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
 		else
-			message = "S\n";
-		char szTemp[0xF];
-		sprintf(szTemp, "%d\n", this->m_firstPlayer.GetId());
-		message.append(szTemp);
-
-		sprintf(szTemp, "%d\n", this->m_roundsCnt);
-		message.append(szTemp);
+			sprintf(m_battleMessage, "S\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
 
 		m_messagesMutex.lock();
-
-		m_messages.push({ BattleMessage::Type::RESULT, message });
+		m_messages.push({ BattleMessage::Type::RESULT, m_battleMessage });
 		SetEvent(m_messagesAvailable);
-
 		m_messagesMutex.unlock();
 
 		m_isBattleRunnig = false;
