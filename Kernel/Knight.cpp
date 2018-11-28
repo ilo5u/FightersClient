@@ -85,6 +85,9 @@ namespace Pokemen
 	{
 		m_battleMessage[0] = 0x0;
 		// ´¦ÀíÒì³£×´Ì¬
+		if (this->InState(State::DEAD) || opponent.InState(State::DEAD))
+			return { };
+
 		if (this->InState(State::AVATAR))
 		{
 			if (this->m_stateRoundsCnt.avatar == 1)
@@ -149,17 +152,12 @@ namespace Pokemen
 			if (this->m_stateRoundsCnt.dizzying == 1)
 			{
 				this->SubState(State::DIZZYING);
+				return { };
 			}
 			else
 			{
 				--this->m_stateRoundsCnt.dizzying;
 			}
-			return m_battleMessage;
-		}
-
-		if (this->InState(State::DEAD))
-		{
-			return m_battleMessage;
 		}
 
 		if (_Hit_Target(this->m_property.m_hitratio, opponent.GetParryratio()))

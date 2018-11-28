@@ -83,7 +83,7 @@ namespace Pokemen
 		this->m_battleMessage[0] = 0x0;
 
 		/* в╢л╛еп╬Ж */
-		if (this->InState(State::DEAD))
+		if (this->InState(State::DEAD) || opponent.InState(State::DEAD))
 			return { };
 
 		if (this->InState(State::INSPIRED))

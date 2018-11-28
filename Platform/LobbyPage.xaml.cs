@@ -69,6 +69,7 @@ namespace Platform
         async private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
             userPlayerId = -1;
+            /* 选择出战精灵 */
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
@@ -78,6 +79,7 @@ namespace Platform
 
                     BattleChoices.Visibility = Visibility.Collapsed;
                     BattleSettings.Visibility = Visibility.Visible;
+                    BattleControl.IsChecked = false;
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -92,12 +94,17 @@ namespace Platform
         async private void DadOrSon_Click(object sender, RoutedEventArgs e)
         {
             userPlayerId = -1;
+            /* 选择出战精灵 */
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
                 if (userPlayerId != -1)
                 {
                     App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 1);
+
+                    BattleChoices.Visibility = Visibility.Collapsed;
+                    BattleSettings.Visibility = Visibility.Visible;
+                    BattleControl.IsChecked = false;
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -156,6 +163,8 @@ namespace Platform
         private void OpenAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
+            BattleChoices.Visibility = Visibility.Visible;
+            BattleSettings.Visibility = Visibility.Collapsed;
 
             AIPlayer = new Kernel.Pokemen(new Random().Next(1, 4));
             SetAIDisplay();
@@ -164,6 +173,8 @@ namespace Platform
         private void ClubmenAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
+            BattleChoices.Visibility = Visibility.Visible;
+            BattleSettings.Visibility = Visibility.Collapsed;
 
             AIPlayer = new Kernel.Pokemen(new Random().Next(4, 8));
             SetAIDisplay();
@@ -172,6 +183,8 @@ namespace Platform
         private void ProfessionalAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
+            BattleChoices.Visibility = Visibility.Visible;
+            BattleSettings.Visibility = Visibility.Collapsed;
 
             AIPlayer = new Kernel.Pokemen(new Random().Next(8, 13));
             SetAIDisplay();
@@ -180,6 +193,8 @@ namespace Platform
         private void MasterAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
+            BattleChoices.Visibility = Visibility.Visible;
+            BattleSettings.Visibility = Visibility.Collapsed;
 
             AIPlayer = new Kernel.Pokemen(new Random().Next(13, 16));
             SetAIDisplay();
