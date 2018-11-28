@@ -194,12 +194,17 @@ namespace Pokemen
 		return false;
 	}
 
+	void BasePlayer::SetMaxHpoints()
+	{
+		this->m_hpointsLimitation = this->m_property.m_hpoints;
+	}
+
 	/// <summary>
 /// 
 /// </summary>
 	Value BasePlayer::IntervalValueCalculator(Value base, Value primary_affect, Value secondary_affect)
 	{
-		return base - static_cast<Value>(100.0 * std::sqrt((double)primary_affect) - 100.0 * std::sqrt((double)secondary_affect));
+		return base - static_cast<Value>(100.0 * std::ceil(std::sqrt((double)primary_affect) - std::sqrt((double)secondary_affect)));
 	}
 
 	/// <summary>
@@ -231,7 +236,9 @@ namespace Pokemen
 	/// </summary>
 	Value BasePlayer::AttackDamageCalculator(Value primary_affect, Value secondary_affect)
 	{
-		return std::max<Value>(0x1, static_cast<Value>(((double)primary_affect * (double)primary_affect) / ((double)primary_affect + (double)secondary_affect)));
+		secondary_affect /= secondary_affect;
+		return _Random(primary_affect % 20 + 1) 
+			+ std::max<Value>(0x1, static_cast<Value>(((double)primary_affect * (double)primary_affect) / ((double)primary_affect + (double)secondary_affect)));
 	}
 
 	/// <summary>

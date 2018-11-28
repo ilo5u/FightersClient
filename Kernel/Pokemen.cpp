@@ -376,6 +376,14 @@ namespace Pokemen
 			return this->m_instance->GetType();
 	}
 
+	void Pokemen::SetMaxHpoints()
+	{
+		if (this->m_instance == nullptr)
+			throw std::exception("CPokemenManager is not implement.");
+		else
+			this->m_instance->SetMaxHpoints();
+	}
+
 	bool Pokemen::InState(BasePlayer::State nowState) const
 	{
 		if (this->m_instance == nullptr)
@@ -401,12 +409,16 @@ namespace Pokemen
 		m_messages(), m_messagesMutex(), m_messagesAvailable(nullptr),
 		m_stateControl(nullptr), m_battleDriver(), m_isBattleRunnig(false)
 	{
-		m_messagesAvailable = CreateEvent(NULL, FALSE, NULL, NULL);
+		m_messagesAvailable = CreateSemaphore(NULL, NULL, 0xFF, NULL);
 		m_stateControl    = CreateEvent(NULL, FALSE, NULL, NULL);
 	}
 
 	BattleStage::~BattleStage()
 	{
+		m_isBattleRunnig = false;
+		if (m_battleDriver.joinable())
+			m_battleDriver.join();
+		CloseHandle(m_stateControl);
 		CloseHandle(m_messagesAvailable);
 	}
 
@@ -466,7 +478,7 @@ namespace Pokemen
 
 	BattleMessage BattleStage::ReadMessage()
 	{
-		WaitForSingleObject(m_messagesAvailable, 2000);
+		WaitForSingleObject(m_messagesAvailable, INFINITE);
 		BattleMessage message;
 		m_messagesMutex.lock();
 
@@ -483,6 +495,8 @@ namespace Pokemen
 
 	void BattleStage::_RunBattle_()
 	{
+		m_firstPlayer.SetMaxHpoints();
+		m_secondPlayer.SetMaxHpoints();
 		int intervalOfFirst  = m_firstPlayer.GetInterval();
 		int intervalOfSecond = m_secondPlayer.GetInterval();
 
@@ -509,10 +523,13 @@ namespace Pokemen
 					m_firstPlayer.Attack(m_secondPlayer).c_str());
 				intervalOfFirst = m_firstPlayer.GetInterval();
 
-				m_messagesMutex.lock();
-				m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
-				SetEvent(m_messagesAvailable);
-				m_messagesMutex.unlock();
+				if (std::strlen(m_battleMessage) > 3)
+				{
+					m_messagesMutex.lock();
+					m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
+					ReleaseSemaphore(m_messagesAvailable, 1, NULL);
+					m_messagesMutex.unlock();
+				}
 			}
 			if (intervalOfSecond == 0)
 			{
@@ -521,10 +538,13 @@ namespace Pokemen
 					m_secondPlayer.Attack(m_firstPlayer).c_str());
 				intervalOfSecond = m_secondPlayer.GetInterval();
 
-				m_messagesMutex.lock();
-				m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
-				SetEvent(m_messagesAvailable);
-				m_messagesMutex.unlock();
+				if (std::strlen(m_battleMessage) > 3)
+				{
+					m_messagesMutex.lock();
+					m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
+					ReleaseSemaphore(m_messagesAvailable, 1, NULL);
+					m_messagesMutex.unlock();
+				}
 			}	// 将小精灵的所有属性值打包发送
 			sprintf(m_battleMessage, "R\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 				m_firstPlayer.GetHpoints(), m_firstPlayer.GetAttack(), m_firstPlayer.GetDefense(), m_firstPlayer.GetAgility(),
@@ -534,7 +554,7 @@ namespace Pokemen
 
 			m_messagesMutex.lock();
 			m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });
-			SetEvent(m_messagesAvailable);
+			ReleaseSemaphore(m_messagesAvailable, 1, NULL);
 			m_messagesMutex.unlock();
 		}
 
@@ -545,7 +565,7 @@ namespace Pokemen
 
 		m_messagesMutex.lock();
 		m_messages.push({ BattleMessage::Type::RESULT, m_battleMessage });
-		SetEvent(m_messagesAvailable);
+		ReleaseSemaphore(m_messagesAvailable, 1, NULL);
 		m_messagesMutex.unlock();
 
 		m_isBattleRunnig = false;

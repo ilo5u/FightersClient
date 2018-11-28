@@ -48,6 +48,7 @@ namespace Pokemen
 		void RenewProperty(const ::Pokemen::Property& prop, int carrer);
 
 	public:
+		void SetMaxHpoints();
 		bool InState(BasePlayer::State nowState) const;
 
 	public:
