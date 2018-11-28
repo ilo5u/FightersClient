@@ -58,6 +58,11 @@ namespace Kernel
 	{
 	}
 
+	Pokemen::Pokemen(int level) :
+		instance(::Pokemen::PokemenType::DEFAULT, level)
+	{
+	}
+
 	Pokemen::~Pokemen()
 	{
 	}

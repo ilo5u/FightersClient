@@ -69,6 +69,7 @@ namespace Kernel
 	{
 	public:
 		Pokemen(int type, int level);
+		Pokemen(int level);
 		virtual ~Pokemen();
 
 	public:

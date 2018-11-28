@@ -157,7 +157,7 @@ namespace Platform
         {
             BattleList.IsPaneOpen = true;
 
-            AIPlayer = new Kernel.Pokemen(1, 1);
+            AIPlayer = new Kernel.Pokemen(new Random().Next(1, 4));
             SetAIDisplay();
         }
 
@@ -165,7 +165,7 @@ namespace Platform
         {
             BattleList.IsPaneOpen = true;
 
-            AIPlayer = new Kernel.Pokemen(1, 3);
+            AIPlayer = new Kernel.Pokemen(new Random().Next(4, 8));
             SetAIDisplay();
         }
 
@@ -173,7 +173,7 @@ namespace Platform
         {
             BattleList.IsPaneOpen = true;
 
-            AIPlayer = new Kernel.Pokemen(1, 7);
+            AIPlayer = new Kernel.Pokemen(new Random().Next(8, 13));
             SetAIDisplay();
         }
 
@@ -181,7 +181,7 @@ namespace Platform
         {
             BattleList.IsPaneOpen = true;
 
-            AIPlayer = new Kernel.Pokemen(1, 12);
+            AIPlayer = new Kernel.Pokemen(new Random().Next(13, 16));
             SetAIDisplay();
         }
     }

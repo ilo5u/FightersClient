@@ -62,6 +62,16 @@ namespace Platform
             GameFrame.Navigate(typeof(LobbyPage));
         }
 
+        internal void HideTag()
+        {
+            GameTag.Visibility = Visibility.Collapsed;
+        }
+
+        internal void ShowTag()
+        {
+            GameTag.Visibility = Visibility.Visible;
+        }
+
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             MainPage.Current.RenewTitleDisplay(false);

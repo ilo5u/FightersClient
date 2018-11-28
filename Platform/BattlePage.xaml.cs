@@ -43,6 +43,9 @@ namespace Platform
         private PokemenViewer SecondPlayer;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            // 隐藏Lobby界面的标签
+            GamePage.Current.HideTag();
+
             // 启动对战信息实时接收线程
             App.Client.IsOnBattle = true;
             App.Client.BattleDriver = new Task(BattleTask);
@@ -85,6 +88,11 @@ namespace Platform
             SecondPlayerLevel.Text = SecondPlayer.Level.ToString();
 
             App.Client.Core.StartBattle();
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            GamePage.Current.ShowTag();
         }
 
         async private void BattleTask()
@@ -152,7 +160,7 @@ namespace Platform
 
         private void OnHandleResultCallBack(string pokemenId, string displays)
         {
-            throw new NotImplementedException();
+
         }
 
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
