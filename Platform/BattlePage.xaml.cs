@@ -135,20 +135,8 @@ namespace Platform
 
                     case MsgType.PVE_RESULT:
                         {
-                            /* 设置比赛结果对话 */
-                            if (infos[0] == "F")
-                            {
-                                MessageDialog msg = new MessageDialog("获胜") { Title = "提示" };
-
-                                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                    () => OnHandleResultCallBack(infos[1], infos[2])
-                                    );
-                            }
-                            else if (infos[0] == "S")
-                            {
-                                MessageDialog msg = new MessageDialog("惨败") { Title = "提示" };
-                            }
                             App.Client.IsOnBattle = false;
+                            Frame.Navigate(typeof(ResultPage), infos);
                         }
                         return;
 
@@ -158,16 +146,8 @@ namespace Platform
             }
         }
 
-        private void OnHandleResultCallBack(string pokemenId, string displays)
-        {
-
-        }
-
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
         {
-            Debug.WriteLine(firstPlayer);
-            Debug.WriteLine(secondPlayer);
-
             string[] firstProperties = firstPlayer.Split(',');
 
             FirstHpoints.Text = firstProperties[0];

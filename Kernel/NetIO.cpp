@@ -15,10 +15,8 @@ namespace NetIO
 		m_recvDriver(), m_sendDriver()
 	{
 		// 创建控制IO缓冲队列的信号量
-		m_sendAvailable = CreateEvent(NULL, FALSE, FALSE, NULL);
-		ResetEvent(m_sendAvailable);
-		m_recvAvailable = CreateEvent(NULL, FALSE, FALSE, NULL);
-		ResetEvent(m_recvAvailable);
+		m_sendAvailable = CreateSemaphore(NULL, NULL, 0xFF, NULL);
+		m_recvAvailable = CreateSemaphore(NULL, NULL, 0xFF, NULL);
 	}
 
 	NetIO::~NetIO()
@@ -108,7 +106,7 @@ namespace NetIO
 		m_sendLocker.lock();
 
 		m_sendPackets.push(packet);
-		SetEvent(m_sendAvailable);
+		ReleaseSemaphore(m_sendAvailable, 1, NULL);
 
 		m_sendLocker.unlock();
 		return false;
@@ -120,14 +118,11 @@ namespace NetIO
 		WaitForSingleObject(m_recvAvailable, 1000);
 
 		m_recvLocker.lock();
-		ResetEvent(m_recvAvailable);
-
 		if (!m_recvPackets.empty())
 		{
 			recvPacket = m_recvPackets.front();
 			m_recvPackets.pop();
 		}
-
 		m_recvLocker.unlock();
 		return recvPacket;
 	}
@@ -153,7 +148,7 @@ namespace NetIO
 			{
 				m_recvLocker.lock();
 				m_recvPackets.push(recvPacket);
-				SetEvent(m_recvAvailable);
+				ReleaseSemaphore(m_recvAvailable, 1, NULL);
 				m_recvLocker.unlock();
 			}
 			else
@@ -174,8 +169,6 @@ namespace NetIO
 
 			bool sendValid = false;
 			m_sendLocker.lock();
-			ResetEvent(m_sendAvailable);
-
 			if (!m_sendPackets.empty())
 			{
 				sendValid = true;

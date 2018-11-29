@@ -476,19 +476,25 @@ namespace Pokemen
 		return m_secondPlayer.GetId();
 	}
 
+	bool BattleStage::ReadyForRead()
+	{
+		bool ready = false;
+		m_messagesMutex.lock();
+		ready = !m_messages.empty();
+		m_messagesMutex.unlock();
+		return ready;
+	}
+
 	BattleMessage BattleStage::ReadMessage()
 	{
-		WaitForSingleObject(m_messagesAvailable, INFINITE);
+		WaitForSingleObject(m_messagesAvailable, 1000);
 		BattleMessage message;
 		m_messagesMutex.lock();
-
-		ResetEvent(m_messagesAvailable);
 		if (!m_messages.empty())
 		{
 			message = m_messages.front();
 			m_messages.pop();
 		}
-
 		m_messagesMutex.unlock();
 		return message;
 	}

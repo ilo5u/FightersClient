@@ -143,7 +143,8 @@ namespace Kernel
 
 	Message Core::ReadOfflineMessage()
 	{
-		if (stage.IsRunning())
+		if (stage.IsRunning()
+			|| stage.ReadyForRead())
 		{
 			::Pokemen::BattleMessage msg = stage.ReadMessage();
 			switch (msg.type)
@@ -166,7 +167,7 @@ namespace Kernel
 				int raiseExp = 0;
 				if (msg.options[0] == 'F')
 					sscanf(msg.options.c_str(), "F\n%d\n%d\n", &pokemenId, &raiseExp);
-				else if (msg.options[1] == 'S')
+				else if (msg.options[0] == 'S')
 					sscanf(msg.options.c_str(), "S\n%d\n%d\n", &pokemenId, &raiseExp);
 				Pokemens::iterator it = std::find_if(
 					pokemens.begin(), pokemens.end(), [&pokemenId](const HPokemen& pokemen) {

@@ -26,5 +26,10 @@ namespace Platform
         {
             this.InitializeComponent();
         }
+
+        private void Upgrade_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

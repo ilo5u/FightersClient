@@ -93,6 +93,8 @@ namespace Pokemen
 		int GetFirstPlayerId() const;
 		int GetSecondPlayerId() const;
 
+		bool ReadyForRead();
+
 		BattleMessage ReadMessage();
 
 	private:
