@@ -161,6 +161,8 @@ namespace Platform
             FirstParryratio.Text = firstProperties[7];
 
             FirstPlayerAnger.Value = int.Parse(firstProperties[8]);
+            FirstPlayerExp.Value = ExpConverter.Convert(int.Parse(firstProperties[9]), int.Parse(firstProperties[10])) / 10;
+            FirstPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(firstProperties[9]), int.Parse(firstProperties[10])).ToString() + "/1000";
 
             string[] secondProperties = secondPlayer.Split(',');
 
@@ -175,6 +177,8 @@ namespace Platform
             SecondParryratio.Text = secondProperties[7];
 
             SecondPlayerAnger.Value = int.Parse(secondProperties[8]);
+            SecondPlayerExp.Value = ExpConverter.Convert(int.Parse(secondProperties[9]), int.Parse(secondProperties[10])) / 10;
+            SecondPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(secondProperties[9]), int.Parse(secondProperties[10])).ToString() + "/1000";
         }
 
         private void OnDisplayFirstPlayerCallBack(string message)

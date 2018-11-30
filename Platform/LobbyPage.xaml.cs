@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Platform.Converters;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace Platform
             HitratioOfOpponent.Text = pokemen.hitratio.ToString();
             ParryratioOfOpponent.Text = pokemen.parryratio.ToString();
 
-            ExpOfOpponent.Text = pokemen.exp.ToString();
+            ExpOfOpponent.Text = (ExpConverter.Convert(pokemen.exp, pokemen.level) / 10).ToString();
             LevelOfOpponent.Text = pokemen.level.ToString();
         }
 

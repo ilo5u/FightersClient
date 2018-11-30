@@ -33,7 +33,8 @@
         <con:PokemenTypeConverter x:Key="PTConverter" />
     </Page.Resources>
 
-    <SplitView PanePlacement="Right" DisplayMode="Inline" OpenPaneLength="240">
+    <SplitView Name="Display"
+               PanePlacement="Right" DisplayMode="Inline" OpenPaneLength="240">
         <SplitView.Pane>
             <Grid>
                 <Grid.RowDefinitions>
@@ -138,7 +139,7 @@
             </Grid>
         </SplitView.Pane>
         <SplitView.Content>
-            <GridView ItemsSource="{x:Bind local:App.Client.Pokemens}">
+            <GridView ItemsSource="{x:Bind local:App.Client.Pokemens}" ItemClick="GridView_ItemClick">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="model:PokemenViewer">
                         <RelativePanel Width="200"

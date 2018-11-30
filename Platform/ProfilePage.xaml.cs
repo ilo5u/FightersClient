@@ -31,5 +31,11 @@ namespace Platform
         {
 
         }
+
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            int pokemenId = ((Models.PokemenViewer)e.ClickedItem).Id;
+            Display.IsPaneOpen = true;
+        }
     }
 }

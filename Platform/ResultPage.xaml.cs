@@ -57,5 +57,10 @@ namespace Platform
         {
 
         }
+
+        private void BackToLobby_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
