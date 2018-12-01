@@ -129,13 +129,6 @@
                             RelativePanel.AlignHorizontalCenterWithPanel="True"
                             Margin="20" Width="80"/>
                 </RelativePanel>
-
-                <RelativePanel Name="BattleSettings" Grid.Row="14" Visibility="Collapsed">
-                    <Button Name="BackToLobby" Content="返回大厅" Click="BackToLobby_Click"
-                                Margin="20" Width="80" />
-                    <ToggleButton Name="BattleControl" Content="&#x25B6;" Click="BattleControl_Click"
-                                      Margin="20" Width="80" RelativePanel.AlignRightWithPanel="True" />
-                </RelativePanel>
             </Grid>
         </SplitView.Pane>
         <SplitView.Content>

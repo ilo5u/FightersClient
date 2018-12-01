@@ -35,7 +35,9 @@
         </Grid.RowDefinitions>
 
         <RelativePanel>
-            <TextBlock Name="ExpInfo" Margin="10" Text="获得经验" Style="{StaticResource HeaderTextBlockStyle}" />
+            <TextBlock Name="ResultInfo" Margin="10" Text="(TODO)" Style="{StaticResource HeaderTextBlockStyle}" />
+            <TextBlock Name="ExpInfo" Margin="10" Text="获得经验" Style="{StaticResource HeaderTextBlockStyle}" 
+                       RelativePanel.Below="ResultInfo"/>
             <TextBlock RelativePanel.Below="ExpInfo" Margin="20,0,0,0" Name="ExpDisplay" Text="(TODO)" Style="{StaticResource SubheaderTextBlockStyle}" />
             <Button Name="BackToLobby" FontFamily="Segoe MDL2 Assets" Content="&#xE0A6;" FontSize="36" Background="White"
                     RelativePanel.AlignRightWithPanel="True" Margin="0,20,40,0"

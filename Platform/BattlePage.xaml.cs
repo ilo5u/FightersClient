@@ -90,11 +90,6 @@ namespace Platform
             App.Client.Core.StartBattle();
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            GamePage.Current.ShowTag();
-        }
-
         async private void BattleTask()
         {
             Message message;

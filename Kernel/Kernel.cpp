@@ -177,15 +177,27 @@ namespace Kernel
 				if (it != pokemens.end())
 				{
 					/* 向UI回传UPDATE信息 */
-					(*it)->Upgrade(raiseExp);
-
-					sprintf(packet.data + std::strlen(packet.data),
-						"%d\n%d\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",
+					char oldProp[BUFSIZ];
+					sprintf(oldProp,
+						"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
 						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
 						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
 						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
 					);
+					msg.options.append(oldProp);
+
+					/* 升级 */
+					(*it)->Upgrade(raiseExp);
+
+					sprintf(packet.data + std::strlen(packet.data),
+						"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
+						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
+						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
+						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
+					);
+
 					msg.options.append(packet.data);
 
 					/* 向服务器回传UPDATE信息 */
