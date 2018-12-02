@@ -78,6 +78,11 @@ namespace Pokemen
 		return this->m_career.type;
 	}
 
+	Assassin::Skill::Type Assassin::GetPrimarySkill() const
+	{
+		return this->m_skill.primarySkill;
+	}
+
 	String Assassin::Attack(BasePlayer& opponent)
 	{
 		this->m_battleMessage[0] = 0x0;

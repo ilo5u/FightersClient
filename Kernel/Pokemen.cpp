@@ -294,6 +294,32 @@ namespace Pokemen
 			return this->m_instance->GetExp();
 	}
 
+	int Pokemen::GetPrimarySkill() const
+	{
+		if (this->m_instance == nullptr)
+			throw std::exception("CPokemenManager is not implement.");
+		else
+		{
+			switch (this->m_instance->GetType())
+			{
+			case PokemenType::MASTER:
+				return static_cast<int>((static_cast<PMaster>(this->m_instance))->GetPrimarySkill());
+
+			case PokemenType::KNIGHT:
+				return static_cast<int>((static_cast<PKnight>(this->m_instance))->GetPrimarySkill());
+
+			case PokemenType::GUARDIAN:
+				return static_cast<int>((static_cast<PGuardian>(this->m_instance))->GetPrimarySkill());
+
+			case PokemenType::ASSASSIN:
+				return static_cast<int>((static_cast<PAssassin>(this->m_instance))->GetPrimarySkill());
+
+			default:
+				throw std::exception("CPokemenManager is not implement.");
+			}
+		}
+	}
+
 	bool Pokemen::Upgrade(int exp)
 	{
 		if (this->m_instance == nullptr)

@@ -1,4 +1,5 @@
 ﻿using Platform.Converters;
+using Platform.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,8 @@ namespace Platform
         /// </summary>
         static public LobbyPage Current;
         public Kernel.Pokemen AIPlayer;
-        public int userPlayerId;
+        public PokemenViewer UserPlayer;
+        public int PrimarySkillType;
 
         public LobbyPage()
         {
@@ -71,11 +73,9 @@ namespace Platform
 
             ExpOfOpponent.Text = ExpConverter.Convert(pokemen.exp).ToString();
             LevelOfOpponent.Text = pokemen.level.ToString();
-        }
 
-        private void PokemensView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            userPlayerId = ((Models.PokemenViewer)e.ClickedItem).Id;
+            PrimarySkillOfOpponent.Text = SkillConverter.Convert(pokemen.type, pokemen.primarySkill);
+            SecondarySkillOfOpponent.Text = SkillConverter.Convert(pokemen.type, pokemen.secondSkill);
         }
 
         public enum BattleType
@@ -86,15 +86,17 @@ namespace Platform
         public BattleType TypeOfBattle;
         async private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
-            userPlayerId = -1;
+            UserPlayer.Id = -1;
             /* 选择出战精灵 */
+            FirstSkill.IsSelected = false;
+            SecondSkill.IsSelected = false;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (userPlayerId != -1)
+                if (UserPlayer.Id != -1)
                 {
                     TypeOfBattle = BattleType.LEVELUP;
-                    App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 0);
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -108,15 +110,17 @@ namespace Platform
 
         async private void DadOrSon_Click(object sender, RoutedEventArgs e)
         {
-            userPlayerId = -1;
+            UserPlayer.Id = -1;
             /* 选择出战精灵 */
+            FirstSkill.IsSelected = false;
+            SecondSkill.IsSelected = false;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (userPlayerId != -1)
+                if (UserPlayer.Id != -1)
                 {
                     TypeOfBattle = BattleType.DADORSON;
-                    App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 1);
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -126,11 +130,6 @@ namespace Platform
                     await msgDialog.ShowAsync();
                 }
             }
-        }
-
-        private void GiveUp_Click(object sender, RoutedEventArgs e)
-        {
-            BattleList.IsPaneOpen = false;
         }
 
         private void OpenAI_Tapped(object sender, TappedRoutedEventArgs e)
@@ -159,6 +158,25 @@ namespace Platform
             BattleList.IsPaneOpen = true;
             AIPlayer = new Kernel.Pokemen(new Random().Next(13, 16));
             SetAIDisplay();
+        }
+
+        private void PokemensView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UserPlayer = (Models.PokemenViewer)e.ClickedItem;
+            FirstSkill.Content = SkillConverter.Convert(UserPlayer.Type, UserPlayer.PrimarySkill);
+            SecondSkill.Content = SkillConverter.Convert(UserPlayer.Type, UserPlayer.SecondSkill);
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FirstSkill.IsSelected == true)
+            {
+                PrimarySkillType = 0;
+            }
+            else if (SecondSkill.IsSelected == true)
+            {
+                PrimarySkillType = 1;
+            }
         }
     }
 }

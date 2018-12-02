@@ -101,6 +101,13 @@
     </Compile>
     <Compile Include="Converters\ExpConverter.cs" />
     <Compile Include="Converters\PokemenTypeConverter.cs" />
+    <Compile Include="Converters\SkillConverter.cs" />
+    <Compile Include="DisplayAllPage.xaml.cs">
+      <DependentUpon>DisplayAllPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DisplaySinglePage.xaml.cs">
+      <DependentUpon>DisplaySinglePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
@@ -204,6 +211,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="BattlePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DisplayAllPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DisplaySinglePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

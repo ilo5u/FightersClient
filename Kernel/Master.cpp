@@ -74,6 +74,11 @@ namespace Pokemen
 		return this->m_career.type;
 	}
 
+	Master::Skill::Type Master::GetPrimarySkill() const
+	{
+		return this->m_skill.primarySkill;
+	}
+
 	/// <summary>
 	/// 
 	/// </summary>

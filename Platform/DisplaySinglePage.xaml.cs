@@ -1,6 +1,4 @@
-﻿using Kernel;
-using Platform.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,16 +20,21 @@ namespace Platform
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ProfilePage : Page
+    public sealed partial class DisplaySinglePage : Page
     {
-        public ProfilePage()
+        public DisplaySinglePage()
         {
             this.InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            PokemensView.Navigate(typeof(DisplayAllPage));
+            /* TODO */
+        }
+
+        private void BackToAll_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

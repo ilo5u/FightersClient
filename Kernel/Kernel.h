@@ -64,6 +64,9 @@ namespace Kernel
 		int career;
 		int exp;
 		int level;
+
+		int primarySkill;
+		int secondSkill;
 	};
 
 	public ref class Pokemen sealed

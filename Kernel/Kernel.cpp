@@ -94,7 +94,10 @@ namespace Kernel
 
 			instance.GetCareer(),
 			instance.GetExp(),
-			instance.GetLevel()
+			instance.GetLevel(),
+
+			instance.GetPrimarySkill(),
+			1 - instance.GetPrimarySkill()
 		};
 	}
 
@@ -380,6 +383,7 @@ namespace Kernel
 		{
 			if ((*it)->GetId() == pokemenId)
 			{
+				(*it)->SetPrimarySkill(type);
 				stage.SetPlayers(*(*it), aiPlayer);
 				break;
 			}

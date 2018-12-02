@@ -23,6 +23,8 @@ namespace Platform.Models
         public int Career { get; set; }
         public int Level { get; set; }
         public int Exp { get; set; }
+        public int PrimarySkill { get; set; }
+        public int SecondSkill { get; set; }
 
         public static explicit operator PokemenViewer(Kernel.Property property)
         {
@@ -45,7 +47,10 @@ namespace Platform.Models
 
                 Career = property.career,
                 Exp = property.exp,
-                Level = property.level
+                Level = property.level,
+
+                PrimarySkill = property.primarySkill,
+                SecondSkill = property.secondSkill
             };
             return viewer;
         }
