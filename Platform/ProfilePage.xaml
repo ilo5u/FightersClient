@@ -33,8 +33,8 @@
         <con:PokemenTypeConverter x:Key="PTConverter" />
     </Page.Resources>
 
-    <SplitView Name="Display" IsPaneOpen="True"
-               PanePlacement="Right" DisplayMode="Inline" OpenPaneLength="240">
+    <SplitView Name="Display"
+               PanePlacement="Right" DisplayMode="Overlay" OpenPaneLength="240">
         <SplitView.Pane>
             <Grid>
                 <Grid.RowDefinitions>
@@ -124,8 +124,8 @@
                                    FontSize="24" Margin="10" FontFamily="Consolas"/>
                 </StackPanel>
 
-                <RelativePanel Name="UpgradeChoices" Grid.Row="14" Visibility="Visible">
-                    <Button Name="Upgrade" Content="转职"
+                <RelativePanel Name="PromoteChoices" Grid.Row="14" Visibility="Visible">
+                    <Button Name="Promote" Content="转职"
                             RelativePanel.AlignHorizontalCenterWithPanel="True"
                             Margin="20" Width="80">
                         <Button.Flyout>

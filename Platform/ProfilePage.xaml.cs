@@ -37,9 +37,9 @@ namespace Platform
 
             pokemenId = pokemen.Id;
             if (pokemen.Career > 0 || pokemen.Level < 9)
-                Upgrade.IsEnabled = false;
+                Promote.IsEnabled = false;
             else
-                Upgrade.IsEnabled = true;
+                Promote.IsEnabled = true;
         }
 
         private void FirstCareer_Click(object sender, RoutedEventArgs e)

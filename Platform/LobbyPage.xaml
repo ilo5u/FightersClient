@@ -36,7 +36,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Frame x:Name="BattleFrame" />
@@ -169,8 +169,8 @@
         </ContentDialog>
 
         <SplitView Name="BattleList"
-                   Grid.Column="1" 
-                   PanePlacement="Right" DisplayMode="Inline" OpenPaneLength="240">
+                   Grid.Column="1"
+                   PanePlacement="Right" DisplayMode="Overlay" OpenPaneLength="240">
             <SplitView.Pane>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -266,17 +266,6 @@
 
                         <Button Name="DadOrSon" Content="决斗赛" Click="DadOrSon_Click"
                                 Margin="20" Width="80" RelativePanel.AlignRightWithPanel="True"/>
-
-                        <Button Name="GiveUp" Content="放弃" Click="GiveUp_Click"
-                                Margin="20" Width="80" RelativePanel.Below="LevelUp" 
-                                RelativePanel.AlignHorizontalCenterWithPanel="True" />
-                    </RelativePanel>
-
-                    <RelativePanel Name="BattleSettings" Grid.Row="14" Visibility="Collapsed">
-                        <Button Name="BackToLobby" Content="返回大厅" Click="BackToLobby_Click"
-                                Margin="20" Width="80" />
-                        <ToggleButton Name="BattleControl" Content="&#x25B6;" Click="BattleControl_Click"
-                                      Margin="20" Width="80" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
                 </Grid>
             </SplitView.Pane>

@@ -453,6 +453,7 @@ namespace Pokemen
 		if (m_battleDriver.joinable())
 			m_battleDriver.join();
 		m_roundsCnt = 0;
+		ResetEvent(m_stateControl);
 	}
 
 	bool BattleStage::IsRunning() const

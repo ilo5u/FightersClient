@@ -43,9 +43,6 @@ namespace Platform
         private PokemenViewer SecondPlayer;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // 隐藏Lobby界面的标签
-            GamePage.Current.HideTag();
-
             // 启动对战信息实时接收线程
             App.Client.IsOnBattle = true;
             App.Client.BattleDriver = new Task(BattleTask);
@@ -90,6 +87,9 @@ namespace Platform
             SecondPlayerLevel.Text = SecondPlayer.Level.ToString();
 
             App.Client.Core.StartBattle();
+
+            BattleControl.IsChecked = false;
+            BattleControl.Content = "▶";
         }
 
         async private void BattleTask()
@@ -190,6 +190,43 @@ namespace Platform
         private void OnDisplaySecondPlayerCallBack(string message)
         {
             BattleMessageOfSecondPlayer.Text += message + '\n';
+        }
+
+        async private void BackToLobby_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.Client.Core.IsBattleRunning())
+            {
+                var msgDialog = new Windows.UI.Popups.MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
+                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("确定"));
+                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("取消"));
+
+                if ((await msgDialog.ShowAsync()).Label == "确定")
+                {
+                    App.Client.Core.ShutdownBattle();
+
+                    App.Client.BattleDriver.Wait();
+                    Frame.Navigate(typeof(WaitPage));
+                }
+            }
+            else
+            {
+                App.Client.BattleDriver.Wait();
+                Frame.Navigate(typeof(WaitPage));
+            }
+        }
+
+        private void BattleControl_Click(object sender, RoutedEventArgs e)
+        {
+            if (BattleControl.IsChecked == true)
+            {
+                BattleControl.Content = "⏸";
+                App.Client.Core.SetBattleOn();
+            }
+            else
+            {
+                BattleControl.Content = "▶";
+                App.Client.Core.SetBattlePasue();
+            }
         }
     }
 }

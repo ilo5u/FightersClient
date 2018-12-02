@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Platform.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -138,10 +139,29 @@ namespace Platform
 
         private void OnUpdatePokemensCallBack(string pokemenInfos)
         {
+            Debug.Write(pokemenInfos);
+            string[] pokemenInfoArray = pokemenInfos.Split('\n');
             try
             {
-                Debug.Write(pokemenInfos);
-                string[] pokemenInfoArray = pokemenInfos.Split('\n');
+                App.Client.Pokemens.First(pokemen => pokemen.Id.Equals(int.Parse(pokemenInfoArray[0]))).Renew(
+                        int.Parse(pokemenInfoArray[1]),
+                        "Assets/TCP.png",
+                        int.Parse(pokemenInfoArray[3]),
+                        int.Parse(pokemenInfoArray[4]),
+                        int.Parse(pokemenInfoArray[5]),
+                        int.Parse(pokemenInfoArray[6]),
+                        int.Parse(pokemenInfoArray[7]),
+                        int.Parse(pokemenInfoArray[8]),
+                        int.Parse(pokemenInfoArray[9]),
+                        int.Parse(pokemenInfoArray[10]),
+                        int.Parse(pokemenInfoArray[11]),
+                        int.Parse(pokemenInfoArray[12]),
+                        int.Parse(pokemenInfoArray[13])
+                    );
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
                 App.Client.Pokemens.Add(
                     new Models.PokemenViewer
                     {
@@ -162,10 +182,6 @@ namespace Platform
                         Level = int.Parse(pokemenInfoArray[13])
                     }
                 );
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.ToString());
             }
         }
 

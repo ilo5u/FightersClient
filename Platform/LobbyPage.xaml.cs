@@ -44,14 +44,12 @@ namespace Platform
         internal void HideBattle()
         {
             BattleList.IsPaneOpen = false;
-            BattleList.Width = 0;
-            BattleControl.IsChecked = false;
+            BattleList.Visibility = Visibility.Collapsed;
         }
 
         internal void ShowBattle()
         {
-            BattleList.IsPaneOpen = false;
-            BattleList.Width = 240;
+            BattleList.Visibility = Visibility.Visible;
         }
 
         private void SetAIDisplay()
@@ -97,10 +95,6 @@ namespace Platform
                 {
                     TypeOfBattle = BattleType.LEVELUP;
                     App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 0);
-
-                    BattleChoices.Visibility = Visibility.Collapsed;
-                    BattleSettings.Visibility = Visibility.Visible;
-                    BattleControl.IsChecked = false;
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -123,10 +117,6 @@ namespace Platform
                 {
                     TypeOfBattle = BattleType.DADORSON;
                     App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 1);
-
-                    BattleChoices.Visibility = Visibility.Collapsed;
-                    BattleSettings.Visibility = Visibility.Visible;
-                    BattleControl.IsChecked = false;
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -143,51 +133,9 @@ namespace Platform
             BattleList.IsPaneOpen = false;
         }
 
-        async private void BackToLobby_Click(object sender, RoutedEventArgs e)
-        {
-            if (App.Client.Core.IsBattleRunning())
-            {
-                var msgDialog = new Windows.UI.Popups.MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
-                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("确定"));
-                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("取消"));
-
-                if ((await msgDialog.ShowAsync()).Label == "确定")
-                {
-                    App.Client.Core.ShutdownBattle();
-
-                    App.Client.BattleDriver.Wait();
-                    BattleList.IsPaneOpen = false;
-                    BattleFrame.Navigate(typeof(WaitPage));
-                }
-            }
-            else
-            {
-                App.Client.BattleDriver.Wait();
-                BattleList.IsPaneOpen = false;
-                BattleFrame.Navigate(typeof(WaitPage));
-            }
-        }
-
-        private void BattleControl_Click(object sender, RoutedEventArgs e)
-        {
-            if (BattleControl.IsChecked == true)
-            {
-                BattleControl.Content = "⏸";
-                App.Client.Core.SetBattleOn();
-            }
-            else
-            {
-                BattleControl.Content = "▶";
-                App.Client.Core.SetBattlePasue();
-            }
-        }
-
         private void OpenAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(1, 4));
             SetAIDisplay();
         }
@@ -195,9 +143,6 @@ namespace Platform
         private void ClubmenAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(4, 8));
             SetAIDisplay();
         }
@@ -205,9 +150,6 @@ namespace Platform
         private void ProfessionalAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(8, 13));
             SetAIDisplay();
         }
@@ -215,9 +157,6 @@ namespace Platform
         private void MasterAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(13, 16));
             SetAIDisplay();
         }

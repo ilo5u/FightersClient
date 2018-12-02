@@ -49,5 +49,25 @@ namespace Platform.Models
             };
             return viewer;
         }
+
+        public void Renew(int type, string image, 
+            int hpoints, int attack, int defense, int agility,
+            int interval, int critical, int hitratio, int parryratio,
+            int career, int exp, int level)
+        {
+            Type = type;
+            Image = image;
+            Hpoints = hpoints;
+            Attack = attack;
+            Defense = defense;
+            Agility = agility;
+            Interval = interval;
+            Critical = critical;
+            Hitratio = hitratio;
+            Parryratio = parryratio;
+            Career = career;
+            Exp = exp;
+            Level = level;
+        }
     }
 }

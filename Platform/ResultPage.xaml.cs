@@ -50,12 +50,6 @@ namespace Platform
                     );
                 DisplayOldAndNewProps(infos[3], infos[4]);
             }
-            LobbyPage.Current.HideBattle();
-        }
-
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            GamePage.Current.ShowTag();
         }
 
         /// <summary>
@@ -103,14 +97,14 @@ namespace Platform
             NewPlayerLevel.Text = newProps[13];
         }
 
-        private void OnHandleLoseCallBack(string exp)
+        private void OnHandleWinCallBack(string exp)
         {
             ResultInfo.Text = "胜利";
             ResultInfo.Foreground = new SolidColorBrush(Colors.DarkGreen);
             ExpDisplay.Text = exp.ToString() + "点";
         }
 
-        private void OnHandleWinCallBack(string exp)
+        private void OnHandleLoseCallBack(string exp)
         {
             ResultInfo.Text = "失败";
             ResultInfo.Foreground = new SolidColorBrush(Colors.DarkRed);

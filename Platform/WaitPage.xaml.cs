@@ -29,7 +29,14 @@ namespace Platform
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            GamePage.Current.ShowTag();
             LobbyPage.Current.ShowBattle();
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            GamePage.Current.HideTag();
+            LobbyPage.Current.HideBattle();
         }
     }
 }
