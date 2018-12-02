@@ -1,4 +1,5 @@
 ﻿using Platform.Converters;
+using Platform.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,8 @@ namespace Platform
         /// </summary>
         static public LobbyPage Current;
         public Kernel.Pokemen AIPlayer;
-        public int userPlayerId;
+        public PokemenViewer UserPlayer = new PokemenViewer();
+        public int PrimarySkillType;
 
         public LobbyPage()
         {
@@ -39,6 +41,17 @@ namespace Platform
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             BattleFrame.Navigate(typeof(WaitPage));
+        }
+
+        internal void HideBattle()
+        {
+            BattleList.IsPaneOpen = false;
+            BattleList.Visibility = Visibility.Collapsed;
+        }
+
+        internal void ShowBattle()
+        {
+            BattleList.Visibility = Visibility.Visible;
         }
 
         private void SetAIDisplay()
@@ -58,29 +71,31 @@ namespace Platform
             HitratioOfOpponent.Text = pokemen.hitratio.ToString();
             ParryratioOfOpponent.Text = pokemen.parryratio.ToString();
 
-            ExpOfOpponent.Text = (ExpConverter.Convert(pokemen.exp, pokemen.level) / 10).ToString();
+            ExpOfOpponent.Text = ExpConverter.Convert(pokemen.exp).ToString();
             LevelOfOpponent.Text = pokemen.level.ToString();
+
+            PrimarySkillOfOpponent.Text = SkillConverter.Convert(pokemen.type, pokemen.primarySkill);
+            SecondarySkillOfOpponent.Text = SkillConverter.Convert(pokemen.type, pokemen.secondSkill);
         }
 
-        private void PokemensView_ItemClick(object sender, ItemClickEventArgs e)
+        public enum BattleType
         {
-            userPlayerId = ((Models.PokemenViewer)e.ClickedItem).Id;
+            LEVELUP,
+            DADORSON
         }
-
+        public BattleType TypeOfBattle;
         async private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
-            userPlayerId = -1;
+            UserPlayer.Id = -1;
             /* 选择出战精灵 */
+            SkillSelect.Visibility = Visibility.Collapsed;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (userPlayerId != -1)
+                if (UserPlayer.Id != -1)
                 {
-                    App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 0);
-
-                    BattleChoices.Visibility = Visibility.Collapsed;
-                    BattleSettings.Visibility = Visibility.Visible;
-                    BattleControl.IsChecked = false;
+                    TypeOfBattle = BattleType.LEVELUP;
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -94,18 +109,16 @@ namespace Platform
 
         async private void DadOrSon_Click(object sender, RoutedEventArgs e)
         {
-            userPlayerId = -1;
+            UserPlayer.Id = -1;
             /* 选择出战精灵 */
+            SkillSelect.Visibility = Visibility.Collapsed;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (userPlayerId != -1)
+                if (UserPlayer.Id != -1)
                 {
-                    App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 1);
-
-                    BattleChoices.Visibility = Visibility.Collapsed;
-                    BattleSettings.Visibility = Visibility.Visible;
-                    BattleControl.IsChecked = false;
+                    TypeOfBattle = BattleType.DADORSON;
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -117,56 +130,9 @@ namespace Platform
             }
         }
 
-        private void GiveUp_Click(object sender, RoutedEventArgs e)
-        {
-            BattleList.IsPaneOpen = false;
-        }
-
-        async private void BackToLobby_Click(object sender, RoutedEventArgs e)
-        {
-            if (App.Client.Core.IsBattleRunning())
-            {
-                var msgDialog = new Windows.UI.Popups.MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
-                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("确定"));
-                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("取消"));
-
-                if ((await msgDialog.ShowAsync()).Label == "确定")
-                {
-                    App.Client.Core.ShutdownBattle();
-
-                    App.Client.BattleDriver.Wait();
-                    BattleList.IsPaneOpen = false;
-                    BattleFrame.Navigate(typeof(WaitPage));
-                }
-            }
-            else
-            {
-                App.Client.BattleDriver.Wait();
-                BattleList.IsPaneOpen = false;
-                BattleFrame.Navigate(typeof(WaitPage));
-            }
-        }
-
-        private void BattleControl_Click(object sender, RoutedEventArgs e)
-        {
-            if (BattleControl.IsChecked == true)
-            {
-                BattleControl.Content = "⏸";
-                App.Client.Core.SetBattleOn();
-            }
-            else
-            {
-                BattleControl.Content = "▶";
-                App.Client.Core.SetBattlePasue();
-            }
-        }
-
         private void OpenAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(1, 4));
             SetAIDisplay();
         }
@@ -174,9 +140,6 @@ namespace Platform
         private void ClubmenAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(4, 8));
             SetAIDisplay();
         }
@@ -184,9 +147,6 @@ namespace Platform
         private void ProfessionalAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(8, 13));
             SetAIDisplay();
         }
@@ -194,11 +154,29 @@ namespace Platform
         private void MasterAI_Tapped(object sender, TappedRoutedEventArgs e)
         {
             BattleList.IsPaneOpen = true;
-            BattleChoices.Visibility = Visibility.Visible;
-            BattleSettings.Visibility = Visibility.Collapsed;
-
             AIPlayer = new Kernel.Pokemen(new Random().Next(13, 16));
             SetAIDisplay();
+        }
+
+        private void PokemensView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UserPlayer = (Models.PokemenViewer)e.ClickedItem;
+            SkillSelect.Visibility = Visibility.Visible;
+            FirstSkill.IsSelected = true;
+            FirstSkill.Content = SkillConverter.Convert(UserPlayer.Type, 0);
+            SecondSkill.Content = SkillConverter.Convert(UserPlayer.Type, 1);
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FirstSkill.IsSelected == true)
+            {
+                PrimarySkillType = 0;
+            }
+            else if (SecondSkill.IsSelected == true)
+            {
+                PrimarySkillType = 1;
+            }
         }
     }
 }

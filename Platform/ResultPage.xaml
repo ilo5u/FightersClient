@@ -10,225 +10,228 @@
 
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="PokemenNameTextStyle">
-            <Setter Property="FontSize" Value="48" />
+            <Setter Property="FontSize" Value="36" />
             <Setter Property="FontFamily" Value="Consolas" />
             <Setter Property="Margin" Value="10,10,0,0" />
         </Style>
 
         <Style TargetType="FontIcon" x:Key="PropertyIconTextStyle">
-            <Setter Property="FontSize" Value="36" />
+            <Setter Property="FontSize" Value="24" />
             <Setter Property="FontFamily" Value="Segoe UI Emoji" />
             <Setter Property="Margin" Value="0,10,10,0" />
         </Style>
 
         <Style TargetType="TextBlock" x:Key="PropertyValueTextStyle">
-            <Setter Property="FontSize" Value="36" />
+            <Setter Property="FontSize" Value="24" />
             <Setter Property="FontFamily" Value="Consolas" />
             <Setter Property="Margin" Value="0,5,15,0" />
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollMode="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <RelativePanel>
-            <TextBlock Name="ResultInfo" Margin="10" Text="(TODO)" Style="{StaticResource HeaderTextBlockStyle}" />
-            <TextBlock Name="ExpInfo" Margin="10" Text="获得经验" Style="{StaticResource HeaderTextBlockStyle}" 
-                       RelativePanel.Below="ResultInfo"/>
-            <TextBlock RelativePanel.Below="ExpInfo" Margin="20,0,0,0" Name="ExpDisplay" Text="(TODO)" Style="{StaticResource SubheaderTextBlockStyle}" />
-            <Button Name="BackToLobby" FontFamily="Segoe MDL2 Assets" Content="&#xE0A6;" FontSize="36" Background="White"
+            <RelativePanel>
+                <TextBlock Name="ResultInfo" Margin="10" Text="(TODO)" Style="{StaticResource HeaderTextBlockStyle}" />
+                <TextBlock Name="ExpInfo" Margin="10" Text="获得经验" Style="{StaticResource HeaderTextBlockStyle}" 
+                       RelativePanel.RightOf="ResultInfo"/>
+                <TextBlock RelativePanel.Below="ExpInfo" 
+                           RelativePanel.AlignLeftWith="ExpInfo" Margin="20,0,0,0" Name="ExpDisplay" Text="(TODO)" Style="{StaticResource SubheaderTextBlockStyle}" />
+                <Button Name="BackToLobby" FontFamily="Segoe MDL2 Assets" Content="&#xE0A6;" FontSize="36" Background="White"
                     RelativePanel.AlignRightWithPanel="True" Margin="0,20,40,0"
                     Click="BackToLobby_Click"/>
-            <TextBlock Text="返回大厅" Style="{StaticResource SubtitleTextBlockStyle}"
+                <TextBlock Text="返回大厅" Style="{StaticResource SubtitleTextBlockStyle}"
                        RelativePanel.AlignLeftWith="BackToLobby" RelativePanel.Below="BackToLobby"/>
-        </RelativePanel>
+            </RelativePanel>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <FontIcon Grid.Column="1"
-                      FontFamily="Segoe UI Emoji" Glyph="&#x1F3C5;" FontSize="64"/>
+                <FontIcon Grid.Column="1" VerticalAlignment="Top" Margin="0,100,20,0"
+                      FontFamily="Segoe UI Emoji" Glyph="&#x1F3C5;" FontSize="48"/>
 
-            <RelativePanel Grid.Column="0" Width="Auto" Margin="10" >
-                <TextBlock Name="OldPlayerName" Style="{StaticResource PokemenNameTextStyle}"
-                           RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                <RelativePanel Grid.Column="0" Width="Auto" Margin="10" >
+                    <TextBlock Name="OldPlayerName" Style="{StaticResource PokemenNameTextStyle}"
+                           RelativePanel.AlignLeftWithPanel="True"/>
 
-                <FontIcon Name="OldPlayerIcon" Style="{StaticResource PropertyIconTextStyle}"
+                    <FontIcon Name="OldPlayerIcon" Style="{StaticResource PropertyIconTextStyle}"
                               RelativePanel.AlignRightWithPanel="True"
                               RelativePanel.AlignVerticalCenterWith="OldPlayerName"/>
 
-                <Image Name="OldPlayerImage" Width="300" Margin="0,5,0,5"
+                    <Image Name="OldPlayerImage" Width="300" Margin="0,5,0,5"
                            RelativePanel.Below="OldPlayerName" RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
-                <Grid Name="OldPropertyGrid" RelativePanel.Below="OldPlayerImage" Width="600"
+                    <Grid Name="OldPropertyGrid" RelativePanel.Below="OldPlayerImage" Width="300"
                       RelativePanel.AlignHorizontalCenterWithPanel="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <RelativePanel Grid.Row="0" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F9E1;" />
-                        <TextBlock Name="OldHpoints" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="0" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F9E1;" />
+                            <TextBlock Name="OldHpoints" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
-                        <TextBlock Name="OldAttack" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="1" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
+                            <TextBlock Name="OldAttack" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left" />
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
-                        <TextBlock Name="OldDefense" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="2" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
+                            <TextBlock Name="OldDefense" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
-                        <TextBlock Name="OldAgility" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="3" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
+                            <TextBlock Name="OldAgility" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="0" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
-                        <TextBlock Name="OldInterval" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="0" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
+                            <TextBlock Name="OldInterval" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
-                        <TextBlock Name="OldCritical" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="1" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
+                            <TextBlock Name="OldCritical" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
-                        <TextBlock Name="OldHitratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="2" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
+                            <TextBlock Name="OldHitratio" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
-                        <TextBlock Name="OldParryratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
-                </Grid>
+                        <RelativePanel Grid.Row="3" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
+                            <TextBlock Name="OldParryratio" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
+                    </Grid>
 
-                <StackPanel RelativePanel.AlignLeftWith="OldPropertyGrid" Margin="5"
+                    <StackPanel RelativePanel.AlignLeftWith="OldPropertyGrid" Margin="5"
                             Name="OldExpStack" Orientation="Horizontal" RelativePanel.Below="OldPropertyGrid">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="36" Glyph="&#x23F3;" Margin="9,5,9,5" />
-                    <ProgressBar Name="OldPlayerExp" Foreground="Green" Background="LightGray" Width="300" Height="10" Margin="5" />
-                    <TextBlock Name="OldPlayerExpTextBlock" FontSize="36" FontFamily="Consolas" Margin="5">100/1000</TextBlock>
-                </StackPanel>
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="24" Glyph="&#x23F3;" Margin="9,5,9,5" />
+                        <ProgressBar Name="OldPlayerExp" Foreground="Green" Background="LightGray" Width="100" Height="10" Margin="5" />
+                        <TextBlock Name="OldPlayerExpTextBlock" FontSize="24" FontFamily="Consolas" Margin="5">100/1000</TextBlock>
+                    </StackPanel>
 
-                <StackPanel RelativePanel.AlignLeftWith="OldPropertyGrid" Margin="5"
+                    <StackPanel RelativePanel.AlignLeftWith="OldPropertyGrid" Margin="5"
                             Name="OldLevelStack" Orientation="Horizontal" RelativePanel.Below="OldExpStack">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="36" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
-                    <TextBlock Name="OldPlayerLevel" FontSize="36" FontFamily="Consolas" Margin="10">15</TextBlock>
-                </StackPanel>
-            </RelativePanel>
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="24" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
+                        <TextBlock Name="OldPlayerLevel" FontSize="24" FontFamily="Consolas" Margin="10">15</TextBlock>
+                    </StackPanel>
+                </RelativePanel>
 
-            <RelativePanel Grid.Column="2" Width="Auto" Margin="10" >
-                <TextBlock Name="NewPlayerName" Style="{StaticResource PokemenNameTextStyle}"
-                           RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                <RelativePanel Grid.Column="2" Width="Auto" Margin="10" >
+                    <TextBlock Name="NewPlayerName" Style="{StaticResource PokemenNameTextStyle}"
+                           RelativePanel.AlignLeftWithPanel="True"/>
 
-                <FontIcon Name="NewPlayerIcon" Style="{StaticResource PropertyIconTextStyle}"
+                    <FontIcon Name="NewPlayerIcon" Style="{StaticResource PropertyIconTextStyle}"
                               RelativePanel.AlignRightWithPanel="True"
                               RelativePanel.AlignVerticalCenterWith="NewPlayerName"/>
 
-                <Image Name="NewPlayerImage" Width="150" Margin="0,5,0,5"
+                    <Image Name="NewPlayerImage" Width="200" Margin="0,5,0,5"
                            RelativePanel.Below="NewPlayerName" RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
-                <Grid Name="NewPropertyGrid" RelativePanel.Below="NewPlayerImage" Width="600"
+                    <Grid Name="NewPropertyGrid" RelativePanel.Below="NewPlayerImage" Width="300"
                       RelativePanel.AlignHorizontalCenterWithPanel="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <RelativePanel Grid.Row="0" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F9E1;" />
-                        <TextBlock Name="NewHpoints" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="0" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F9E1;" />
+                            <TextBlock Name="NewHpoints" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
-                        <TextBlock Name="NewAttack" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="1" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
+                            <TextBlock Name="NewAttack" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
-                        <TextBlock Name="NewDefense" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="2" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
+                            <TextBlock Name="NewDefense" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3" Grid.Column="0" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
-                        <TextBlock Name="NewAgility" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="3" Grid.Column="0" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
+                            <TextBlock Name="NewAgility" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="0" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
-                        <TextBlock Name="NewInterval" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="0" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
+                            <TextBlock Name="NewInterval" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
-                        <TextBlock Name="NewCritical" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="1" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
+                            <TextBlock Name="NewCritical" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
-                        <TextBlock Name="NewHitratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        <RelativePanel Grid.Row="2" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
+                            <TextBlock Name="NewHitratio" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3" Grid.Column="1" Margin="5">
-                        <FontIcon FontSize="36" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
-                        <TextBlock Name="NewParryratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
-                </Grid>
+                        <RelativePanel Grid.Row="3" Grid.Column="1" Margin="5">
+                            <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
+                            <TextBlock Name="NewParryratio" Style="{StaticResource PropertyValueTextStyle}"
+                                       RelativePanel.AlignRightWithPanel="True" TextAlignment="Left"/>
+                        </RelativePanel>
+                    </Grid>
 
-                <StackPanel RelativePanel.AlignLeftWith="NewPropertyGrid" Margin="5"
+                    <StackPanel RelativePanel.AlignLeftWith="NewPropertyGrid" Margin="5"
                             Name="NewExpStack" Orientation="Horizontal" RelativePanel.Below="NewPropertyGrid">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="36" Glyph="&#x23F3;" Margin="9,5,9,5" />
-                    <ProgressBar Name="NewPlayerExp" Foreground="Green" Background="LightGray" Width="300" Height="10" Margin="5" />
-                    <TextBlock Name="NewPlayerExpTextBlock" FontSize="36" FontFamily="Consolas" Margin="5">100/1000</TextBlock>
-                </StackPanel>
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="24" Glyph="&#x23F3;" Margin="9,5,9,5" />
+                        <ProgressBar Name="NewPlayerExp" Foreground="Green" Background="LightGray" Width="100" Height="10" Margin="5" />
+                        <TextBlock Name="NewPlayerExpTextBlock" FontSize="24" FontFamily="Consolas" Margin="5">100/1000</TextBlock>
+                    </StackPanel>
 
-                <StackPanel RelativePanel.AlignLeftWith="NewPropertyGrid" Margin="5"
+                    <StackPanel RelativePanel.AlignLeftWith="NewPropertyGrid" Margin="5"
                             Name="NewLevelStack" Orientation="Horizontal" RelativePanel.Below="NewExpStack">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="36" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
-                    <TextBlock Name="NewPlayerLevel" FontSize="36" FontFamily="Consolas" Margin="10">15</TextBlock>
-                </StackPanel>
-            </RelativePanel>
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="24" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
+                        <TextBlock Name="NewPlayerLevel" FontSize="24" FontFamily="Consolas" Margin="10">15</TextBlock>
+                    </StackPanel>
+                </RelativePanel>
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

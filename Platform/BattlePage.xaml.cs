@@ -43,15 +43,12 @@ namespace Platform
         private PokemenViewer SecondPlayer;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // 隐藏Lobby界面的标签
-            GamePage.Current.HideTag();
-
             // 启动对战信息实时接收线程
             App.Client.IsOnBattle = true;
             App.Client.BattleDriver = new Task(BattleTask);
             App.Client.BattleDriver.Start();
 
-            FirstPlayer = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.userPlayerId);
+            FirstPlayer = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
             SecondPlayer = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
 
             // 设置左侧小精灵的初始信息
@@ -68,7 +65,8 @@ namespace Platform
             FirstHitratio.Text = FirstPlayer.Hitratio.ToString();
             FirstParryratio.Text = FirstPlayer.Parryratio.ToString();
 
-            FirstPlayerExp.Value = FirstPlayer.Exp;
+            FirstPlayerExp.Value = ExpConverter.Convert(FirstPlayer.Exp);
+            FirstPlayerExpTextBlock.Text = ExpConverter.Convert(FirstPlayer.Exp).ToString() + "/100";
             FirstPlayerLevel.Text = FirstPlayer.Level.ToString();
 
             SecondPlayerName.Text = SecondPlayer.Name;
@@ -84,10 +82,14 @@ namespace Platform
             SecondHitratio.Text = SecondPlayer.Hitratio.ToString();
             SecondParryratio.Text = SecondPlayer.Parryratio.ToString();
 
-            SecondPlayerExp.Value = SecondPlayer.Exp;
+            SecondPlayerExp.Value = ExpConverter.Convert(SecondPlayer.Exp);
+            SecondPlayerExpTextBlock.Text = ExpConverter.Convert(SecondPlayer.Exp).ToString() + "/100";
             SecondPlayerLevel.Text = SecondPlayer.Level.ToString();
 
             App.Client.Core.StartBattle();
+
+            BattleControl.IsChecked = false;
+            BattleControl.Content = "▶";
         }
 
         async private void BattleTask()
@@ -131,7 +133,10 @@ namespace Platform
                     case MsgType.PVE_RESULT:
                         {
                             App.Client.IsOnBattle = false;
-                            Frame.Navigate(typeof(ResultPage), infos);
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnResultCallBack(infos)
+                                );
                         }
                         return;
 
@@ -139,6 +144,11 @@ namespace Platform
                         break;
                 }
             }
+        }
+
+        private void OnResultCallBack(string[] infos)
+        {
+            Frame.Navigate(typeof(ResultPage), infos);
         }
 
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
@@ -156,8 +166,6 @@ namespace Platform
             FirstParryratio.Text = firstProperties[7];
 
             FirstPlayerAnger.Value = int.Parse(firstProperties[8]);
-            FirstPlayerExp.Value = ExpConverter.Convert(int.Parse(firstProperties[9]), int.Parse(firstProperties[10])) / 10;
-            FirstPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(firstProperties[9]), int.Parse(firstProperties[10])).ToString() + "/1000";
 
             string[] secondProperties = secondPlayer.Split(',');
 
@@ -172,8 +180,6 @@ namespace Platform
             SecondParryratio.Text = secondProperties[7];
 
             SecondPlayerAnger.Value = int.Parse(secondProperties[8]);
-            SecondPlayerExp.Value = ExpConverter.Convert(int.Parse(secondProperties[9]), int.Parse(secondProperties[10])) / 10;
-            SecondPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(secondProperties[9]), int.Parse(secondProperties[10])).ToString() + "/1000";
         }
 
         private void OnDisplayFirstPlayerCallBack(string message)
@@ -184,6 +190,43 @@ namespace Platform
         private void OnDisplaySecondPlayerCallBack(string message)
         {
             BattleMessageOfSecondPlayer.Text += message + '\n';
+        }
+
+        async private void BackToLobby_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.Client.Core.IsBattleRunning())
+            {
+                var msgDialog = new Windows.UI.Popups.MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
+                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("确定"));
+                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("取消"));
+
+                if ((await msgDialog.ShowAsync()).Label == "确定")
+                {
+                    App.Client.Core.ShutdownBattle();
+
+                    App.Client.BattleDriver.Wait();
+                    Frame.Navigate(typeof(WaitPage));
+                }
+            }
+            else
+            {
+                App.Client.BattleDriver.Wait();
+                Frame.Navigate(typeof(WaitPage));
+            }
+        }
+
+        private void BattleControl_Click(object sender, RoutedEventArgs e)
+        {
+            if (BattleControl.IsChecked == true)
+            {
+                BattleControl.Content = "⏸";
+                App.Client.Core.SetBattleOn();
+            }
+            else
+            {
+                BattleControl.Content = "▶";
+                App.Client.Core.SetBattlePasue();
+            }
         }
     }
 }

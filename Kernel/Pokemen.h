@@ -41,6 +41,8 @@ namespace Pokemen
 		int GetLevel() const;
 		int GetExp() const;
 
+		int GetPrimarySkill() const;
+
 	public:
 		bool Upgrade(int exp);
 		bool SetPrimarySkill(int skill);

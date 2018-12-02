@@ -52,11 +52,6 @@ namespace Platform
             }
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            GamePage.Current.ShowTag();
-        }
-
         /// <summary>
         /// 设置获得经验的前后小精灵的变化
         /// </summary>
@@ -80,8 +75,8 @@ namespace Platform
             OldHitratio.Text = oldProps[9];
             OldParryratio.Text = oldProps[10];
 
-            OldPlayerExp.Value = ExpConverter.Convert(int.Parse(oldProps[11]), int.Parse(oldProps[12]));
-            OldPlayerExpTextBlock.Text = (ExpConverter.Convert(int.Parse(oldProps[11]), int.Parse(oldProps[12])) / 10).ToString() + "/1000";
+            OldPlayerExp.Value = ExpConverter.Convert(int.Parse(oldProps[12]));
+            OldPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(oldProps[12])).ToString() + "/100";
             OldPlayerLevel.Text = oldProps[13];
 
             NewPlayerIcon.Glyph = PokemenTypeConverter.ExternConvert(int.Parse(newProps[1]));
@@ -97,21 +92,23 @@ namespace Platform
             NewHitratio.Text = newProps[9];
             NewParryratio.Text = newProps[10];
 
-            NewPlayerExp.Value = ExpConverter.Convert(int.Parse(newProps[11]), int.Parse(newProps[12]));
-            NewPlayerExpTextBlock.Text = (ExpConverter.Convert(int.Parse(newProps[11]), int.Parse(newProps[12])) / 10).ToString() + "/1000";
+            NewPlayerExp.Value = ExpConverter.Convert(int.Parse(newProps[12]));
+            NewPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(newProps[12])).ToString() + "/100";
             NewPlayerLevel.Text = newProps[13];
-        }
-
-        private void OnHandleLoseCallBack(string exp)
-        {
-            ResultInfo.Text = "胜利";
-            ResultInfo.Foreground = new SolidColorBrush(Colors.DarkGreen);
         }
 
         private void OnHandleWinCallBack(string exp)
         {
+            ResultInfo.Text = "胜利";
+            ResultInfo.Foreground = new SolidColorBrush(Colors.DarkGreen);
+            ExpDisplay.Text = exp.ToString() + "点";
+        }
+
+        private void OnHandleLoseCallBack(string exp)
+        {
             ResultInfo.Text = "失败";
             ResultInfo.Foreground = new SolidColorBrush(Colors.DarkRed);
+            ExpDisplay.Text = exp.ToString() + "点";
         }
 
         private void BackToLobby_Click(object sender, RoutedEventArgs e)

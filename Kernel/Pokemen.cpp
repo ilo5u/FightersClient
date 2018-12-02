@@ -294,6 +294,32 @@ namespace Pokemen
 			return this->m_instance->GetExp();
 	}
 
+	int Pokemen::GetPrimarySkill() const
+	{
+		if (this->m_instance == nullptr)
+			throw std::exception("CPokemenManager is not implement.");
+		else
+		{
+			switch (this->m_instance->GetType())
+			{
+			case PokemenType::MASTER:
+				return static_cast<int>((static_cast<PMaster>(this->m_instance))->GetPrimarySkill());
+
+			case PokemenType::KNIGHT:
+				return static_cast<int>((static_cast<PKnight>(this->m_instance))->GetPrimarySkill());
+
+			case PokemenType::GUARDIAN:
+				return static_cast<int>((static_cast<PGuardian>(this->m_instance))->GetPrimarySkill());
+
+			case PokemenType::ASSASSIN:
+				return static_cast<int>((static_cast<PAssassin>(this->m_instance))->GetPrimarySkill());
+
+			default:
+				throw std::exception("CPokemenManager is not implement.");
+			}
+		}
+	}
+
 	bool Pokemen::Upgrade(int exp)
 	{
 		if (this->m_instance == nullptr)
@@ -430,9 +456,8 @@ namespace Pokemen
 
 	void BattleStage::Start()
 	{
-		ResetEvent(m_messagesAvailable);
+		this->Clear();
 		m_isBattleRunnig = true;
-
 		m_battleDriver = std::move(std::thread{ std::bind(&BattleStage::_RunBattle_, this) });
 	}
 
@@ -454,6 +479,7 @@ namespace Pokemen
 		if (m_battleDriver.joinable())
 			m_battleDriver.join();
 		m_roundsCnt = 0;
+		ResetEvent(m_stateControl);
 	}
 
 	bool BattleStage::IsRunning() const
@@ -565,9 +591,9 @@ namespace Pokemen
 		}
 
 		if (m_firstPlayer.InState(BasePlayer::State::DEAD))
-			sprintf(m_battleMessage, "F\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
-		else
 			sprintf(m_battleMessage, "S\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
+		else
+			sprintf(m_battleMessage, "F\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
 
 		m_messagesMutex.lock();
 		m_messages.push({ BattleMessage::Type::RESULT, m_battleMessage });

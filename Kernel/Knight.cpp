@@ -78,6 +78,11 @@ namespace Pokemen
 		return this->m_career.type;
 	}
 
+	Knight::Skill::Type Knight::GetPrimarySkill() const
+	{
+		return this->m_skill.primarySkill;
+	}
+
 	/// <summary>
 	/// 
 	/// </summary>

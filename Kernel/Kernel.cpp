@@ -94,7 +94,10 @@ namespace Kernel
 
 			instance.GetCareer(),
 			instance.GetExp(),
-			instance.GetLevel()
+			instance.GetLevel(),
+
+			instance.GetPrimarySkill(),
+			1 - instance.GetPrimarySkill()
 		};
 	}
 
@@ -125,6 +128,10 @@ namespace Kernel
 
 		case MsgType::LOGOUT:
 			sendPacket.type = PacketType::LOGOUT;
+			break;
+
+		case MsgType::UPGRADE_POKEMEN:
+			sendPacket.type = PacketType::UPGRADE_POKEMEN;
 			break;
 
 		default:
@@ -177,29 +184,35 @@ namespace Kernel
 				if (it != pokemens.end())
 				{
 					/* 向UI回传UPDATE信息 */
-					char oldProp[BUFSIZ];
-					sprintf(oldProp,
+					char prop[BUFSIZ];
+					sprintf(prop,
 						"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
 						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
 						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
 						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
 					);
-					msg.options.append(oldProp);
+					msg.options.append(prop);
 
 					/* 升级 */
 					(*it)->Upgrade(raiseExp);
 
-					sprintf(packet.data + std::strlen(packet.data),
+					sprintf(prop,
 						"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
 						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
 						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
 						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
 					);
+					msg.options.append(prop);
 
-					msg.options.append(packet.data);
-
+					sprintf(packet.data + std::strlen(packet.data),
+						"%d\n%d\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",
+						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
+						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
+						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
+						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
+					);
 					/* 向服务器回传UPDATE信息 */
 					netDriver.SendPacket(packet);
 				}
@@ -370,6 +383,7 @@ namespace Kernel
 		{
 			if ((*it)->GetId() == pokemenId)
 			{
+				(*it)->SetPrimarySkill(type);
 				stage.SetPlayers(*(*it), aiPlayer);
 				break;
 			}

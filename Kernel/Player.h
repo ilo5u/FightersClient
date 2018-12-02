@@ -158,7 +158,7 @@ namespace Pokemen
 			static const Value angerInc = 10;
 			static const Value bleedDamage = 20;
 
-			static const Value exp = 1000;
+			static const Value exp = 100;
 			static const Value hpointsInc = 100;
 			static const Value levelupPropertiesInc = 21;
 
@@ -291,6 +291,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);
 		bool   SetPrimarySkill(Skill::Type primarySkill);
@@ -382,6 +383,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);
 		bool   SetPrimarySkill(Skill::Type skill);
@@ -473,6 +475,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);
 		bool   SetPrimarySkill(Skill::Type primarySkill);
@@ -568,6 +571,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);
 		bool   SetPrimarySkill(Skill::Type primarySkill);

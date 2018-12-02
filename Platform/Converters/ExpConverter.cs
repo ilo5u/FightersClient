@@ -8,9 +8,9 @@ namespace Platform.Converters
 {
     class ExpConverter
     {
-        public static int Convert(int exp, int level)
+        public static int Convert(int exp)
         {
-            return level == 0 ? exp : exp % ((level - 1) * 1000);
+            return exp % 100;
         }
     }
 }

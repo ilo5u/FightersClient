@@ -23,6 +23,8 @@ namespace Platform.Models
         public int Career { get; set; }
         public int Level { get; set; }
         public int Exp { get; set; }
+        public int PrimarySkill { get; set; }
+        public int SecondSkill { get; set; }
 
         public static explicit operator PokemenViewer(Kernel.Property property)
         {
@@ -45,9 +47,32 @@ namespace Platform.Models
 
                 Career = property.career,
                 Exp = property.exp,
-                Level = property.level
+                Level = property.level,
+
+                PrimarySkill = property.primarySkill,
+                SecondSkill = property.secondSkill
             };
             return viewer;
+        }
+
+        public void Renew(int type, string image, 
+            int hpoints, int attack, int defense, int agility,
+            int interval, int critical, int hitratio, int parryratio,
+            int career, int exp, int level)
+        {
+            Type = type;
+            Image = image;
+            Hpoints = hpoints;
+            Attack = attack;
+            Defense = defense;
+            Agility = agility;
+            Interval = interval;
+            Critical = critical;
+            Hitratio = hitratio;
+            Parryratio = parryratio;
+            Career = career;
+            Exp = exp;
+            Level = level;
         }
     }
 }
