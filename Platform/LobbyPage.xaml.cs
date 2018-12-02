@@ -29,7 +29,7 @@ namespace Platform
         /// </summary>
         static public LobbyPage Current;
         public Kernel.Pokemen AIPlayer;
-        public PokemenViewer UserPlayer;
+        public PokemenViewer UserPlayer = new PokemenViewer();
         public int PrimarySkillType;
 
         public LobbyPage()
@@ -88,8 +88,7 @@ namespace Platform
         {
             UserPlayer.Id = -1;
             /* 选择出战精灵 */
-            FirstSkill.IsSelected = false;
-            SecondSkill.IsSelected = false;
+            SkillSelect.Visibility = Visibility.Collapsed;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
@@ -112,8 +111,7 @@ namespace Platform
         {
             UserPlayer.Id = -1;
             /* 选择出战精灵 */
-            FirstSkill.IsSelected = false;
-            SecondSkill.IsSelected = false;
+            SkillSelect.Visibility = Visibility.Collapsed;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
@@ -163,8 +161,10 @@ namespace Platform
         private void PokemensView_ItemClick(object sender, ItemClickEventArgs e)
         {
             UserPlayer = (Models.PokemenViewer)e.ClickedItem;
-            FirstSkill.Content = SkillConverter.Convert(UserPlayer.Type, UserPlayer.PrimarySkill);
-            SecondSkill.Content = SkillConverter.Convert(UserPlayer.Type, UserPlayer.SecondSkill);
+            SkillSelect.Visibility = Visibility.Visible;
+            FirstSkill.IsSelected = true;
+            FirstSkill.Content = SkillConverter.Convert(UserPlayer.Type, 0);
+            SecondSkill.Content = SkillConverter.Convert(UserPlayer.Type, 1);
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

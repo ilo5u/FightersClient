@@ -48,7 +48,7 @@ namespace Platform
             App.Client.BattleDriver = new Task(BattleTask);
             App.Client.BattleDriver.Start();
 
-            FirstPlayer = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.userPlayerId);
+            FirstPlayer = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
             SecondPlayer = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
 
             // 设置左侧小精灵的初始信息

@@ -34,7 +34,7 @@ namespace Platform
 
         private void BackToAll_Click(object sender, RoutedEventArgs e)
         {
-
+            Frame.Navigate(typeof(DisplayAllPage));
         }
     }
 }

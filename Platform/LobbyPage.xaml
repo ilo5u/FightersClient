@@ -173,7 +173,7 @@
                     </GridView.ItemTemplate>
                 </GridView>
 
-                <ListBox Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Single">
+                <ListBox Name="SkillSelect" Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Single">
                     <ListBoxItem Name="FirstSkill" FontSize="24" />
                     <ListBoxItem Name="SecondSkill" FontSize="24" />
                 </ListBox>
