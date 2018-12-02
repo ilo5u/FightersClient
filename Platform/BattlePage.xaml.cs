@@ -68,7 +68,8 @@ namespace Platform
             FirstHitratio.Text = FirstPlayer.Hitratio.ToString();
             FirstParryratio.Text = FirstPlayer.Parryratio.ToString();
 
-            FirstPlayerExp.Value = FirstPlayer.Exp;
+            FirstPlayerExp.Value = ExpConverter.Convert(FirstPlayer.Exp);
+            FirstPlayerExpTextBlock.Text = ExpConverter.Convert(FirstPlayer.Exp).ToString() + "/100";
             FirstPlayerLevel.Text = FirstPlayer.Level.ToString();
 
             SecondPlayerName.Text = SecondPlayer.Name;
@@ -84,7 +85,8 @@ namespace Platform
             SecondHitratio.Text = SecondPlayer.Hitratio.ToString();
             SecondParryratio.Text = SecondPlayer.Parryratio.ToString();
 
-            SecondPlayerExp.Value = SecondPlayer.Exp;
+            SecondPlayerExp.Value = ExpConverter.Convert(SecondPlayer.Exp);
+            SecondPlayerExpTextBlock.Text = ExpConverter.Convert(SecondPlayer.Exp).ToString() + "/100";
             SecondPlayerLevel.Text = SecondPlayer.Level.ToString();
 
             App.Client.Core.StartBattle();
@@ -131,7 +133,10 @@ namespace Platform
                     case MsgType.PVE_RESULT:
                         {
                             App.Client.IsOnBattle = false;
-                            Frame.Navigate(typeof(ResultPage), infos);
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnResultCallBack(infos)
+                                );
                         }
                         return;
 
@@ -139,6 +144,11 @@ namespace Platform
                         break;
                 }
             }
+        }
+
+        private void OnResultCallBack(string[] infos)
+        {
+            Frame.Navigate(typeof(ResultPage), infos);
         }
 
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
@@ -156,8 +166,6 @@ namespace Platform
             FirstParryratio.Text = firstProperties[7];
 
             FirstPlayerAnger.Value = int.Parse(firstProperties[8]);
-            FirstPlayerExp.Value = ExpConverter.Convert(int.Parse(firstProperties[9]), int.Parse(firstProperties[10])) / 10;
-            FirstPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(firstProperties[9]), int.Parse(firstProperties[10])).ToString() + "/1000";
 
             string[] secondProperties = secondPlayer.Split(',');
 
@@ -172,8 +180,6 @@ namespace Platform
             SecondParryratio.Text = secondProperties[7];
 
             SecondPlayerAnger.Value = int.Parse(secondProperties[8]);
-            SecondPlayerExp.Value = ExpConverter.Convert(int.Parse(secondProperties[9]), int.Parse(secondProperties[10])) / 10;
-            SecondPlayerExpTextBlock.Text = ExpConverter.Convert(int.Parse(secondProperties[9]), int.Parse(secondProperties[10])).ToString() + "/1000";
         }
 
         private void OnDisplayFirstPlayerCallBack(string message)

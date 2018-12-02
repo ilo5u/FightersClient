@@ -26,5 +26,10 @@ namespace Platform
         {
             this.InitializeComponent();
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            LobbyPage.Current.ShowBattle();
+        }
     }
 }

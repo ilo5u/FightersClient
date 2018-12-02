@@ -430,9 +430,8 @@ namespace Pokemen
 
 	void BattleStage::Start()
 	{
-		ResetEvent(m_messagesAvailable);
+		this->Clear();
 		m_isBattleRunnig = true;
-
 		m_battleDriver = std::move(std::thread{ std::bind(&BattleStage::_RunBattle_, this) });
 	}
 
@@ -565,9 +564,9 @@ namespace Pokemen
 		}
 
 		if (m_firstPlayer.InState(BasePlayer::State::DEAD))
-			sprintf(m_battleMessage, "F\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
-		else
 			sprintf(m_battleMessage, "S\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
+		else
+			sprintf(m_battleMessage, "F\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
 
 		m_messagesMutex.lock();
 		m_messages.push({ BattleMessage::Type::RESULT, m_battleMessage });

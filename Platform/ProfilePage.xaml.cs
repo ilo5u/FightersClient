@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kernel;
+using Platform.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,15 +29,29 @@ namespace Platform
             this.InitializeComponent();
         }
 
-        private void Upgrade_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+        int pokemenId;
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            int pokemenId = ((Models.PokemenViewer)e.ClickedItem).Id;
+            PokemenViewer pokemen = (PokemenViewer)e.ClickedItem;
             Display.IsPaneOpen = true;
+
+            pokemenId = pokemen.Id;
+            if (pokemen.Career > 0 || pokemen.Level < 9)
+                Upgrade.IsEnabled = false;
+            else
+                Upgrade.IsEnabled = true;
+        }
+
+        private void FirstCareer_Click(object sender, RoutedEventArgs e)
+        {
+            Message msg = new Message { type = MsgType.UPGRADE_POKEMEN, data = pokemenId.ToString() + "\n1\n" };
+            App.Client.Core.SendMessage(msg);
+        }
+
+        private void SecondCareer_Click(object sender, RoutedEventArgs e)
+        {
+            Message msg = new Message { type = MsgType.UPGRADE_POKEMEN, data = pokemenId.ToString() + "\n2\n" };
+            App.Client.Core.SendMessage(msg);
         }
     }
 }

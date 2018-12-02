@@ -41,6 +41,19 @@ namespace Platform
             BattleFrame.Navigate(typeof(WaitPage));
         }
 
+        internal void HideBattle()
+        {
+            BattleList.IsPaneOpen = false;
+            BattleList.Width = 0;
+            BattleControl.IsChecked = false;
+        }
+
+        internal void ShowBattle()
+        {
+            BattleList.IsPaneOpen = false;
+            BattleList.Width = 240;
+        }
+
         private void SetAIDisplay()
         {
             Kernel.Property pokemen = AIPlayer.GetProperty();
@@ -58,7 +71,7 @@ namespace Platform
             HitratioOfOpponent.Text = pokemen.hitratio.ToString();
             ParryratioOfOpponent.Text = pokemen.parryratio.ToString();
 
-            ExpOfOpponent.Text = (ExpConverter.Convert(pokemen.exp, pokemen.level) / 10).ToString();
+            ExpOfOpponent.Text = ExpConverter.Convert(pokemen.exp).ToString();
             LevelOfOpponent.Text = pokemen.level.ToString();
         }
 
@@ -67,6 +80,12 @@ namespace Platform
             userPlayerId = ((Models.PokemenViewer)e.ClickedItem).Id;
         }
 
+        public enum BattleType
+        {
+            LEVELUP,
+            DADORSON
+        }
+        public BattleType TypeOfBattle;
         async private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
             userPlayerId = -1;
@@ -76,6 +95,7 @@ namespace Platform
             {
                 if (userPlayerId != -1)
                 {
+                    TypeOfBattle = BattleType.LEVELUP;
                     App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 0);
 
                     BattleChoices.Visibility = Visibility.Collapsed;
@@ -101,6 +121,7 @@ namespace Platform
             {
                 if (userPlayerId != -1)
                 {
+                    TypeOfBattle = BattleType.DADORSON;
                     App.Client.Core.SetBattlePlayersAndType(userPlayerId, AIPlayer, 1);
 
                     BattleChoices.Visibility = Visibility.Collapsed;

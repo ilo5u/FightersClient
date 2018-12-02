@@ -33,7 +33,7 @@
         <con:PokemenTypeConverter x:Key="PTConverter" />
     </Page.Resources>
 
-    <SplitView Name="Display"
+    <SplitView Name="Display" IsPaneOpen="True"
                PanePlacement="Right" DisplayMode="Inline" OpenPaneLength="240">
         <SplitView.Pane>
             <Grid>
@@ -56,78 +56,85 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal">
-                    <FontIcon Name="IconOfOppoent" Style="{StaticResource PropertyIconTextStyle}" />
-                    <TextBlock Name="NameOfOpponent" Style="{StaticResource PokemenNameTextStyle}" Text="Name" />
+                    <FontIcon Name="TypeOfPokemen" Style="{StaticResource PropertyIconTextStyle}" />
+                    <TextBlock Name="NameOfPokemen" Style="{StaticResource PokemenNameTextStyle}" Text="Name" />
                 </StackPanel>
 
-                <Image Grid.Row="1" Name="ImageOfOpponent" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Image Grid.Row="1" Name="ImageOfPokemen" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F9E1;" />
-                    <TextBlock Name="HpointsOfOpponent" Style="{StaticResource PropertyValueTextStyle}" />
+                    <TextBlock Name="HpointsOfPokemen" Style="{StaticResource PropertyValueTextStyle}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F5E1;" />
-                    <TextBlock Name="AttackOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="AttackOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="4" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x26D1;" />
-                    <TextBlock Name="DefenseOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="DefenseOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="5" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3BF;" />
-                    <TextBlock Name="AgilityOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="AgilityOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="6" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F55B;" />
-                    <TextBlock Name="BreakOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="IntervalOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="7" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F4A3;" />
-                    <TextBlock Name="CriticalOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="CriticalOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="8" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3AF;" />
-                    <TextBlock Name="HitratioOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="HitratioOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="9" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3C3;" />
-                    <TextBlock Name="ParryratioOfOpponent" Style="{StaticResource PropertyValueTextStyle}" />
+                    <TextBlock Name="ParryratioOfPokemen" Style="{StaticResource PropertyValueTextStyle}" />
                 </StackPanel>
 
                 <StackPanel Grid.Row="10" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x23F3;" />
-                    <TextBlock Name="LevelOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="LevelOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="11" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3C6;" />
-                    <TextBlock Name="ExpOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                    <TextBlock Name="ExpOfPokemen" Style="{StaticResource PropertyValueTextStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="12" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2755;" />
-                    <TextBlock Name="PrimarySkillOfOpponent" Text="主技能"
+                    <TextBlock Name="PrimarySkillOfPokemen" Text="主技能"
                                    FontSize="24" Margin="10" FontFamily="Consolas"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="13" Orientation="Horizontal">
                     <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2754;" />
-                    <TextBlock Name="SecondarySkillOfOpponent" Text="次技能" 
+                    <TextBlock Name="SecondarySkillOfPokemen" Text="次技能" 
                                    FontSize="24" Margin="10" FontFamily="Consolas"/>
                 </StackPanel>
 
                 <RelativePanel Name="UpgradeChoices" Grid.Row="14" Visibility="Visible">
-                    <Button Name="Upgrade" Content="转职" Click="Upgrade_Click"
+                    <Button Name="Upgrade" Content="转职"
                             RelativePanel.AlignHorizontalCenterWithPanel="True"
-                            Margin="20" Width="80"/>
+                            Margin="20" Width="80">
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Name="FirstCareer" Text="(TODO1)" Click="FirstCareer_Click" />
+                                <MenuFlyoutItem Name="SecondCareer" Text="(TODO2)" Click="SecondCareer_Click" />
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
                 </RelativePanel>
             </Grid>
         </SplitView.Pane>
@@ -151,13 +158,13 @@
                               RelativePanel.AlignVerticalCenterWith="PokemenNameTextBlock"/>
 
                             <Image Name="PokemenImage"
-                           Source="{x:Bind Image}"
-                           Width="200"
-                           RelativePanel.Below="PokemenNameTextBlock"
-                           Margin="0,5,0,5"/>
+                                   Source="{x:Bind Image}"
+                                   Width="200"
+                                   RelativePanel.Below="PokemenNameTextBlock"
+                                   Margin="0,5,0,5"/>
 
                             <Grid RelativePanel.Below="PokemenImage"
-                          Width="200">
+                                  Width="200">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
@@ -171,8 +178,8 @@
 
                                 <RelativePanel Grid.Row="0" Grid.Column="0">
                                     <TextBlock FontSize="24"
-                                       FontFamily="Segoe UI Emoji"
-                                       Text="&#x1F9E1;" />
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F9E1;" />
                                     <TextBlock FontSize="24"
                                        Text="{x:Bind Hpoints}" 
                                        RelativePanel.AlignRightWithPanel="True"
