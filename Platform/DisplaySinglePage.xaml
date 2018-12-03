@@ -52,7 +52,7 @@
                 <Image Name="ImageOfPokemen" Width="150" Margin="0,5,0,5"
                            RelativePanel.Below="NameOfPokemen" RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
-                <Grid Name="PropertyGird" RelativePanel.Below="ImageOfPokemen" Width="Auto">
+                <Grid Name="PropertyGird" RelativePanel.Below="ImageOfPokemen" HorizontalAlignment="Stretch">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -148,16 +148,19 @@
                             RelativePanel.AlignRightWithPanel="True" Margin="0,0,40,0"
                             RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 </RelativePanel>
-                <TextBlock Name="NormalSkillNotation" Grid.Row="1" Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
+                <TextBlock Name="NormalSkillNotation" Grid.Row="1" TextWrapping="Wrap"
+                           Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
                 <TextBlock Grid.Row="2" Style="{ThemeResource TitleTextBlockStyle}" Text="怒气技能" Margin="20" />
-                <TextBlock Name="MainSkillNotation" Grid.Row="3" Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
+                <TextBlock Name="MainSkillNotation" Grid.Row="3" TextWrapping="Wrap"
+                           Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Vertical">
                 <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="职业" Margin="20" />
-                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
+                <TextBlock Name="CareerInfo" Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
                 <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="职业简介" Margin="20"/>
-                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
+                <TextBlock Name="NotationOfCareer" Style="{ThemeResource BodyTextBlockStyle}" 
+                           TextWrapping="Wrap" Text="(TODO)" Margin="20" />
             </StackPanel>
 
         </Grid>

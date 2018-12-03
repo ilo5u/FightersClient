@@ -31,6 +31,7 @@
         </Style>
 
         <con:PokemenTypeConverter x:Key="PTConverter" />
+        <con:ShrinkNameConverter x:Key="SNConverter" />
     </Page.Resources>
 
     <Grid>
@@ -174,7 +175,7 @@
                 </GridView>
 
                 <ListBox Name="SkillSelect" Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Single">
-                    <ListBoxItem Name="FirstSkill" FontSize="24" />
+                    <ListBoxItem Name="FirstSkill" FontSize="24" IsSelected="True"/>
                     <ListBoxItem Name="SecondSkill" FontSize="24" />
                 </ListBox>
             </Grid>
@@ -389,8 +390,18 @@
                                   ItemsSource="{x:Bind local:App.Client.Users}">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="model:UserViewer">
-                                    <TextBlock Text="{x:Bind Name}" Width="240" HorizontalAlignment="Center"
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="&#xE13D;" FontSize="24">
+                                            <Button.Flyout>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem Name="OnlineUserName" Text="{x:Bind Name}" FontSize="24"/>
+                                                </MenuFlyout>
+                                            </Button.Flyout>
+                                        </Button>
+                                        <TextBlock Text="{Binding ElementName=OnlineUserName, Path=Text, Converter={StaticResource SNConverter}}" Width="240" HorizontalAlignment="Center"
                                                FontFamily="Consolas" FontSize="24" Margin="10" Foreground="DarkGreen"/>
+                                        
+                                    </StackPanel>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>

@@ -92,7 +92,7 @@ namespace Platform
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (UserPlayer.Id != -1)
+                if (UserPlayer.Id == -1)
                 {
                     TypeOfBattle = BattleType.LEVELUP;
                     App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
@@ -115,7 +115,7 @@ namespace Platform
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (UserPlayer.Id != -1)
+                if (UserPlayer.Id == -1)
                 {
                     TypeOfBattle = BattleType.DADORSON;
                     App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
@@ -160,7 +160,7 @@ namespace Platform
 
         private void PokemensView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            UserPlayer = (Models.PokemenViewer)e.ClickedItem;
+            UserPlayer = (PokemenViewer)e.ClickedItem;
             SkillSelect.Visibility = Visibility.Visible;
             FirstSkill.IsSelected = true;
             FirstSkill.Content = SkillConverter.Convert(UserPlayer.Type, 0);
