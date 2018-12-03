@@ -187,21 +187,23 @@ namespace Platform
 
         private void OnSetOnlineUsersCallBack(string userInfos)
         {
+            Debug.WriteLine(userInfos);
             string[] userInfoArray = userInfos.Split('\n');
             int total = int.Parse(userInfoArray[0]);
             for (int i = 1; i <= total; ++i)
-                App.Client.Users.Add(new Models.UserViewer { Name = userInfoArray[i] });
+                App.Client.Users.Add(new UserViewer { Name = userInfoArray[i] });
         }
 
         private void OnUpdateOnlineUsersCallBack(string userInfos)
         {
+            Debug.WriteLine(userInfos);
             string[] userInfoArray = userInfos.Split('\n');
             try
             {
                 if (userInfoArray[1] == "OFF")
-                    App.Client.Users.Remove(new Models.UserViewer { Name = userInfoArray[0] });
+                    App.Client.Users.Remove(new UserViewer { Name = userInfoArray[0] });
                 else if (userInfoArray[1] == "ON")
-                    App.Client.Users.Add(new Models.UserViewer { Name = userInfoArray[0] });
+                    App.Client.Users.Add(new UserViewer { Name = userInfoArray[0] });
             }
             catch (Exception e)
             {

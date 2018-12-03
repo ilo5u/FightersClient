@@ -5,6 +5,8 @@ constexpr int PORT = 27893;
 
 #pragma comment (lib, "WS2_32.lib")
 
+static std::string serverIp = "10.201.6.248";
+
 namespace NetIO
 {
 	NetIO::NetIO() :
@@ -49,7 +51,7 @@ namespace NetIO
 			OutputDebugStringA("初始化网络环境成功。\n");
 
 			m_serverAddr.sin_family = AF_INET;
-			m_serverAddr.sin_addr.S_un.S_addr = inet_addr("10.128.233.191");
+			m_serverAddr.sin_addr.S_un.S_addr = inet_addr(serverIp.c_str());
 			m_serverAddr.sin_port = htons(PORT);
 			if (connect(m_connectSocket, (LPSOCKADDR)&m_serverAddr, sizeof(SOCKADDR))
 				== SOCKET_ERROR)

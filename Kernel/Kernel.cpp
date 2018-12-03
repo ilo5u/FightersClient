@@ -134,6 +134,10 @@ namespace Kernel
 			sendPacket.type = PacketType::UPGRADE_POKEMEN;
 			break;
 
+		case MsgType::GET_ONLINE_USERS:
+			sendPacket.type = PacketType::GET_ONLINE_USERS;
+			break;
+
 		default:
 			break;
 		}

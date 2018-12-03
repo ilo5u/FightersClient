@@ -99,8 +99,13 @@
     <Compile Include="BattlePage.xaml.cs">
       <DependentUpon>BattlePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CareerConverter.cs" />
     <Compile Include="Converters\ExpConverter.cs" />
+    <Compile Include="Converters\MainSkillConverter.cs" />
+    <Compile Include="Converters\NotationOfCareerConverter.cs" />
+    <Compile Include="Converters\NotationOfSkillConverter.cs" />
     <Compile Include="Converters\PokemenTypeConverter.cs" />
+    <Compile Include="Converters\ShrinkNameConverter.cs" />
     <Compile Include="Converters\SkillConverter.cs" />
     <Compile Include="DisplayAllPage.xaml.cs">
       <DependentUpon>DisplayAllPage.xaml</DependentUpon>
