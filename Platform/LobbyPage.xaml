@@ -76,7 +76,7 @@
                                    RelativePanel.Below="NameOfPokemen"
                                    Margin="0,5,0,5"/>
 
-                                <Grid RelativePanel.Below="ImageOfPokemen"
+                                <Grid Name="PropertyGrid" RelativePanel.Below="ImageOfPokemen"
                                   Width="200">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
@@ -169,6 +169,11 @@
                                                Margin="0,0,10,0"/>
                                     </RelativePanel>
                                 </Grid>
+ 
+                                <StackPanel Orientation="Horizontal" RelativePanel.Below="PropertyGrid">
+                                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
+                                    <TextBlock FontSize="24" FontFamily="Consolas" Margin="10" Text="{x:Bind Level}" />
+                                </StackPanel>
                             </RelativePanel>
                         </DataTemplate>
                     </GridView.ItemTemplate>
@@ -294,7 +299,7 @@
                         <TextBlock Name="ListOfAI"
                                    FontSize="24"
                                    FontFamily="Consolas"
-                                   Text="电脑" 
+                                   Text="对战" 
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"
                                    Margin="0,20,0,0"/>
@@ -391,7 +396,7 @@
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="model:UserViewer">
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Content="&#xE13D;" FontSize="24">
+                                        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE13D;" FontSize="24">
                                             <Button.Flyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="OnlineUserName" Text="{x:Bind Name}" FontSize="24"/>

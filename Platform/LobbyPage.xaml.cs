@@ -29,6 +29,7 @@ namespace Platform
         /// </summary>
         static public LobbyPage Current;
         public Kernel.Pokemen AIPlayer;
+        int UserPlayerId;
         public PokemenViewer UserPlayer = new PokemenViewer();
         public int PrimarySkillType;
 
@@ -86,13 +87,13 @@ namespace Platform
         public BattleType TypeOfBattle;
         async private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
-            UserPlayer.Id = -1;
+            UserPlayerId = -1;
             /* 选择出战精灵 */
             SkillSelect.Visibility = Visibility.Collapsed;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (UserPlayer.Id == -1)
+                if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.LEVELUP;
                     App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
@@ -109,13 +110,13 @@ namespace Platform
 
         async private void DadOrSon_Click(object sender, RoutedEventArgs e)
         {
-            UserPlayer.Id = -1;
+            UserPlayerId = -1;
             /* 选择出战精灵 */
             SkillSelect.Visibility = Visibility.Collapsed;
             ContentDialogResult contentDialogResult = await SelectOfPokemens.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {
-                if (UserPlayer.Id == -1)
+                if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.DADORSON;
                     App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
@@ -161,6 +162,7 @@ namespace Platform
         private void PokemensView_ItemClick(object sender, ItemClickEventArgs e)
         {
             UserPlayer = (PokemenViewer)e.ClickedItem;
+            UserPlayerId = UserPlayer.Id;
             SkillSelect.Visibility = Visibility.Visible;
             FirstSkill.IsSelected = true;
             FirstSkill.Content = SkillConverter.Convert(UserPlayer.Type, 0);

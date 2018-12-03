@@ -46,13 +46,13 @@
                 <TextBlock Name="NameOfPokemen" Style="{StaticResource PokemenNameTextStyle}"/>
 
                 <FontIcon Name="TypeOfPokemen" Style="{StaticResource PropertyIconTextStyle}"
-                              RelativePanel.AlignRightWithPanel="True"
+                              RelativePanel.RightOf="NameOfPokemen" Margin="10,0,0,0"
                               RelativePanel.AlignVerticalCenterWith="NameOfPokemen"/>
 
-                <Image Name="ImageOfPokemen" Width="150" Margin="0,5,0,5"
-                           RelativePanel.Below="NameOfPokemen" RelativePanel.AlignHorizontalCenterWithPanel="True" />
+                <Image Name="ImageOfPokemen" Width="200" Margin="0,5,0,5"
+                           RelativePanel.Below="NameOfPokemen" RelativePanel.AlignLeftWith="NameOfPokemen" />
 
-                <Grid Name="PropertyGird" RelativePanel.Below="ImageOfPokemen" HorizontalAlignment="Stretch">
+                <Grid Name="PropertyGird" RelativePanel.Below="ImageOfPokemen" Width="300">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -71,45 +71,45 @@
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="1" Grid.Column="0">
-                        <FontIcon Name="AttackIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
+                        <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
                         <TextBlock Name="Attack" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.RightOf="AttackIcon" />
+                                       RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="2" Grid.Column="0">
-                        <FontIcon Name="DefenseIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
+                        <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
                         <TextBlock Name="Defense" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.RightOf="DefenseIcon" />
+                                       RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="3" Grid.Column="0">
-                        <FontIcon Name="AgilityIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
+                        <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
                         <TextBlock Name="Agility" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.RightOf="AgilityIcon" />
+                                       RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="0" Grid.Column="1">
-                        <FontIcon Name="IntervalIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
+                        <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
                         <TextBlock Name="Interval" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.RightOf="IntervalIcon" />
+                                       RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="1" Grid.Column="1">
-                        <FontIcon Name="CriticalIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
+                        <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
                         <TextBlock Name="Critical" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.RightOf="CriticalIcon" />
+                                       RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="2" Grid.Column="1">
-                        <FontIcon Name="HitratioIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
+                        <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
                         <TextBlock Name="Hitratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.RightOf="HitratioIcon" />
+                                       RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="3" Grid.Column="1">
-                        <FontIcon Name="ParryratioIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
+                        <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
                         <TextBlock Name="Parryratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.RightOf="ParryratioIcon" />
+                                       RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
                 </Grid>
 

@@ -63,14 +63,14 @@
                            RelativePanel.AlignLeftWithPanel="True"/>
 
                     <FontIcon Name="OldPlayerIcon" Style="{StaticResource PropertyIconTextStyle}"
-                              RelativePanel.AlignRightWithPanel="True"
+                              RelativePanel.RightOf="OldPlayerName" Margin="10,0,0,0"
                               RelativePanel.AlignVerticalCenterWith="OldPlayerName"/>
 
                     <Image Name="OldPlayerImage" Width="300" Margin="0,5,0,5"
                            RelativePanel.Below="OldPlayerName" RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
                     <Grid Name="OldPropertyGrid" RelativePanel.Below="OldPlayerImage" Width="300"
-                      RelativePanel.AlignHorizontalCenterWithPanel="True">
+                      RelativePanel.AlignLeftWithPanel="True">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -150,19 +150,19 @@
                            RelativePanel.AlignLeftWithPanel="True"/>
 
                     <FontIcon Name="NewPlayerIcon" Style="{StaticResource PropertyIconTextStyle}"
-                              RelativePanel.AlignRightWithPanel="True"
+                              RelativePanel.RightOf="NewPlayerName" Margin="10,0,0,0"
                               RelativePanel.AlignVerticalCenterWith="NewPlayerName"/>
 
                     <Image Name="NewPlayerImage" Width="200" Margin="0,5,0,5"
                            RelativePanel.Below="NewPlayerName" RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
                     <Grid Name="NewPropertyGrid" RelativePanel.Below="NewPlayerImage" Width="300"
-                      RelativePanel.AlignHorizontalCenterWithPanel="True">
+                      RelativePanel.AlignLeftWithPanel="True">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="43" />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150" />

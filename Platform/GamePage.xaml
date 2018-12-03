@@ -16,7 +16,7 @@
 
         <RelativePanel Name="GameTag" Grid.Row="0">
             <TextBlock Name="LobbyTag"
-                       Text="Lobby"
+                       Text="对战大厅"
                        FontFamily="Conaloas"
                        FontSize="24"
                        RelativePanel.AlignLeftWithPanel="True"
@@ -33,7 +33,7 @@
                        Margin="0,30,0,0"/>
 
             <TextBlock Name="ProfileTag"
-                       Text="Profile"
+                       Text="个人资料"
                        FontFamily="Consolas"
                        FontSize="24"
                        RelativePanel.RightOf="LobbyTag"
@@ -50,7 +50,7 @@
                        Margin="0,30,0,0"/>
 
             <TextBlock Name="RankTag"
-                       Text="Rank"
+                       Text="排行榜"
                        FontFamily="Consolas"
                        FontSize="24"
                        RelativePanel.RightOf="ProfileTag"

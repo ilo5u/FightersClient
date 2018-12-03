@@ -14,8 +14,8 @@ namespace Platform.Converters
             string name = (string)value;
             if (string.IsNullOrEmpty(name))
                 return "";
-            else if (name.Length > 2)
-                return name.Substring(0, 2) + "...";
+            else if (name.Length > 6)
+                return name.Substring(0, 6) + "...";
             else
                 return name;
         }
