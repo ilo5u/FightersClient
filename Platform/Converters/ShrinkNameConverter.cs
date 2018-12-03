@@ -12,9 +12,12 @@ namespace Platform.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             string name = (string)value;
-            if (name.Length > 2)
+            if (string.IsNullOrEmpty(name))
+                return "";
+            else if (name.Length > 2)
                 return name.Substring(0, 2) + "...";
-            return name;
+            else
+                return name;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
