@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Platform.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,6 +24,7 @@ namespace Platform
     /// </summary>
     public sealed partial class LosePage : Page
     {
+        public ObservableCollection<PokemenViewer> SelectsOfPokemens = new ObservableCollection<PokemenViewer>();
         public LosePage()
         {
             this.InitializeComponent();
@@ -29,7 +32,63 @@ namespace Platform
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
+            PokemenId = -1;
+            SelectsOfPokemens.Clear();
+
+            if (App.Client.Pokemens.Count < 4)
+            {
+                SelectsOfPokemens = App.Client.Pokemens;
+            }
+            else
+            {
+                List<int> selects = new List<int>();
+                Random generator = new Random();
+                while (selects.Count < 3)
+                {
+                    int id = generator.Next() % App.Client.Pokemens.Count;
+                    if (selects.Contains(id))
+                        continue;
+                    else
+                        selects.Add(id);
+                }
+
+                foreach (var id in selects)
+                {
+                    SelectsOfPokemens.Add(
+                        App.Client.Pokemens.ElementAt(id)
+                        );
+                }
+            }
+        }
+
+        int PokemenId;
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            PokemenId = ((PokemenViewer)e.ClickedItem).Id;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (PokemenId == -1)
+            {
+                if (sender is FrameworkElement instruc)
+                {
+                    FlyoutBase.ShowAttachedFlyout(instruc);
+                }
+            }
+            else
+            {
+                App.Client.Core.SendMessage(
+                    new Kernel.Message {
+                        type = Kernel.MsgType.SUB_POKEMEN,
+                        data = PokemenId.ToString()
+                    }
+                    );
+                App.Client.Pokemens.Remove(
+                    App.Client.Pokemens.First(pokemen => pokemen.Id == PokemenId)
+                    );
+                LobbyPage.Current.BackToLobby();
+            }
         }
     }
 }
