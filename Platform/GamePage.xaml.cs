@@ -129,14 +129,18 @@ namespace Platform
                         }
                         break;
 
+                    case Kernel.MsgType.ADD_POKEMEN:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnAddPokemenCallBack(message.data)
+                                );
+                        }
+                        break;
+
                     case Kernel.MsgType.DISCONNECT:
                         {
                             App.Client.IsOnConnection = false;
-
-                            MessageDialog msg = new MessageDialog("与服务器断开连接。") { Title = "错误" };
-                            msg.Commands.Add(new UICommand("确定"));
-                            await msg.ShowAsync();
-
                             if (App.Client.IsOnBattle)
                             {
                                 App.Client.IsOnBattle = false;
@@ -156,10 +160,20 @@ namespace Platform
             }
         }
 
-        public void OnDisconnectionCallBack()
+        private void OnAddPokemenCallBack(string pokemenInfo)
+        {
+            OnUpdatePokemensCallBack(pokemenInfo);
+            WinPage.Current.ShowNewPokemen();
+        }
+
+        async public void OnDisconnectionCallBack()
         {
             App.Client.Users.Clear();
             App.Client.Pokemens.Clear();
+
+            MessageDialog msg = new MessageDialog("与服务器断开连接。") { Title = "错误" };
+            msg.Commands.Add(new UICommand("确定"));
+            await msg.ShowAsync();
 
             Frame.Navigate(typeof(LoginPage));
         }

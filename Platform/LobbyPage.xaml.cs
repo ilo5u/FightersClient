@@ -55,6 +55,11 @@ namespace Platform
             BattleList.Visibility = Visibility.Visible;
         }
 
+        internal void BackToLobby()
+        {
+            BattleFrame.Navigate(typeof(WaitPage));
+        }
+
         private void SetAIDisplay()
         {
             Kernel.Property pokemen = AIPlayer.GetProperty();

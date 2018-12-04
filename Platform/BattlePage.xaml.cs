@@ -39,8 +39,8 @@ namespace Platform
             Current = this;
         }
 
-        private PokemenViewer FirstPlayer;
-        private PokemenViewer SecondPlayer;
+        public PokemenViewer FirstPlayer = new PokemenViewer();
+        public PokemenViewer SecondPlayer = new PokemenViewer();
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             // 启动对战信息实时接收线程
@@ -50,41 +50,6 @@ namespace Platform
 
             FirstPlayer = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
             SecondPlayer = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
-
-            // 设置左侧小精灵的初始信息
-            FirstPlayerName.Text = FirstPlayer.Name;
-            FirstPlayerIcon.Glyph = PokemenTypeConverter.ExternConvert(FirstPlayer.Type);
-
-            FirstHpoints.Text = FirstPlayer.Hpoints.ToString();
-            FirstAttack.Text = FirstPlayer.Attack.ToString();
-            FirstDefense.Text = FirstPlayer.Defense.ToString();
-            FirstAgility.Text = FirstPlayer.Agility.ToString();
-
-            FirstInterval.Text = FirstPlayer.Interval.ToString();
-            FirstCritical.Text = FirstPlayer.Critical.ToString();
-            FirstHitratio.Text = FirstPlayer.Hitratio.ToString();
-            FirstParryratio.Text = FirstPlayer.Parryratio.ToString();
-
-            FirstPlayerExp.Value = ExpConverter.Convert(FirstPlayer.Exp);
-            FirstPlayerExpTextBlock.Text = ExpConverter.Convert(FirstPlayer.Exp).ToString() + "/100";
-            FirstPlayerLevel.Text = FirstPlayer.Level.ToString();
-
-            SecondPlayerName.Text = SecondPlayer.Name;
-            SecondPlayerIcon.Glyph = PokemenTypeConverter.ExternConvert(SecondPlayer.Type);
-
-            SecondHpoints.Text = SecondPlayer.Hpoints.ToString();
-            SecondAttack.Text = SecondPlayer.Attack.ToString();
-            SecondDefense.Text = SecondPlayer.Defense.ToString();
-            SecondAgility.Text = SecondPlayer.Agility.ToString();
-
-            SecondInterval.Text = SecondPlayer.Interval.ToString();
-            SecondCritical.Text = SecondPlayer.Critical.ToString();
-            SecondHitratio.Text = SecondPlayer.Hitratio.ToString();
-            SecondParryratio.Text = SecondPlayer.Parryratio.ToString();
-
-            SecondPlayerExp.Value = ExpConverter.Convert(SecondPlayer.Exp);
-            SecondPlayerExpTextBlock.Text = ExpConverter.Convert(SecondPlayer.Exp).ToString() + "/100";
-            SecondPlayerLevel.Text = SecondPlayer.Level.ToString();
 
             App.Client.Core.StartBattle();
 
@@ -148,7 +113,19 @@ namespace Platform
 
         private void OnResultCallBack(string[] infos)
         {
-            Frame.Navigate(typeof(ResultPage), infos);
+            switch (LobbyPage.Current.TypeOfBattle)
+            {
+                case LobbyPage.BattleType.LEVELUP:
+                    Frame.Navigate(typeof(ResultPage), infos);
+                    break;
+
+                case LobbyPage.BattleType.DADORSON:
+                    Frame.Navigate(typeof(BonusPage), infos[0]);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
