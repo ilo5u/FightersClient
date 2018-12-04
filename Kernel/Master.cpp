@@ -18,7 +18,7 @@ namespace Pokemen
 			BasicProperties::agility + _Random(CommonBasicValues::propertyOffset),
 			0x0, 0x0, 0x0, 0x0
 		),
-		m_skill(Skill::Type::RAGED),
+		m_skill(static_cast<Skill::Type>(_Random(2))),
 		m_career(Career::Type::Normal),
 		m_angriedCnt(0x1)
 	{
@@ -48,6 +48,9 @@ namespace Pokemen
 
 		while (this->m_property.m_level < std::min<Value>(level, CommonBasicValues::levelLimitation))
 			Upgrade(CommonBasicValues::exp);
+
+		if (level > 8)
+			Promote(static_cast<Career::Type>(_Random(3)));
 	}
 
 	Master::Master(const Property& prop, Career::Type career) :

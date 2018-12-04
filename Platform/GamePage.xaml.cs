@@ -1,4 +1,5 @@
-﻿using Platform.Models;
+﻿using Platform.Converters;
+using Platform.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,12 +10,14 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -128,13 +131,53 @@ namespace Platform
                         }
                         break;
 
+                    case Kernel.MsgType.ADD_POKEMEN:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnAddPokemenCallBack(message.data)
+                                );
+                        }
+                        break;
+
                     case Kernel.MsgType.DISCONNECT:
+                        {
+                            App.Client.IsOnConnection = false;
+                            if (App.Client.IsOnBattle)
+                            {
+                                App.Client.IsOnBattle = false;
+                                App.Client.BattleDriver.Wait();
+                            }
+
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                OnDisconnectionCallBack
+                                );
+                        }
                         return;
 
                     default:
                         break;
                 }
             }
+        }
+
+        private void OnAddPokemenCallBack(string pokemenInfo)
+        {
+            OnUpdatePokemensCallBack(pokemenInfo);
+            WinPage.Current.ShowNewPokemen();
+        }
+
+        async public void OnDisconnectionCallBack()
+        {
+            MessageDialog msg = new MessageDialog("与服务器断开连接。") { Title = "错误" };
+            msg.Commands.Add(new UICommand("确定"));
+            await msg.ShowAsync();
+
+            await Dispatcher.RunAsync(
+                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                MainPage.Current.OnLogoutCallBack
+                );
         }
 
         private void OnUpdatePokemensCallBack(string pokemenInfos)
@@ -145,7 +188,6 @@ namespace Platform
             {
                 App.Client.Pokemens.First(pokemen => pokemen.Id.Equals(int.Parse(pokemenInfoArray[0]))).Renew(
                         int.Parse(pokemenInfoArray[1]),
-                        "Assets/TCP.png",
                         int.Parse(pokemenInfoArray[3]),
                         int.Parse(pokemenInfoArray[4]),
                         int.Parse(pokemenInfoArray[5]),
@@ -163,11 +205,11 @@ namespace Platform
             {
                 Debug.WriteLine(e.ToString());
                 App.Client.Pokemens.Add(
-                    new Models.PokemenViewer
+                    new PokemenViewer
                     {
                         Id = int.Parse(pokemenInfoArray[0]),
                         Type = int.Parse(pokemenInfoArray[1]),
-                        Image = "Assets/TCP.png",
+                        Image = ImageConverter.Convert(int.Parse(pokemenInfoArray[1]), int.Parse(pokemenInfoArray[11])),
                         Name = pokemenInfoArray[2],
                         Hpoints = int.Parse(pokemenInfoArray[3]),
                         Attack = int.Parse(pokemenInfoArray[4]),

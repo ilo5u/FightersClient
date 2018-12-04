@@ -7,17 +7,11 @@ using Windows.UI.Xaml.Data;
 
 namespace Platform.Converters
 {
-    class ShrinkNameConverter : IValueConverter
+    class IntToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string name = (string)value;
-            if (string.IsNullOrEmpty(name))
-                return "";
-            else if (name.Length > 6)
-                return name.Substring(0, 6) + "...";
-            else
-                return name;
+            return ((int)value).ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

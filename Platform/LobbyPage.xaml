@@ -76,7 +76,7 @@
                                    RelativePanel.Below="NameOfPokemen"
                                    Margin="0,5,0,5"/>
 
-                                <Grid RelativePanel.Below="ImageOfPokemen"
+                                <Grid Name="PropertyGrid" RelativePanel.Below="ImageOfPokemen"
                                   Width="200">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
@@ -169,6 +169,11 @@
                                                Margin="0,0,10,0"/>
                                     </RelativePanel>
                                 </Grid>
+ 
+                                <StackPanel Orientation="Horizontal" RelativePanel.Below="PropertyGrid">
+                                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
+                                    <TextBlock FontSize="24" FontFamily="Consolas" Margin="10" Text="{x:Bind Level}" />
+                                </StackPanel>
                             </RelativePanel>
                         </DataTemplate>
                     </GridView.ItemTemplate>
@@ -209,7 +214,8 @@
                         <TextBlock Name="NameOfOpponent" Style="{StaticResource PokemenNameTextStyle}" Text="Name" />
                     </StackPanel>
 
-                    <Image Grid.Row="1" Name="ImageOfOpponent" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Image Grid.Row="1" Name="ImageOfOpponent" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Width="180"/>
 
                     <StackPanel Grid.Row="2" Orientation="Horizontal">
                         <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F9E1;" />
@@ -261,17 +267,19 @@
                         <TextBlock Name="ExpOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="12" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2755;" />
+                    <RelativePanel Grid.Row="12">
+                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2755;"
+                                  RelativePanel.Above="PrimarySkillOfOpponent"/>
                         <TextBlock Name="PrimarySkillOfOpponent" Text="主技能"
-                                   FontSize="24" Margin="10" FontFamily="Consolas"/>
-                    </StackPanel>
+                                   FontSize="14" Margin="10" TextWrapping="Wrap" FontFamily="Consolas"/>
+                    </RelativePanel>
 
-                    <StackPanel Grid.Row="13" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2754;" />
+                    <RelativePanel Grid.Row="13">
+                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2754;"
+                                  RelativePanel.Above="SecondarySkillOfOpponent"/>
                         <TextBlock Name="SecondarySkillOfOpponent" Text="次技能" 
-                                   FontSize="24" Margin="10" FontFamily="Consolas"/>
-                    </StackPanel>
+                                   FontSize="14" Margin="10" TextWrapping="Wrap" FontFamily="Consolas"/>
+                    </RelativePanel>
 
                     <RelativePanel Name="BattleChoices" Grid.Row="14" Visibility="Visible">
                         <Button Name="LevelUp" Content="升级赛" Click="LevelUp_Click" 
@@ -294,7 +302,7 @@
                         <TextBlock Name="ListOfAI"
                                    FontSize="24"
                                    FontFamily="Consolas"
-                                   Text="电脑" 
+                                   Text="对战" 
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"
                                    Margin="0,20,0,0"/>
@@ -383,7 +391,7 @@
                         <TextBlock Name="ListOfUsers"
                                    FontSize="24"
                                    FontFamily="Consolas"
-                                   Text="玩家"
+                                   Text="在线玩家"
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"/>
                         <GridView RelativePanel.Below="ListOfUsers" Width="240"
@@ -391,7 +399,9 @@
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="model:UserViewer">
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Content="&#xE13D;" FontSize="24">
+                                        <Button Background="White" 
+                                                Foreground="DarkGreen" FontWeight="Bold"
+                                                FontFamily="Segoe MDL2 Assets" Content="&#xE13D;" FontSize="24">
                                             <Button.Flyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="OnlineUserName" Text="{x:Bind Name}" FontSize="24"/>

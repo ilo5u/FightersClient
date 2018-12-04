@@ -21,7 +21,7 @@ namespace Pokemen
 			BasicProperties::agility + _Random(CommonBasicValues::propertyOffset),
 			0x0, 0x0, 0x0, 0x0
 		),
-		m_skill(Skill::Type::SUNDER_ARM),
+		m_skill(static_cast<Skill::Type>(_Random(2))),
 		m_career(Career::Type::Normal)
 	{
 		this->m_property.m_interval
@@ -50,6 +50,9 @@ namespace Pokemen
 
 		while (this->m_property.m_level < std::min<Value>(level, CommonBasicValues::levelLimitation))
 			Upgrade(CommonBasicValues::exp);
+
+		if (level > 8)
+			Promote(static_cast<Career::Type>(_Random(3)));
 	}
 
 	Knight::Knight(const Property& prop, Career::Type career) :

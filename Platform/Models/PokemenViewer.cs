@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Platform.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,11 +29,13 @@ namespace Platform.Models
 
         public static explicit operator PokemenViewer(Kernel.Property property)
         {
+            string imagePath = ImageConverter.Convert(property.type, property.career);
             PokemenViewer viewer = new PokemenViewer
             {
                 Id = property.id,
 
                 Type = property.type,
+                Image = imagePath,
                 Name = property.name,
 
                 Hpoints = property.hpoints,
@@ -55,13 +58,13 @@ namespace Platform.Models
             return viewer;
         }
 
-        public void Renew(int type, string image, 
+        public void Renew(int type, 
             int hpoints, int attack, int defense, int agility,
             int interval, int critical, int hitratio, int parryratio,
             int career, int exp, int level)
         {
             Type = type;
-            Image = image;
+            Image = ImageConverter.Convert(type, career);
             Hpoints = hpoints;
             Attack = attack;
             Defense = defense;

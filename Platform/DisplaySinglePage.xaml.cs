@@ -1,4 +1,5 @@
-﻿using Platform.Converters;
+﻿using Kernel;
+using Platform.Converters;
 using Platform.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Platform
     /// </summary>
     public sealed partial class DisplaySinglePage : Page
     {
-        PokemenViewer DisplayOfPokemen;
+        public PokemenViewer DisplayOfPokemen = new PokemenViewer();
         public DisplaySinglePage()
         {
             this.InitializeComponent();
@@ -33,33 +34,46 @@ namespace Platform
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             DisplayOfPokemen = (PokemenViewer)e.Parameter;
-            NameOfPokemen.Text = DisplayOfPokemen.Name;
-            TypeOfPokemen.Glyph = PokemenTypeConverter.ExternConvert(DisplayOfPokemen.Type);
-
-            Hpoints.Text = DisplayOfPokemen.Hpoints.ToString();
-            Attack.Text = DisplayOfPokemen.Attack.ToString();
-            Defense.Text = DisplayOfPokemen.Defense.ToString();
-            Agility.Text = DisplayOfPokemen.Agility.ToString();
-
-            Interval.Text = DisplayOfPokemen.Interval.ToString();
-            Critical.Text = DisplayOfPokemen.Critical.ToString();
-            Hitratio.Text = DisplayOfPokemen.Hitratio.ToString();
-            Parryratio.Text = DisplayOfPokemen.Parryratio.ToString();
-
-            ExpValue.Value = ExpConverter.Convert(DisplayOfPokemen.Exp);
-            ExpInfo.Text = ExpConverter.Convert(DisplayOfPokemen.Exp).ToString() + "/100";
-            LevelValue.Text = DisplayOfPokemen.Level.ToString();
 
             NormalSkillNotation.Text = NotationOfSkillConverter.Convert(DisplayOfPokemen.Type);
             MainSkillNotation.Text = MainSkillConverter.Convert(DisplayOfPokemen.Type);
 
             CareerInfo.Text = CareerConverter.Convert(DisplayOfPokemen.Type, DisplayOfPokemen.Career);
             NotationOfCareer.Text = NotationOfCareerConverter.Convert(DisplayOfPokemen.Type, DisplayOfPokemen.Career);
+
+            /* 设置转职选项 */
+            if (DisplayOfPokemen.Career == 0 && DisplayOfPokemen.Level > 8)
+                Promote.IsEnabled = true;
+            else
+                Promote.IsEnabled = false;
         }
 
         private void BackToAll_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(DisplayAllPage));
+        }
+
+        private void FirstCareer_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.Core.SendMessage(
+                new Message {
+                    type = MsgType.PROMOTE_POKEMEN,
+                    data = DisplayOfPokemen.Id.ToString() + "\n1\n"
+                }
+                );
+            Promote.IsEnabled = false;
+        }
+
+        private void SecondCareer_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.Core.SendMessage(
+                new Message
+                {
+                    type = MsgType.PROMOTE_POKEMEN,
+                    data = DisplayOfPokemen.Id.ToString() + "\n2\n"
+                }
+                );
+            Promote.IsEnabled = false;
         }
     }
 }

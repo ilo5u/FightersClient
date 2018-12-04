@@ -122,7 +122,7 @@ namespace Platform
                 if (App.Client.IsOnBattle)
                 {
                     /* 处于对战模式 则需要提醒用户 */
-                    MessageDialog msgDialog = new MessageDialog("确定要退出?") { Title = "" };
+                    MessageDialog msgDialog = new MessageDialog("确定要退出？此次比赛将不予保存。") { Title = "" };
                     msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("退出"));
                     msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("取消"));
                     if ((await msgDialog.ShowAsync()).Label == "取消")

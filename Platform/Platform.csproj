@@ -99,8 +99,15 @@
     <Compile Include="BattlePage.xaml.cs">
       <DependentUpon>BattlePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BonusPage.xaml.cs">
+      <DependentUpon>BonusPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\CareerConverter.cs" />
     <Compile Include="Converters\ExpConverter.cs" />
+    <Compile Include="Converters\ExpInfoConverter.cs" />
+    <Compile Include="Converters\ExpValueConverter.cs" />
+    <Compile Include="Converters\ImageConverter.cs" />
+    <Compile Include="Converters\IntToStringConverter.cs" />
     <Compile Include="Converters\MainSkillConverter.cs" />
     <Compile Include="Converters\NotationOfCareerConverter.cs" />
     <Compile Include="Converters\NotationOfSkillConverter.cs" />
@@ -131,6 +138,9 @@
     <Compile Include="LogoutPage.xaml.cs">
       <DependentUpon>LogoutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LosePage.xaml.cs">
+      <DependentUpon>LosePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -148,6 +158,9 @@
     </Compile>
     <Compile Include="WaitPage.xaml.cs">
       <DependentUpon>WaitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WinPage.xaml.cs">
+      <DependentUpon>WinPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +215,18 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Pictures\Ares.png" />
+    <Content Include="Pictures\Assassin.png" />
+    <Content Include="Pictures\Athena.png" />
+    <Content Include="Pictures\Darker.png" />
+    <Content Include="Pictures\Guardian.png" />
+    <Content Include="Pictures\Joker.png" />
+    <Content Include="Pictures\Knight.png" />
+    <Content Include="Pictures\Lighter.png" />
+    <Content Include="Pictures\Master.png" />
+    <Content Include="Pictures\Michelle.png" />
+    <Content Include="Pictures\Paladin.png" />
+    <Content Include="Pictures\Yodian.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -216,6 +241,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="BattlePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BonusPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,6 +280,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LosePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -268,6 +301,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WaitPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WinPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
