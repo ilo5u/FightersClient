@@ -130,8 +130,8 @@ namespace Kernel
 			sendPacket.type = PacketType::LOGOUT;
 			break;
 
-		case MsgType::UPGRADE_POKEMEN:
-			sendPacket.type = PacketType::UPGRADE_POKEMEN;
+		case MsgType::PROMOTE_POKEMEN:
+			sendPacket.type = PacketType::PROMOTE_POKEMEN;
 			break;
 
 		case MsgType::GET_ONLINE_USERS:
@@ -237,7 +237,9 @@ namespace Kernel
 	Message Core::ReadOnlineMessage()
 	{
 		if (!netDriver.IsConnected())
-			return { };
+			return { 
+				MsgType::DISCONNECT
+			};
 
 		try
 		{

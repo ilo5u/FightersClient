@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -129,12 +130,38 @@ namespace Platform
                         break;
 
                     case Kernel.MsgType.DISCONNECT:
+                        {
+                            App.Client.IsOnConnection = false;
+
+                            MessageDialog msg = new MessageDialog("与服务器断开连接。") { Title = "错误" };
+                            msg.Commands.Add(new UICommand("确定"));
+                            await msg.ShowAsync();
+
+                            if (App.Client.IsOnBattle)
+                            {
+                                App.Client.IsOnBattle = false;
+                                App.Client.BattleDriver.Wait();
+                            }
+
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                OnDisconnectionCallBack
+                                );
+                        }
                         return;
 
                     default:
                         break;
                 }
             }
+        }
+
+        public void OnDisconnectionCallBack()
+        {
+            App.Client.Users.Clear();
+            App.Client.Pokemens.Clear();
+
+            Frame.Navigate(typeof(LoginPage));
         }
 
         private void OnUpdatePokemensCallBack(string pokemenInfos)

@@ -388,7 +388,7 @@
                         <TextBlock Name="ListOfUsers"
                                    FontSize="24"
                                    FontFamily="Consolas"
-                                   Text="玩家"
+                                   Text="在线玩家"
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"/>
                         <GridView RelativePanel.Below="ListOfUsers" Width="240"
@@ -396,7 +396,9 @@
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="model:UserViewer">
                                     <StackPanel Orientation="Horizontal">
-                                        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE13D;" FontSize="24">
+                                        <Button Background="White" 
+                                                Foreground="DarkGreen" FontWeight="Bold"
+                                                FontFamily="Segoe MDL2 Assets" Content="&#xE13D;" FontSize="24">
                                             <Button.Flyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="OnlineUserName" Text="{x:Bind Name}" FontSize="24"/>

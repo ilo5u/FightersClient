@@ -101,6 +101,9 @@
     </Compile>
     <Compile Include="Converters\CareerConverter.cs" />
     <Compile Include="Converters\ExpConverter.cs" />
+    <Compile Include="Converters\ExpInfoConverter.cs" />
+    <Compile Include="Converters\ExpValueConverter.cs" />
+    <Compile Include="Converters\IntToStringConverter.cs" />
     <Compile Include="Converters\MainSkillConverter.cs" />
     <Compile Include="Converters\NotationOfCareerConverter.cs" />
     <Compile Include="Converters\NotationOfSkillConverter.cs" />

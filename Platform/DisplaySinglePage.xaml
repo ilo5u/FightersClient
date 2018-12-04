@@ -5,6 +5,7 @@
     xmlns:local="using:Platform"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:con="using:Platform.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -26,6 +27,9 @@
             <Setter Property="FontFamily" Value="Consolas" />
             <Setter Property="Margin" Value="0,5,15,0" />
         </Style>
+        <con:ExpValueConverter x:Key="EVConverter" />
+        <con:ExpInfoConverter x:Key="EIConverter" />
+        <con:PokemenTypeConverter x:Key="PTConverter" />
     </Page.Resources>
     
     <Grid>
@@ -42,17 +46,22 @@
 
             <TextBlock Style="{ThemeResource HeaderTextBlockStyle}" Text="属性" Margin="20" />
 
-            <RelativePanel Grid.Row="1" Width="Auto" Margin="20" >
-                <TextBlock Name="NameOfPokemen" Style="{StaticResource PokemenNameTextStyle}"/>
+            <RelativePanel Grid.Row="1" 
+                           Width="Auto" 
+                           Margin="20"
+                           DataContext="{x:Bind DisplayOfPokemen}">
+                <TextBlock Name="NameOfPokemen" Text="{Binding Name}"
+                           Style="{StaticResource PokemenNameTextStyle}"/>
 
-                <FontIcon Name="TypeOfPokemen" Style="{StaticResource PropertyIconTextStyle}"
+                <FontIcon Name="TypeOfPokemen" Glyph="{Binding Path=Type,Converter={StaticResource PTConverter}}"
+                          Style="{StaticResource PropertyIconTextStyle}"
                               RelativePanel.RightOf="NameOfPokemen" Margin="10,0,0,0"
                               RelativePanel.AlignVerticalCenterWith="NameOfPokemen"/>
 
                 <Image Name="ImageOfPokemen" Width="200" Margin="0,5,0,5"
                            RelativePanel.Below="NameOfPokemen" RelativePanel.AlignLeftWith="NameOfPokemen" />
 
-                <Grid Name="PropertyGird" RelativePanel.Below="ImageOfPokemen" Width="300">
+                <Grid Name="PropertyGird" RelativePanel.Below="ImageOfPokemen" Width="250" DataContext="{x:Bind DisplayOfPokemen}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -67,61 +76,78 @@
                     <RelativePanel Grid.Row="0" Grid.Column="0">
                         <FontIcon Name="HpointsIcon" FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F9E1;" />
                         <TextBlock Name="Hpoints" Style="{StaticResource PropertyValueTextStyle}"
-                               RelativePanel.RightOf="HpointsIcon" />
+                                   Text="{Binding Path=Hpoints}" RelativePanel.AlignRightWithPanel="True"  />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="1" Grid.Column="0">
                         <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
                         <TextBlock Name="Attack" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                                   Text="{Binding Path=Attack}" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="2" Grid.Column="0">
                         <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
                         <TextBlock Name="Defense" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                                   Text="{Binding Path=Defense}" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="3" Grid.Column="0">
                         <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
                         <TextBlock Name="Agility" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                                   Text="{Binding Path=Agility}" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="0" Grid.Column="1">
                         <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
                         <TextBlock Name="Interval" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                                   Text="{Binding Path=Interval}" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="1" Grid.Column="1">
                         <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
                         <TextBlock Name="Critical" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                                   Text="{Binding Path=Critical}" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="2" Grid.Column="1">
                         <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
                         <TextBlock Name="Hitratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                                   Text="{Binding Path=Hitratio}" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="3" Grid.Column="1">
                         <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
                         <TextBlock Name="Parryratio" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                                   Text="{Binding Path=Parryratio}" RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
                 </Grid>
 
-                <StackPanel Name="ExpStack" Orientation="Horizontal" RelativePanel.Below="PropertyGird">
-                    <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x23F3;" Margin="9,5,9,5" />
-                    <ProgressBar Name="ExpValue" Foreground="Green" Background="LightGray" Width="150" Height="15" Margin="5" />
-                    <TextBlock Name="ExpInfo" FontSize="24" FontFamily="Consolas" Margin="5">100/1000</TextBlock>
+                <StackPanel Name="ExpStack"
+                            Orientation="Horizontal" 
+                            RelativePanel.Below="PropertyGird"
+                            DataContext="{x:Bind DisplayOfPokemen}">
+                    <FontIcon FontSize="24" 
+                              FontFamily="Segoe UI Emoji" 
+                              Glyph="&#x23F3;"
+                              Margin="9,5,9,5" />
+                    <ProgressBar Name="ExpValue"
+                                 Value="{Binding Path=Exp,Converter={StaticResource EVConverter}}"
+                                 Foreground="Green"
+                                 Background="LightGray" 
+                                 Width="150" Height="15" 
+                                 Margin="5" />
+                    <TextBlock Name="ExpInfo" Text="{Binding Path=Exp,Converter={StaticResource EIConverter}}" 
+                               FontSize="24" 
+                               FontFamily="Consolas" 
+                               Margin="5" />
                 </StackPanel>
 
-                <StackPanel Name="LevelStack" Orientation="Horizontal" RelativePanel.Below="ExpStack">
+                <StackPanel Name="LevelStack" 
+                            Orientation="Horizontal" 
+                            RelativePanel.Below="ExpStack"
+                            DataContext="{x:Bind DisplayOfPokemen}">
                     <FontIcon FontSize="24" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
-                    <TextBlock Name="LevelValue" FontSize="24" FontFamily="Consolas" Margin="10">15</TextBlock>
+                    <TextBlock Name="LevelValue" Text="{Binding Level}" FontSize="24" FontFamily="Consolas" Margin="10">15</TextBlock>
                 </StackPanel>
 
             </RelativePanel>
@@ -156,8 +182,20 @@
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Vertical">
-                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="职业" Margin="20" />
-                <TextBlock Name="CareerInfo" Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="职业" Margin="20" />
+                    <Button Name="Promote"
+                            Content="转职" Style="{ThemeResource ButtonRevealStyle}" Margin="20" IsEnabled="False">
+                        <Button.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Name="FirstCareer" Text="" Click="FirstCareer_Click" />
+                                <MenuFlyoutItem Name="SecondCareer" Text="" Click="SecondCareer_Click" />
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+
+                    <TextBlock Name="CareerInfo" Style="{ThemeResource BodyTextBlockStyle}" Text="(TODO)" Margin="20" />
                 <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="职业简介" Margin="20"/>
                 <TextBlock Name="NotationOfCareer" Style="{ThemeResource BodyTextBlockStyle}" 
                            TextWrapping="Wrap" Text="(TODO)" Margin="20" />
