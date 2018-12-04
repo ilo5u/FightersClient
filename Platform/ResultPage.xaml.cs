@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -63,6 +64,9 @@ namespace Platform
             string[] newProps = news.Split(',');
 
             OldPlayerIcon.Glyph = PokemenTypeConverter.ExternConvert(int.Parse(oldProps[1]));
+            OldPlayerImage.Source = new BitmapImage(
+                new Uri(ImageConverter.Convert(int.Parse(oldProps[1]), int.Parse(oldProps[11])), UriKind.Relative)
+                );
             OldPlayerName.Text = oldProps[2];
 
             OldHpoints.Text = oldProps[3];
@@ -80,6 +84,9 @@ namespace Platform
             OldPlayerLevel.Text = oldProps[13];
 
             NewPlayerIcon.Glyph = PokemenTypeConverter.ExternConvert(int.Parse(newProps[1]));
+            NewPlayerImage.Source = new BitmapImage(
+                new Uri(ImageConverter.Convert(int.Parse(newProps[1]), int.Parse(newProps[11])), UriKind.Relative)
+                );
             NewPlayerName.Text = newProps[2];
 
             NewHpoints.Text = newProps[3];

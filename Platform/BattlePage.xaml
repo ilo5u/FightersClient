@@ -59,6 +59,7 @@
                           RelativePanel.AlignVerticalCenterWith="FirstPlayerName"/>
 
                 <Image Name="FirstPlayerImage" 
+                       Source="{Binding Image}"
                        Width="150"
                        Margin="0,5,0,5"
                        RelativePanel.Below="FirstPlayerName"
@@ -188,6 +189,7 @@
                           RelativePanel.AlignVerticalCenterWith="SecondPlayerName"/>
 
                 <Image Name="SecondPlayerImage"
+                       Source="{Binding Image}"
                        Width="150"
                        Margin="0,5,0,5"
                        RelativePanel.Below="SecondPlayerName" 

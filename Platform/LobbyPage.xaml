@@ -269,13 +269,13 @@
                     <StackPanel Grid.Row="12" Orientation="Horizontal">
                         <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2755;" />
                         <TextBlock Name="PrimarySkillOfOpponent" Text="主技能"
-                                   FontSize="24" Margin="10" FontFamily="Consolas"/>
+                                   FontSize="16" Margin="10" TextWrapping="Wrap" FontFamily="Consolas"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="13" Orientation="Horizontal">
                         <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2754;" />
                         <TextBlock Name="SecondarySkillOfOpponent" Text="次技能" 
-                                   FontSize="24" Margin="10" FontFamily="Consolas"/>
+                                   FontSize="16" Margin="10" TextWrapping="Wrap" FontFamily="Consolas"/>
                     </StackPanel>
 
                     <RelativePanel Name="BattleChoices" Grid.Row="14" Visibility="Visible">

@@ -78,6 +78,7 @@
                       RelativePanel.AlignVerticalCenterWith="NameOfPokemen"/>
 
             <Image Name="ImageOfPokemen" 
+                   Source="{Binding Image}"
                    Width="300" 
                    Margin="0,5,0,5"
                    RelativePanel.Below="NameOfPokemen"

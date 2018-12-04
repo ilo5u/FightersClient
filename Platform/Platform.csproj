@@ -106,6 +106,7 @@
     <Compile Include="Converters\ExpConverter.cs" />
     <Compile Include="Converters\ExpInfoConverter.cs" />
     <Compile Include="Converters\ExpValueConverter.cs" />
+    <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\IntToStringConverter.cs" />
     <Compile Include="Converters\MainSkillConverter.cs" />
     <Compile Include="Converters\NotationOfCareerConverter.cs" />
@@ -214,6 +215,18 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="Pictures\Ares.png" />
+    <Content Include="Pictures\Assassin.png" />
+    <Content Include="Pictures\Athena.png" />
+    <Content Include="Pictures\Darker.png" />
+    <Content Include="Pictures\Guardian.png" />
+    <Content Include="Pictures\Joker.png" />
+    <Content Include="Pictures\Knight.png" />
+    <Content Include="Pictures\Lighter.png" />
+    <Content Include="Pictures\Master.png" />
+    <Content Include="Pictures\Michelle.png" />
+    <Content Include="Pictures\Paladin.png" />
+    <Content Include="Pictures\Yodian.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

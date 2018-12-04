@@ -168,14 +168,14 @@ namespace Platform
 
         async public void OnDisconnectionCallBack()
         {
-            App.Client.Users.Clear();
-            App.Client.Pokemens.Clear();
-
             MessageDialog msg = new MessageDialog("与服务器断开连接。") { Title = "错误" };
             msg.Commands.Add(new UICommand("确定"));
             await msg.ShowAsync();
 
-            Frame.Navigate(typeof(LoginPage));
+            await Dispatcher.RunAsync(
+                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                MainPage.Current.OnLogoutCallBack
+                );
         }
 
         private void OnUpdatePokemensCallBack(string pokemenInfos)

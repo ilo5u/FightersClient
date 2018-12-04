@@ -66,8 +66,11 @@
                               RelativePanel.RightOf="OldPlayerName" Margin="10,0,0,0"
                               RelativePanel.AlignVerticalCenterWith="OldPlayerName"/>
 
-                    <Image Name="OldPlayerImage" Width="300" Margin="0,5,0,5"
-                           RelativePanel.Below="OldPlayerName" RelativePanel.AlignHorizontalCenterWithPanel="True" />
+                    <Image Name="OldPlayerImage"
+                           Width="300"
+                           Margin="0,5,0,5"
+                           RelativePanel.Below="OldPlayerName"
+                           RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
                     <Grid Name="OldPropertyGrid" RelativePanel.Below="OldPlayerImage" Width="300"
                       RelativePanel.AlignLeftWithPanel="True">
