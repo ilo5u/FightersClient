@@ -66,6 +66,10 @@ namespace Platform
             Kernel.Property pokemen = AIPlayer.GetProperty();
 
             IconOfOppoent.Glyph = PokemenTypeConverter.ExternConvert(pokemen.type);
+            BitmapImage image = new BitmapImage {
+                UriSource = new Uri("ms-appx:" + ImageConverter.Convert(pokemen.type, pokemen.career), UriKind.RelativeOrAbsolute)
+            };
+            ImageOfOpponent.Source = image; 
             NameOfOpponent.Text = pokemen.name;
 
             HpointsOfOpponent.Text = pokemen.hpoints.ToString();

@@ -58,13 +58,13 @@ namespace Platform.Models
             return viewer;
         }
 
-        public void Renew(int type, string image, 
+        public void Renew(int type, 
             int hpoints, int attack, int defense, int agility,
             int interval, int critical, int hitratio, int parryratio,
             int career, int exp, int level)
         {
             Type = type;
-            Image = image;
+            Image = ImageConverter.Convert(type, career);
             Hpoints = hpoints;
             Attack = attack;
             Defense = defense;

@@ -1,4 +1,5 @@
-﻿using Platform.Models;
+﻿using Platform.Converters;
+using Platform.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +17,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -186,7 +188,6 @@ namespace Platform
             {
                 App.Client.Pokemens.First(pokemen => pokemen.Id.Equals(int.Parse(pokemenInfoArray[0]))).Renew(
                         int.Parse(pokemenInfoArray[1]),
-                        "Assets/TCP.png",
                         int.Parse(pokemenInfoArray[3]),
                         int.Parse(pokemenInfoArray[4]),
                         int.Parse(pokemenInfoArray[5]),
@@ -204,11 +205,11 @@ namespace Platform
             {
                 Debug.WriteLine(e.ToString());
                 App.Client.Pokemens.Add(
-                    new Models.PokemenViewer
+                    new PokemenViewer
                     {
                         Id = int.Parse(pokemenInfoArray[0]),
                         Type = int.Parse(pokemenInfoArray[1]),
-                        Image = "Assets/TCP.png",
+                        Image = ImageConverter.Convert(int.Parse(pokemenInfoArray[1]), int.Parse(pokemenInfoArray[11])),
                         Name = pokemenInfoArray[2],
                         Hpoints = int.Parse(pokemenInfoArray[3]),
                         Attack = int.Parse(pokemenInfoArray[4]),

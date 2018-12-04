@@ -63,10 +63,12 @@ namespace Platform
             string[] oldProps = olds.Split(',');
             string[] newProps = news.Split(',');
 
+            BitmapImage image = new BitmapImage {
+                UriSource = new Uri("ms-appx:" + ImageConverter.Convert(int.Parse(oldProps[1]), int.Parse(oldProps[11])), UriKind.RelativeOrAbsolute)
+            };
+
             OldPlayerIcon.Glyph = PokemenTypeConverter.ExternConvert(int.Parse(oldProps[1]));
-            OldPlayerImage.Source = new BitmapImage(
-                new Uri(ImageConverter.Convert(int.Parse(oldProps[1]), int.Parse(oldProps[11])), UriKind.Relative)
-                );
+            OldPlayerImage.Source = image;
             OldPlayerName.Text = oldProps[2];
 
             OldHpoints.Text = oldProps[3];
@@ -84,9 +86,7 @@ namespace Platform
             OldPlayerLevel.Text = oldProps[13];
 
             NewPlayerIcon.Glyph = PokemenTypeConverter.ExternConvert(int.Parse(newProps[1]));
-            NewPlayerImage.Source = new BitmapImage(
-                new Uri(ImageConverter.Convert(int.Parse(newProps[1]), int.Parse(newProps[11])), UriKind.Relative)
-                );
+            NewPlayerImage.Source = image;
             NewPlayerName.Text = newProps[2];
 
             NewHpoints.Text = newProps[3];

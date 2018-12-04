@@ -16,13 +16,13 @@ namespace Platform.Converters
                     switch (career)
                     {
                         case 0:
-                            return "Pictures/Master.png";
+                            return "/Pictures/Master.png";
 
                         case 1:
-                            return "Pictures/Lighter.png";
+                            return "/Pictures/Lighter.png";
 
                         case 2:
-                            return "Pictures/Darker.png";
+                            return "/Pictures/Darker.png";
 
                         default:
                             return "";
@@ -32,13 +32,13 @@ namespace Platform.Converters
                     switch (career)
                     {
                         case 0:
-                            return "Pictures/Knight.png";
+                            return "/Pictures/Knight.png";
 
                         case 1:
-                            return "Pictures/Ares.png";
+                            return "/Pictures/Ares.png";
 
                         case 2:
-                            return "Pictures/Athena.png";
+                            return "/Pictures/Athena.png";
 
                         default:
                             return "";
@@ -47,13 +47,13 @@ namespace Platform.Converters
                     switch (career)
                     {
                         case 0:
-                            return "Pictures/Guardian.png";
+                            return "/Pictures/Guardian.png";
 
                         case 1:
-                            return "Pictures/Paladin.png";
+                            return "/Pictures/Paladin.png";
 
                         case 2:
-                            return "Pictures/Joker.png";
+                            return "/Pictures/Joker.png";
 
                         default:
                             return "";
@@ -62,13 +62,13 @@ namespace Platform.Converters
                     switch (career)
                     {
                         case 0:
-                            return "Pictures/Assassin.png";
+                            return "/Pictures/Assassin.png";
 
                         case 1:
-                            return "Pictures/Yodian.png";
+                            return "/Pictures/Yodian.png";
 
                         case 2:
-                            return "Pictures/Michelle.png";
+                            return "/Pictures/Michelle.png";
 
                         default:
                             return "";
