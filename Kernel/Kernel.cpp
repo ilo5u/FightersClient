@@ -351,6 +351,16 @@ namespace Kernel
 		return netDriver.IsConnected();
 	}
 
+	Platform::String^ Core::GetIP()
+	{
+		return ref new Platform::String(StringToWString(netDriver.GetIP().c_str()).c_str());
+	}
+
+	void Core::SetIP(Platform::String^ newIP)
+	{
+		netDriver.SetIP(WStringToString(newIP->Data()));
+	}
+
 	Property Core::GetPropertyAt(int pokemenId)
 	{
 		for (Pokemens::const_iterator it = pokemens.begin();

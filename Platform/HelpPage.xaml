@@ -8,7 +8,35 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <RelativePanel>
+        <TextBox Header="服务器IP"
+                 FontSize="36"
+                 Width="300"
+                 Margin="20"
+                 Name="IPGetter"/>
 
-    </Grid>
+        <StackPanel Orientation="Horizontal"
+                    RelativePanel.RightOf="IPGetter"
+                    RelativePanel.AlignVerticalCenterWith="IPGetter"
+                    Margin="0,50,0,0">
+            <TextBlock Text="当前IP=" 
+                       Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <TextBlock Text="{Binding IP}"
+                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                       DataContext="{x:Bind IPOfServer}"/>
+        </StackPanel>
+
+        <Button Content="设置" 
+                Click="Button_Click"
+                RelativePanel.Below="IPGetter"
+                Margin="20"
+                FontSize="36">
+            <FlyoutBase.AttachedFlyout>
+                <Flyout>
+                    <TextBlock Foreground="DarkRed"
+                               Text="IP错误" />
+                </Flyout>
+            </FlyoutBase.AttachedFlyout>
+        </Button>
+    </RelativePanel>
 </Page>

@@ -37,6 +37,10 @@ namespace Kernel
 		PROMOTE_POKEMEN = 0x0600,
 		ADD_POKEMEN = 0x0700,
 		SUB_POKEMEN = 0x0800,
+		GET_POKEMENS_BY_USER = 0x0900,
+		SET_POKEMENS_BY_USER = 0x0A00,
+		SET_POKEMENS_OVER = 0x0B00,
+		RENEW_RANKLIST = 0x0C00,
 
 		DISCONNECT = 0xFFFF
 	};
@@ -101,6 +105,8 @@ namespace Kernel
 		bool StartConnection();
 		bool CloseConnection();
 		bool IsConnected();
+		Platform::String^ GetIP();
+		void SetIP(Platform::String^ newIP);
 
 	public:
 		Property GetPropertyAt(int pokemenId);

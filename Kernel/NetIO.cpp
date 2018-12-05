@@ -48,8 +48,6 @@ namespace NetIO
 				return false;
 			}
 
-			OutputDebugStringA("初始化网络环境成功。\n");
-
 			m_serverAddr.sin_family = AF_INET;
 			m_serverAddr.sin_addr.S_un.S_addr = inet_addr(serverIp.c_str());
 			m_serverAddr.sin_port = htons(PORT);
@@ -78,6 +76,10 @@ namespace NetIO
 
 	bool NetIO::Disconnect()
 	{
+		m_isConnected = false;
+		// 关闭通信
+		closesocket(m_connectSocket);
+		WSACleanup();
 		// 销毁IO通信线程
 		if (m_recvDriver.joinable())
 			m_recvDriver.join();
@@ -96,11 +98,19 @@ namespace NetIO
 			m_sendPackets.pop();
 		m_sendLocker.unlock();
 
-		// 关闭通信
-		closesocket(m_connectSocket);
-		WSACleanup();
-
 		return true;
+	}
+
+	std::string NetIO::GetIP() const
+	{
+		return serverIp;
+	}
+
+	void NetIO::SetIP(const std::string& newIP)
+	{
+		if (m_isConnected)
+			Disconnect();
+		serverIp = newIP;
 	}
 
 	bool NetIO::SendPacket(const Packet& packet)

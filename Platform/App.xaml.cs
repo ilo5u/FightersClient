@@ -46,7 +46,7 @@ namespace Platform
         /// 观察集
         /// </summary>
         public ObservableCollection<Models.PokemenViewer> Pokemens;
-        public ObservableCollection<Models.UserViewer> Users;
+        public ObservableCollection<Models.OnlineUserViewer> Users;
 
         /// <summary>
         /// 连接控制
@@ -86,7 +86,7 @@ namespace Platform
             LocalRecords = new List<Record>();
 
             Pokemens = new ObservableCollection<Models.PokemenViewer>();
-            Users = new ObservableCollection<Models.UserViewer>();
+            Users = new ObservableCollection<Models.OnlineUserViewer>();
 
             Core = new Kernel.Core();
         }

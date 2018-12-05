@@ -140,6 +140,33 @@ namespace Platform
                         }
                         break;
 
+                    case Kernel.MsgType.SET_POKEMENS_BY_USER:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnSetPokemensByUserCallBack(message.data)
+                                );
+                        }
+                        break;
+
+                    case Kernel.MsgType.SET_POKEMENS_OVER:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                OnSetPokemensOverCallBack
+                                );
+                        }
+                        break;
+
+                    case Kernel.MsgType.RENEW_RANKLIST:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnRenewRanklistCallBack(message.data)
+                                );
+                        }
+                        break;
+
                     case Kernel.MsgType.DISCONNECT:
                         {
                             App.Client.IsOnConnection = false;
@@ -160,6 +187,44 @@ namespace Platform
                         break;
                 }
             }
+        }
+
+        private void OnRenewRanklistCallBack(string userInfos)
+        {
+            /* 更新列表数据 */
+
+            /* 排序 */
+            RankPage.Current.AllUsers.OrderBy(user => user.NumberOfPokemens);
+        }
+
+        private void OnSetPokemensOverCallBack()
+        {
+            RankPage.Current.ShowPokemensView();
+        }
+
+        private void OnSetPokemensByUserCallBack(string pokemenInfos)
+        {
+            string[] pokemenInfoArray = pokemenInfos.Split('\n');
+            RankPage.Current.OtherPokemens.Add(
+                    new PokemenViewer
+                    {
+                        Id = int.Parse(pokemenInfoArray[0]),
+                        Type = int.Parse(pokemenInfoArray[1]),
+                        Image = ImageConverter.Convert(int.Parse(pokemenInfoArray[1]), int.Parse(pokemenInfoArray[11])),
+                        Name = pokemenInfoArray[2],
+                        Hpoints = int.Parse(pokemenInfoArray[3]),
+                        Attack = int.Parse(pokemenInfoArray[4]),
+                        Defense = int.Parse(pokemenInfoArray[5]),
+                        Agility = int.Parse(pokemenInfoArray[6]),
+                        Interval = int.Parse(pokemenInfoArray[7]),
+                        Critical = int.Parse(pokemenInfoArray[8]),
+                        Hitratio = int.Parse(pokemenInfoArray[9]),
+                        Parryratio = int.Parse(pokemenInfoArray[10]),
+                        Career = int.Parse(pokemenInfoArray[11]),
+                        Exp = int.Parse(pokemenInfoArray[12]),
+                        Level = int.Parse(pokemenInfoArray[13])
+                    }
+                );
         }
 
         private void OnAddPokemenCallBack(string pokemenInfo)
@@ -233,7 +298,7 @@ namespace Platform
             string[] userInfoArray = userInfos.Split('\n');
             int total = int.Parse(userInfoArray[0]);
             for (int i = 1; i <= total; ++i)
-                App.Client.Users.Add(new UserViewer { Name = userInfoArray[i] });
+                App.Client.Users.Add(new OnlineUserViewer { Name = userInfoArray[i] });
         }
 
         private void OnUpdateOnlineUsersCallBack(string userInfos)
@@ -243,9 +308,9 @@ namespace Platform
             try
             {
                 if (userInfoArray[1] == "OFF")
-                    App.Client.Users.Remove(new UserViewer { Name = userInfoArray[0] });
+                    App.Client.Users.Remove(App.Client.Users.First(user => user.Name == userInfoArray[0]));
                 else if (userInfoArray[1] == "ON")
-                    App.Client.Users.Add(new UserViewer { Name = userInfoArray[0] });
+                    App.Client.Users.Add(new OnlineUserViewer { Name = userInfoArray[0] });
             }
             catch (Exception e)
             {
