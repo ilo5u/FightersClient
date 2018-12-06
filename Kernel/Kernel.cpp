@@ -128,6 +128,7 @@ namespace Kernel
 
 		case MsgType::LOGOUT:
 			sendPacket.type = PacketType::LOGOUT;
+			pokemens.clear();
 			break;
 
 		case MsgType::PROMOTE_POKEMEN:

@@ -65,10 +65,9 @@ namespace NetIO
 			m_sendDriver 
 				= std::move(Thread{ std::bind(&NetIO::_SendThread_, this) });
 		}
-		catch (const std::exception& e)
+		catch (const std::exception&)
 		{
 			WSACleanup();
-			OutputDebugStringA(e.what());
 			return false;
 		}
 		return true;
@@ -76,16 +75,16 @@ namespace NetIO
 
 	bool NetIO::Disconnect()
 	{
-		m_isConnected = false;
-		// 关闭通信
-		closesocket(m_connectSocket);
-		WSACleanup();
 		// 销毁IO通信线程
 		if (m_recvDriver.joinable())
 			m_recvDriver.join();
 
 		if (m_sendDriver.joinable())
 			m_sendDriver.join();
+
+		// 关闭通信
+		closesocket(m_connectSocket);
+		WSACleanup();
 
 		// 清空IO缓冲队列
 		m_recvLocker.lock();
@@ -109,7 +108,10 @@ namespace NetIO
 	void NetIO::SetIP(const std::string& newIP)
 	{
 		if (m_isConnected)
+		{
+			m_isConnected = false;
 			Disconnect();
+		}
 		serverIp = newIP;
 	}
 

@@ -590,17 +590,20 @@ namespace Pokemen
 			m_messagesMutex.unlock();
 		}
 
-		if (m_firstPlayer.InState(BasePlayer::State::DEAD))
-			sprintf(m_battleMessage, "S\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
-		else
-			sprintf(m_battleMessage, "F\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
+		if (m_isBattleRunnig)
+		{
+			if (m_firstPlayer.InState(BasePlayer::State::DEAD))
+				sprintf(m_battleMessage, "S\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
+			else
+				sprintf(m_battleMessage, "F\n%d\n%d\n", m_firstPlayer.GetId(), m_roundsCnt);
 
-		m_messagesMutex.lock();
-		m_messages.push({ BattleMessage::Type::RESULT, m_battleMessage });
-		ReleaseSemaphore(m_messagesAvailable, 1, NULL);
-		m_messagesMutex.unlock();
+			m_messagesMutex.lock();
+			m_messages.push({ BattleMessage::Type::RESULT, m_battleMessage });
+			ReleaseSemaphore(m_messagesAvailable, 1, NULL);
+			m_messagesMutex.unlock();
 
-		m_isBattleRunnig = false;
+			m_isBattleRunnig = false;
+		}
 	}
 
 	BattleMessage::BattleMessage(BattleMessage::Type type, const String& message) :

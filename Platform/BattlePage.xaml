@@ -114,8 +114,9 @@
 
                     <RelativePanel Grid.Row="1" Grid.Column="1">
                         <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
-                        <TextBlock Name="FirstCritical" Style="{StaticResource PropertyValueTextStyle}"
-                                       RelativePanel.AlignRightWithPanel="True" />
+                        <TextBlock Name="FirstCritical" Text="{Binding Critical}"
+                                   Style="{StaticResource PropertyValueTextStyle}"
+                                   RelativePanel.AlignRightWithPanel="True" />
                     </RelativePanel>
 
                     <RelativePanel Grid.Row="2" Grid.Column="1">
