@@ -35,9 +35,9 @@ namespace Platform
             PokemenId = -1;
             SelectsOfPokemens.Clear();
 
-            if (App.Client.Pokemens.Count < 4)
+            if (App.Client.OnlinePokemens.Count < 4)
             {
-                SelectsOfPokemens = App.Client.Pokemens;
+                SelectsOfPokemens = App.Client.OnlinePokemens;
             }
             else
             {
@@ -45,7 +45,7 @@ namespace Platform
                 Random generator = new Random();
                 while (selects.Count < 3)
                 {
-                    int id = generator.Next() % App.Client.Pokemens.Count;
+                    int id = generator.Next() % App.Client.OnlinePokemens.Count;
                     if (selects.Contains(id))
                         continue;
                     else
@@ -55,7 +55,7 @@ namespace Platform
                 foreach (var id in selects)
                 {
                     SelectsOfPokemens.Add(
-                        App.Client.Pokemens.ElementAt(id)
+                        App.Client.OnlinePokemens.ElementAt(id)
                         );
                 }
             }
@@ -84,8 +84,8 @@ namespace Platform
                         data = PokemenId.ToString()
                     }
                     );
-                App.Client.Pokemens.Remove(
-                    App.Client.Pokemens.First(pokemen => pokemen.Id == PokemenId)
+                App.Client.OnlinePokemens.Remove(
+                    App.Client.OnlinePokemens.First(pokemen => pokemen.Id == PokemenId)
                     );
                 LobbyPage.Current.BackToLobby();
             }

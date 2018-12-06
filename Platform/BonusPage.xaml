@@ -19,7 +19,8 @@
                        Margin="10" 
                        Text="(TODO)"
                        Style="{StaticResource HeaderTextBlockStyle}" />
-            <Frame Name="ResultFrame" />
+            <Frame Name="ResultFrame"
+                   Grid.Row="1"/>
         </Grid>
     </ScrollViewer>
 </Page>

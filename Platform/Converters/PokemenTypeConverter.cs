@@ -82,7 +82,7 @@ namespace Platform.Converters
             }
             else
             {
-                throw new NotImplementedException();
+                return "";
             }
         }
 

@@ -106,12 +106,15 @@
     <Compile Include="Converters\ExpConverter.cs" />
     <Compile Include="Converters\ExpInfoConverter.cs" />
     <Compile Include="Converters\ExpValueConverter.cs" />
+    <Compile Include="Converters\GloryConverter.cs" />
+    <Compile Include="Converters\HonorConverter.cs" />
     <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Converters\IntToStringConverter.cs" />
     <Compile Include="Converters\MainSkillConverter.cs" />
     <Compile Include="Converters\NotationOfCareerConverter.cs" />
     <Compile Include="Converters\NotationOfSkillConverter.cs" />
     <Compile Include="Converters\PokemenTypeConverter.cs" />
+    <Compile Include="Converters\RateConverter.cs" />
     <Compile Include="Converters\ShrinkNameConverter.cs" />
     <Compile Include="Converters\SkillConverter.cs" />
     <Compile Include="DisplayAllPage.xaml.cs">
@@ -120,6 +123,7 @@
     <Compile Include="DisplaySinglePage.xaml.cs">
       <DependentUpon>DisplaySinglePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExceptionHandlingSynchronizationContext.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>

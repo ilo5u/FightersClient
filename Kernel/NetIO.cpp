@@ -5,7 +5,7 @@ constexpr int PORT = 27893;
 
 #pragma comment (lib, "WS2_32.lib")
 
-static std::string serverIp = "10.128.233.191";
+static std::string serverIp = "10.201.6.248";
 
 namespace NetIO
 {

@@ -44,6 +44,11 @@ namespace Platform
         {
             MainPage.Current.RenewTitleDisplay(true);
 
+            App.Client.OnlineUsers = new System.Collections.ObjectModel.ObservableCollection<Models.OnlineUserViewer>();
+            App.Client.OnlinePokemens = new System.Collections.ObjectModel.ObservableCollection<Models.PokemenViewer>();
+            App.Client.RankedUsers = new System.Collections.ObjectModel.ObservableCollection<Models.UserInfoViewer>();
+            App.Client.RankedPokemens = new System.Collections.ObjectModel.ObservableCollection<Models.PokemenViewer>();
+
             App.Client.Core.SendMessage(
                 new Kernel.Message { type = Kernel.MsgType.GET_ONLINE_USERS, data = "" }
                 );
@@ -63,6 +68,7 @@ namespace Platform
                     FullSizeDesired = true,
                 }.ShowAsync();
             }
+
             GameFrame.Navigate(typeof(LobbyPage));
         }
 
@@ -151,10 +157,7 @@ namespace Platform
 
                     case Kernel.MsgType.SET_POKEMENS_OVER:
                         {
-                            await Dispatcher.RunAsync(
-                                Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                OnSetPokemensOverCallBack
-                                );
+                            App.Client.IsRankedPokemensReady.Release();
                         }
                         break;
 
@@ -163,6 +166,15 @@ namespace Platform
                             await Dispatcher.RunAsync(
                                 Windows.UI.Core.CoreDispatcherPriority.Normal,
                                 () => OnRenewRanklistCallBack(message.data)
+                                );
+                        }
+                        break;
+
+                    case Kernel.MsgType.SET_RANKLIST:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnSetRanklistCallBack(message.data)
                                 );
                         }
                         break;
@@ -189,23 +201,76 @@ namespace Platform
             }
         }
 
+        private void OnSetRanklistCallBack(string userInfos)
+        {
+            string[] numberAndUserInfos = userInfos.Split('\n');
+            Debug.WriteLine(userInfos);
+            int total = int.Parse(numberAndUserInfos[0]);
+            for (int pos = 1; pos <= total; ++pos)
+            {
+                /* 更新列表数据 */
+                string[] userInfoArray = numberAndUserInfos[pos].Split(',');
+                try
+                {
+                    App.Client.RankedUsers.First(user => user.Name.Equals(userInfoArray[0])).Renew(
+                        int.Parse(userInfoArray[1]),
+                        int.Parse(userInfoArray[2]),
+                        int.Parse(userInfoArray[3]),
+                        int.Parse(userInfoArray[4])
+                        );
+                }
+                catch (Exception)
+                {
+                    App.Client.RankedUsers.Add(
+                        new UserInfoViewer {
+                            Name = userInfoArray[0],
+                            NumberOfPokemens = int.Parse(userInfoArray[1]),
+                            Rate = RateConverter.Convert(int.Parse(userInfoArray[2]), int.Parse(userInfoArray[3])),
+                            Honor = HonorConverter.Convert(int.Parse(userInfoArray[1])),
+                            Glory = GloryConverter.Convert(int.Parse(userInfoArray[4]))
+                        }
+                        );
+                }
+            }
+
+            /* 排序 */
+            App.Client.RankedUsers.OrderBy(user => user.NumberOfPokemens);
+        }
+
         private void OnRenewRanklistCallBack(string userInfos)
         {
             /* 更新列表数据 */
+            string[] userInfoArray = userInfos.Split('\n');
+            try
+            {
+                App.Client.RankedUsers.First(user => user.Name.Equals(userInfoArray[0])).Renew(
+                    int.Parse(userInfoArray[1]),
+                    int.Parse(userInfoArray[2]),
+                    int.Parse(userInfoArray[3]),
+                    int.Parse(userInfoArray[4])
+                    );
+            }
+            catch (Exception)
+            {
+                App.Client.RankedUsers.Add(
+                    new UserInfoViewer
+                    {
+                        Name = userInfoArray[0],
+                        NumberOfPokemens = int.Parse(userInfoArray[1]),
+                        Rate = RateConverter.Convert(int.Parse(userInfoArray[2]), int.Parse(userInfoArray[3])),
+                        Honor = HonorConverter.Convert(int.Parse(userInfoArray[1])),
+                        Glory = GloryConverter.Convert(int.Parse(userInfoArray[4]))
+                    });
+            }
 
             /* 排序 */
-            RankPage.Current.AllUsers.OrderBy(user => user.NumberOfPokemens);
-        }
-
-        private void OnSetPokemensOverCallBack()
-        {
-            RankPage.Current.ShowPokemensView();
+            App.Client.RankedUsers.OrderBy(user => user.NumberOfPokemens);
         }
 
         private void OnSetPokemensByUserCallBack(string pokemenInfos)
         {
             string[] pokemenInfoArray = pokemenInfos.Split('\n');
-            RankPage.Current.OtherPokemens.Add(
+            App.Client.RankedPokemens.Add(
                     new PokemenViewer
                     {
                         Id = int.Parse(pokemenInfoArray[0]),
@@ -229,6 +294,7 @@ namespace Platform
 
         private void OnAddPokemenCallBack(string pokemenInfo)
         {
+            Debug.WriteLine(pokemenInfo);
             OnUpdatePokemensCallBack(pokemenInfo);
             WinPage.Current.ShowNewPokemen();
         }
@@ -247,11 +313,10 @@ namespace Platform
 
         private void OnUpdatePokemensCallBack(string pokemenInfos)
         {
-            Debug.Write(pokemenInfos);
             string[] pokemenInfoArray = pokemenInfos.Split('\n');
             try
             {
-                App.Client.Pokemens.First(pokemen => pokemen.Id.Equals(int.Parse(pokemenInfoArray[0]))).Renew(
+                App.Client.OnlinePokemens.First(pokemen => pokemen.Id.Equals(int.Parse(pokemenInfoArray[0]))).Renew(
                         int.Parse(pokemenInfoArray[1]),
                         int.Parse(pokemenInfoArray[3]),
                         int.Parse(pokemenInfoArray[4]),
@@ -266,10 +331,9 @@ namespace Platform
                         int.Parse(pokemenInfoArray[13])
                     );
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e.ToString());
-                App.Client.Pokemens.Add(
+                App.Client.OnlinePokemens.Add(
                     new PokemenViewer
                     {
                         Id = int.Parse(pokemenInfoArray[0]),
@@ -298,7 +362,7 @@ namespace Platform
             string[] userInfoArray = userInfos.Split('\n');
             int total = int.Parse(userInfoArray[0]);
             for (int i = 1; i <= total; ++i)
-                App.Client.Users.Add(new OnlineUserViewer { Name = userInfoArray[i] });
+                App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[i] });
         }
 
         private void OnUpdateOnlineUsersCallBack(string userInfos)
@@ -308,9 +372,9 @@ namespace Platform
             try
             {
                 if (userInfoArray[1] == "OFF")
-                    App.Client.Users.Remove(App.Client.Users.First(user => user.Name == userInfoArray[0]));
+                    App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name == userInfoArray[0]));
                 else if (userInfoArray[1] == "ON")
-                    App.Client.Users.Add(new OnlineUserViewer { Name = userInfoArray[0] });
+                    App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[0] });
             }
             catch (Exception e)
             {

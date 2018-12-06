@@ -3,9 +3,11 @@ using Platform.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,9 +27,8 @@ namespace Platform
     /// </summary>
     public sealed partial class RankPage : Page
     {
-        static public RankPage Current;
-        public ObservableCollection<UserInfoViewer> AllUsers = new ObservableCollection<UserInfoViewer>();
-        public ObservableCollection<PokemenViewer> OtherPokemens = new ObservableCollection<PokemenViewer>(); 
+        public static RankPage Current;
+
         public RankPage()
         {
             this.InitializeComponent();
@@ -45,17 +46,29 @@ namespace Platform
             WaitForPokemens.Visibility = Visibility.Visible;
             PokemensGrid.Visibility = Visibility.Collapsed;
 
+            App.Client.RankedPokemens.Clear();
+
+            string username = ((UserInfoViewer)e.ClickedItem).Name;
+            new Task(() => WaitForPokemensReady(username)).Start();
+        }
+
+        async private void WaitForPokemensReady(string username)
+        {
+            App.Client.IsRankedPokemensReady = new System.Threading.Semaphore(0, 1);
             App.Client.Core.SendMessage(new Message
             {
                 type = MsgType.GET_POKEMENS_BY_USER,
-                data = ((UserInfoViewer)e.ClickedItem).Name
+                data = username
             });
-        }
 
-        internal void ShowPokemensView()
-        {
-            WaitForPokemens.Visibility = Visibility.Collapsed;
-            PokemensGrid.Visibility = Visibility.Visible;
+            App.Client.IsRankedPokemensReady.WaitOne();
+            await Dispatcher.RunAsync(
+                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                () => {
+                    WaitForPokemens.Visibility = Visibility.Collapsed;
+                    PokemensGrid.Visibility = Visibility.Visible;
+                }
+                );
         }
     }
 }

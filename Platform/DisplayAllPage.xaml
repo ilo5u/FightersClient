@@ -33,7 +33,7 @@
         <con:PokemenTypeConverter x:Key="PTConverter" />
     </Page.Resources>
     
-    <GridView ItemsSource="{x:Bind local:App.Client.Pokemens}" 
+    <GridView ItemsSource="{x:Bind local:App.Client.OnlinePokemens}" 
               ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
         <GridView.ItemTemplate>
             <DataTemplate x:DataType="model:PokemenViewer">
