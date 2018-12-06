@@ -43,6 +43,11 @@ namespace Platform
         public PokemenViewer SecondPlayer = new PokemenViewer();
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.DADORSON)
+                BackToLobby.Visibility = Visibility.Collapsed;
+            else
+                BackToLobby.Visibility = Visibility.Visible;
+
             // 启动对战信息实时接收线程
             App.Client.IsOnBattle = true;
             App.Client.BattleDriver = new Task(BattleTask);
@@ -181,6 +186,7 @@ namespace Platform
                 {
                     App.Client.Core.ShutdownBattle();
 
+                    App.Client.IsOnBattle = false;
                     App.Client.BattleDriver.Wait();
                     Frame.Navigate(typeof(WaitPage));
                 }

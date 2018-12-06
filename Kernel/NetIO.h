@@ -21,6 +21,9 @@ namespace NetIO
 		bool Connect();
 		bool Disconnect();
 
+		std::string GetIP() const;
+		void SetIP(const std::string& newIP);
+
 		bool   SendPacket(const Packet& packet);
 		Packet ReadPacket();
 

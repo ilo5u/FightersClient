@@ -39,7 +39,7 @@ namespace Platform
 
         internal void ShowNewPokemen()
         {
-            NewPokemen = App.Client.Pokemens.Last();
+            NewPokemen = App.Client.OnlinePokemens.Last();
 
             WaitForNewPokemen.Visibility = Visibility.Collapsed;
             NewPokemenDisplay.Visibility = Visibility.Visible;

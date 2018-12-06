@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Platform.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -19,6 +21,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WinRTExceptions;
 
 namespace Platform
 {
@@ -45,8 +48,12 @@ namespace Platform
         /// <summary>
         /// 观察集
         /// </summary>
-        public ObservableCollection<Models.PokemenViewer> Pokemens;
-        public ObservableCollection<Models.UserViewer> Users;
+        public ObservableCollection<PokemenViewer> OnlinePokemens;
+        public ObservableCollection<OnlineUserViewer> OnlineUsers;
+        public ObservableCollection<UserInfoViewer> RankedUsers;
+        public ObservableCollection<PokemenViewer> RankedPokemens;
+
+        public Semaphore IsRankedPokemensReady;
 
         /// <summary>
         /// 连接控制
@@ -76,7 +83,43 @@ namespace Platform
             Client = this;
             InitializeLocalEnvironments();
             LoadLocalRecords();
+
+            UnhandledException += App_UnhandledException;
         }
+
+        private async void OnUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            await new Windows.UI.Popups.MessageDialog("Application Unhandled Exception:\r\n" + e.Exception.Message, "爆了 :(")
+                .ShowAsync();
+        }
+
+        /// <summary>
+        /// Should be called from OnActivated and OnLaunched
+        /// </summary>
+        private void RegisterExceptionHandlingSynchronizationContext()
+        {
+            ExceptionHandlingSynchronizationContext
+                .Register()
+                .UnhandledException += SynchronizationContext_UnhandledException;
+        }
+
+        private async void SynchronizationContext_UnhandledException(object sender, WinRTExceptions.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            await new Windows.UI.Popups.MessageDialog("Synchronization Context Unhandled Exception:\r\n" + e.Exception.Message)
+                .ShowAsync();
+        }
+
+        private async void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            await new Windows.UI.Popups.MessageDialog("Application Unhandled Exception:\r\n" + e.Exception.Message)
+                .ShowAsync();
+        }
+        
 
         /// <summary>
         /// 初始化本地环境
@@ -85,8 +128,8 @@ namespace Platform
         {
             LocalRecords = new List<Record>();
 
-            Pokemens = new ObservableCollection<Models.PokemenViewer>();
-            Users = new ObservableCollection<Models.UserViewer>();
+            OnlinePokemens = new ObservableCollection<Models.PokemenViewer>();
+            OnlineUsers = new ObservableCollection<Models.OnlineUserViewer>();
 
             Core = new Kernel.Core();
         }
@@ -151,6 +194,7 @@ namespace Platform
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            RegisterExceptionHandlingSynchronizationContext();
             Frame rootFrame = Window.Current.Content as Frame;
 
             // 不要在窗口已包含内容时重复应用程序初始化，
@@ -183,6 +227,13 @@ namespace Platform
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
             }
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            RegisterExceptionHandlingSynchronizationContext();
+
+            base.OnActivated(args);
         }
 
         /// <summary>

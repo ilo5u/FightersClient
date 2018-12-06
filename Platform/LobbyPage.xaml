@@ -52,7 +52,7 @@
 
                 <GridView x:Name="PokemensView" ItemClick="PokemensView_ItemClick"
                           IsItemClickEnabled="True"
-                          ItemsSource="{x:Bind local:App.Client.Pokemens}">
+                          ItemsSource="{x:Bind local:App.Client.OnlinePokemens}">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="model:PokemenViewer">
                             <RelativePanel Width="200"
@@ -395,9 +395,9 @@
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"/>
                         <GridView RelativePanel.Below="ListOfUsers" Width="240"
-                                  ItemsSource="{x:Bind local:App.Client.Users}">
+                                  ItemsSource="{x:Bind local:App.Client.OnlineUsers}">
                             <GridView.ItemTemplate>
-                                <DataTemplate x:DataType="model:UserViewer">
+                                <DataTemplate x:DataType="model:OnlineUserViewer">
                                     <StackPanel Orientation="Horizontal">
                                         <Button Background="White" 
                                                 Foreground="DarkGreen" FontWeight="Bold"

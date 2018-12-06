@@ -128,6 +128,7 @@ namespace Kernel
 
 		case MsgType::LOGOUT:
 			sendPacket.type = PacketType::LOGOUT;
+			pokemens.clear();
 			break;
 
 		case MsgType::PROMOTE_POKEMEN:
@@ -136,6 +137,29 @@ namespace Kernel
 
 		case MsgType::GET_ONLINE_USERS:
 			sendPacket.type = PacketType::GET_ONLINE_USERS;
+			break;
+
+		case MsgType::ADD_POKEMEN:
+			sendPacket.type = PacketType::ADD_POKEMEN;
+			break;
+
+		case MsgType::SUB_POKEMEN:
+			{
+				sendPacket.type = PacketType::SUB_POKEMEN;
+				int removeId = 0;
+				sscanf(WStringToString(msg.data->Data()).c_str(),
+					"%d", &removeId);
+				if (removeId > 0)
+				{
+					pokemens.remove_if([&removeId](const HPokemen& pokemen) {
+						return pokemen->GetId() == removeId;
+					});
+				}
+			}
+			break;
+
+		case MsgType::GET_POKEMENS_BY_USER:
+			sendPacket.type = PacketType::GET_POKEMENS_BY_USER;
 			break;
 
 		default:
@@ -315,6 +339,36 @@ namespace Kernel
 					ref new Platform::String(StringToWString(recvPacket.data).c_str())
 				};
 
+			case PacketType::ADD_POKEMEN:
+				return {
+					MsgType::ADD_POKEMEN,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::SET_POKEMENS_BY_USER:
+				return {
+					MsgType::SET_POKEMENS_BY_USER,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::SET_POKEMENS_OVER:
+				return {
+					MsgType::SET_POKEMENS_OVER,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::RENEW_RANKLIST:
+				return {
+					MsgType::RENEW_RANKLIST,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::SET_RANKLIST:
+				return {
+					MsgType::SET_RANKLIST,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
 			default:
 				return { };
 			}
@@ -349,6 +403,16 @@ namespace Kernel
 	bool Core::IsConnected()
 	{
 		return netDriver.IsConnected();
+	}
+
+	Platform::String^ Core::GetIP()
+	{
+		return ref new Platform::String(StringToWString(netDriver.GetIP().c_str()).c_str());
+	}
+
+	void Core::SetIP(Platform::String^ newIP)
+	{
+		netDriver.SetIP(WStringToString(newIP->Data()));
 	}
 
 	Property Core::GetPropertyAt(int pokemenId)

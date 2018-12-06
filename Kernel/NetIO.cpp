@@ -5,7 +5,7 @@ constexpr int PORT = 27893;
 
 #pragma comment (lib, "WS2_32.lib")
 
-static std::string serverIp = "10.128.233.191";
+static std::string serverIp = "10.201.6.248";
 
 namespace NetIO
 {
@@ -48,8 +48,6 @@ namespace NetIO
 				return false;
 			}
 
-			OutputDebugStringA("初始化网络环境成功。\n");
-
 			m_serverAddr.sin_family = AF_INET;
 			m_serverAddr.sin_addr.S_un.S_addr = inet_addr(serverIp.c_str());
 			m_serverAddr.sin_port = htons(PORT);
@@ -67,10 +65,9 @@ namespace NetIO
 			m_sendDriver 
 				= std::move(Thread{ std::bind(&NetIO::_SendThread_, this) });
 		}
-		catch (const std::exception& e)
+		catch (const std::exception&)
 		{
 			WSACleanup();
-			OutputDebugStringA(e.what());
 			return false;
 		}
 		return true;
@@ -85,6 +82,10 @@ namespace NetIO
 		if (m_sendDriver.joinable())
 			m_sendDriver.join();
 
+		// 关闭通信
+		closesocket(m_connectSocket);
+		WSACleanup();
+
 		// 清空IO缓冲队列
 		m_recvLocker.lock();
 		while (!m_recvPackets.empty())
@@ -96,11 +97,22 @@ namespace NetIO
 			m_sendPackets.pop();
 		m_sendLocker.unlock();
 
-		// 关闭通信
-		closesocket(m_connectSocket);
-		WSACleanup();
-
 		return true;
+	}
+
+	std::string NetIO::GetIP() const
+	{
+		return serverIp;
+	}
+
+	void NetIO::SetIP(const std::string& newIP)
+	{
+		if (m_isConnected)
+		{
+			m_isConnected = false;
+			Disconnect();
+		}
+		serverIp = newIP;
 	}
 
 	bool NetIO::SendPacket(const Packet& packet)

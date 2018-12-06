@@ -57,10 +57,16 @@
                        RelativePanel.AlignLeftWith="BackToLobby"
                        RelativePanel.Below="BackToLobby"/>
         </RelativePanel>
-        <ProgressRing Grid.Row="1"
-                      Name="WaitForNewPokemen" 
-                      Margin="10"
-                      IsActive="True" />
+
+        <StackPanel Name="WaitForNewPokemen"
+                    Orientation="Vertical"
+                    Grid.Row="1">
+            <ProgressRing Margin="10"
+                          IsActive="True"
+                          Width="150"
+                          Height="150"/>
+            <TextBlock Text="请稍后..." Foreground="AliceBlue" />
+        </StackPanel>
         <RelativePanel Grid.Row="1"
                        Name="NewPokemenDisplay"
                        Width="Auto"

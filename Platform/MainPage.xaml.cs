@@ -157,18 +157,15 @@ namespace Platform
                 App.Client.NetDriver.Wait();
             }
 
+            IsOnLogout = false;
             await Dispatcher.RunAsync(
                 Windows.UI.Core.CoreDispatcherPriority.Normal,
                 OnLogoutCallBack
                 );
-            IsOnLogout = false;
         }
 
         public void OnLogoutCallBack()
         {
-            App.Client.Users.Clear();
-            App.Client.Pokemens.Clear();
-
             Saving.Visibility = Visibility.Collapsed;
             SubFrame.Navigate(typeof(LoginPage));
         }
