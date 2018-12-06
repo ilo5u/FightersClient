@@ -3,6 +3,7 @@ using Platform.Converters;
 using Platform.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace Platform
         /// 公共访问实例对象
         /// </summary>
         static public BattlePage Current;
+        public ObservableCollection<StateViewer> FirstStates = new ObservableCollection<StateViewer>();
+        public ObservableCollection<StateViewer> SecondStates = new ObservableCollection<StateViewer>();
 
         public BattlePage()
         {
@@ -47,6 +50,9 @@ namespace Platform
                 BackToLobby.Visibility = Visibility.Collapsed;
             else
                 BackToLobby.Visibility = Visibility.Visible;
+
+            FirstStates.Clear();
+            SecondStates.Clear();
 
             // 启动对战信息实时接收线程
             App.Client.IsOnBattle = true;

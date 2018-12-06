@@ -5,6 +5,7 @@
     xmlns:local="using:Platform"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:Platform.Models"
     xmlns:con="using:Platform.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -30,6 +31,7 @@
         <con:PokemenTypeConverter x:Key="PTConverter" />
         <con:ExpValueConverter x:Key="EVConverter" />
         <con:ExpInfoConverter x:Key="EIConverter" />
+        <con:StateConverter x:Key="STConverter" />
     </Page.Resources>
 
     <Grid>
@@ -49,292 +51,333 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <RelativePanel Grid.Row="0" Width="Auto" Margin="10" DataContext="{x:Bind FirstPlayer}" >
-                <TextBlock Name="FirstPlayerName" Text="{Binding Name}"
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+
+                <RelativePanel Grid.Column="0"
+                               Width="Auto"
+                               Margin="10"
+                               DataContext="{x:Bind FirstPlayer}" >
+                    <TextBlock Name="FirstPlayerName" Text="{Binding Name}"
                            Style="{StaticResource PokemenNameTextStyle}"/>
 
-                <FontIcon Name="FirstPlayerIcon"  Glyph="{Binding Path=Type,Converter={StaticResource PTConverter}}"
+                    <FontIcon Name="FirstPlayerIcon"  Glyph="{Binding Path=Type,Converter={StaticResource PTConverter}}"
                           Style="{StaticResource PropertyIconTextStyle}"
                           RelativePanel.AlignRightWithPanel="True"
                           RelativePanel.AlignVerticalCenterWith="FirstPlayerName"/>
 
-                <Image Name="FirstPlayerImage" 
+                    <Image Name="FirstPlayerImage" 
                        Source="{Binding Image}"
                        Width="120"
                        Margin="0,5,0,5"
                        RelativePanel.Below="FirstPlayerName"
                        RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
-                <Grid Name="FirstPropertyGrid" RelativePanel.Below="FirstPlayerImage" Width="200">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                    <Grid Name="FirstPropertyGrid" RelativePanel.Below="FirstPlayerImage" Width="200">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <RelativePanel Grid.Row="0" Grid.Column="0">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F9E1;" />
-                        <TextBlock Name="FirstHpoints" Text="{Binding Hpoints}"
+                        <RelativePanel Grid.Row="0" Grid.Column="0">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F9E1;" />
+                            <TextBlock Name="FirstHpoints" Text="{Binding Hpoints}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1" Grid.Column="0">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
-                        <TextBlock Name="FirstAttack" Text="{Binding Attack}"
+                        <RelativePanel Grid.Row="1" Grid.Column="0">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F5E1;" />
+                            <TextBlock Name="FirstAttack" Text="{Binding Attack}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2" Grid.Column="0">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
-                        <TextBlock Name="FirstDefense" Text="{Binding Defense}"
+                        <RelativePanel Grid.Row="2" Grid.Column="0">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x26D1;" />
+                            <TextBlock Name="FirstDefense" Text="{Binding Defense}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3" Grid.Column="0">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
-                        <TextBlock Name="FirstAgility" Text="{Binding Agility}"
+                        <RelativePanel Grid.Row="3" Grid.Column="0">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F3BF;" />
+                            <TextBlock Name="FirstAgility" Text="{Binding Agility}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="0" Grid.Column="1">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
-                        <TextBlock Name="FirstInterval" Text="{Binding Interval}"
+                        <RelativePanel Grid.Row="0" Grid.Column="1">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F55B;" />
+                            <TextBlock Name="FirstInterval" Text="{Binding Interval}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1" Grid.Column="1">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
-                        <TextBlock Name="FirstCritical" Text="{Binding Critical}"
+                        <RelativePanel Grid.Row="1" Grid.Column="1">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F4A3;" />
+                            <TextBlock Name="FirstCritical" Text="{Binding Critical}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2" Grid.Column="1">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
-                        <TextBlock Name="FirstHitratio" Text="{Binding Hitratio}"
+                        <RelativePanel Grid.Row="2" Grid.Column="1">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F3AF;" />
+                            <TextBlock Name="FirstHitratio" Text="{Binding Hitratio}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3" Grid.Column="1">
-                        <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
-                        <TextBlock Name="FirstParryratio" Text="{Binding Parryratio}"
+                        <RelativePanel Grid.Row="3" Grid.Column="1">
+                            <FontIcon FontSize="16" FontFamily="Segoe UI Emoji" Glyph="&#x1F3C3;" />
+                            <TextBlock Name="FirstParryratio" Text="{Binding Parryratio}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
-                </Grid>
+                        </RelativePanel>
+                    </Grid>
 
-                <StackPanel Name="FirstAngerStack" Orientation="Horizontal" RelativePanel.Below="FirstPropertyGrid">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
+                    <StackPanel Name="FirstAngerStack" Orientation="Horizontal" RelativePanel.Below="FirstPropertyGrid">
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
                               Glyph="&#x1F4A2;" 
                               Margin="5" />
-                    <ProgressBar Name="FirstPlayerAnger"
+                        <ProgressBar Name="FirstPlayerAnger"
                                  Foreground="OrangeRed" 
                                  Width="150" 
                                  Height="10" 
                                  Margin="5" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Name="FirstExpStack"
+                    <StackPanel Name="FirstExpStack"
                             Orientation="Horizontal" 
                             RelativePanel.Below="FirstAngerStack">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
                               Glyph="&#x23F3;" 
                               Margin="9,5,9,5" />
-                    <ProgressBar Name="FirstPlayerExp" Value="{Binding Path=Exp,Converter={StaticResource EVConverter}}"
+                        <ProgressBar Name="FirstPlayerExp" Value="{Binding Path=Exp,Converter={StaticResource EVConverter}}"
                                  Foreground="Green" 
                                  Background="LightGray" 
                                  Width="50"
                                  Height="10"
                                  Margin="5" />
-                    <TextBlock Name="FirstPlayerExpTextBlock" Text="{Binding Path=Exp,Converter={StaticResource EIConverter}}"
+                        <TextBlock Name="FirstPlayerExpTextBlock" Text="{Binding Path=Exp,Converter={StaticResource EIConverter}}"
                                FontSize="16" 
                                FontFamily="Consolas"
                                Margin="5" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Name="FirstLevelStack" 
+                    <StackPanel Name="FirstLevelStack" 
                             Orientation="Horizontal"
                             RelativePanel.Below="FirstExpStack">
-                    <FontIcon FontFamily="Segoe UI Emoji"  FontSize="16"
+                        <FontIcon FontFamily="Segoe UI Emoji"  FontSize="16"
                               Glyph="&#x1F3C6;" 
                               Margin="9,5,9,5" />
-                    <TextBlock Name="FirstPlayerLevel" Text="{Binding Level}"
+                        <TextBlock Name="FirstPlayerLevel" Text="{Binding Level}"
                                FontSize="16" 
                                FontFamily="Consolas" 
                                Margin="10" />
-                </StackPanel>
+                    </StackPanel>
 
-            </RelativePanel>
+                </RelativePanel>
 
-            <RelativePanel Grid.Row="1" 
+                <GridView IsItemClickEnabled="False"
+                          Grid.Column="1"
+                          ItemsSource="{x:Bind FirstStates}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="data:StateViewer">
+                            <FontIcon FontFamily="Segoe UI Emoji"
+                                      FontSize="24"
+                                      Glyph="{x:Bind Type,Converter={StaticResource STConverter}}" />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+
+                <RelativePanel Grid.Column="0" 
                            Width="Auto" 
                            Margin="10" 
                            DataContext="{x:Bind SecondPlayer}" >
-                <TextBlock Name="SecondPlayerName" Text="{Binding Name}"
+                    <TextBlock Name="SecondPlayerName" Text="{Binding Name}"
                            Style="{StaticResource PokemenNameTextStyle}"/>
 
-                <FontIcon Name="SecondPlayerIcon" Glyph="{Binding Path=Type,Converter={StaticResource PTConverter}}"
+                    <FontIcon Name="SecondPlayerIcon" Glyph="{Binding Path=Type,Converter={StaticResource PTConverter}}"
                           Style="{StaticResource PropertyIconTextStyle}"
                           RelativePanel.AlignRightWithPanel="True"
                           RelativePanel.AlignVerticalCenterWith="SecondPlayerName"/>
 
-                <Image Name="SecondPlayerImage"
+                    <Image Name="SecondPlayerImage"
                        Source="{Binding Image}"
                        Width="120"
                        Margin="0,5,0,5"
                        RelativePanel.Below="SecondPlayerName" 
                        RelativePanel.AlignHorizontalCenterWithPanel="True" />
 
-                <Grid Name="SecondPropertyGrid" 
+                    <Grid Name="SecondPropertyGrid" 
                       RelativePanel.Below="SecondPlayerImage" 
                       Width="200">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <RelativePanel Grid.Row="0" 
+                        <RelativePanel Grid.Row="0" 
                                    Grid.Column="0">
-                        <FontIcon FontSize="16"
+                            <FontIcon FontSize="16"
                                   FontFamily="Segoe UI Emoji"
                                   Glyph="&#x1F9E1;" />
-                        <TextBlock Name="SecondHpoints" Text="{Binding Hpoints}"
+                            <TextBlock Name="SecondHpoints" Text="{Binding Hpoints}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1" 
+                        <RelativePanel Grid.Row="1" 
                                    Grid.Column="0">
-                        <FontIcon FontSize="16" 
+                            <FontIcon FontSize="16" 
                                   FontFamily="Segoe UI Emoji" 
                                   Glyph="&#x1F5E1;" />
-                        <TextBlock Name="SecondAttack" Text="{Binding Attack}"
+                            <TextBlock Name="SecondAttack" Text="{Binding Attack}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2" 
+                        <RelativePanel Grid.Row="2" 
                                    Grid.Column="0">
-                        <FontIcon FontSize="16" 
+                            <FontIcon FontSize="16" 
                                   FontFamily="Segoe UI Emoji"
                                   Glyph="&#x26D1;" />
-                        <TextBlock Name="SecondDefense" Text="{Binding Defense}"
+                            <TextBlock Name="SecondDefense" Text="{Binding Defense}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3"
+                        <RelativePanel Grid.Row="3"
                                    Grid.Column="0">
-                        <FontIcon FontSize="16"
+                            <FontIcon FontSize="16"
                                   FontFamily="Segoe UI Emoji"
                                   Glyph="&#x1F3BF;" />
-                        <TextBlock Name="SecondAgility" Text="{Binding Agility}"
+                            <TextBlock Name="SecondAgility" Text="{Binding Agility}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="0" 
+                        <RelativePanel Grid.Row="0" 
                                    Grid.Column="1">
-                        <FontIcon FontSize="16"
+                            <FontIcon FontSize="16"
                                   FontFamily="Segoe UI Emoji"
                                   Glyph="&#x1F55B;" />
-                        <TextBlock Name="SecondInterval" Text="{Binding Interval}"
+                            <TextBlock Name="SecondInterval" Text="{Binding Interval}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="1"
+                        <RelativePanel Grid.Row="1"
                                    Grid.Column="1">
-                        <FontIcon FontSize="16"
+                            <FontIcon FontSize="16"
                                   FontFamily="Segoe UI Emoji"
                                   Glyph="&#x1F4A3;" />
-                        <TextBlock Name="SecondCritical" Text="{Binding Critical}"
+                            <TextBlock Name="SecondCritical" Text="{Binding Critical}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="2"
+                        <RelativePanel Grid.Row="2"
                                    Grid.Column="1">
-                        <FontIcon FontSize="16" 
+                            <FontIcon FontSize="16" 
                                   FontFamily="Segoe UI Emoji"
                                   Glyph="&#x1F3AF;" />
-                        <TextBlock Name="SecondHitratio" Text="{Binding Hitratio}"
+                            <TextBlock Name="SecondHitratio" Text="{Binding Hitratio}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="3" 
+                        <RelativePanel Grid.Row="3" 
                                    Grid.Column="1">
-                        <FontIcon FontSize="16" 
+                            <FontIcon FontSize="16" 
                                   FontFamily="Segoe UI Emoji" 
                                   Glyph="&#x1F3C3;" />
-                        <TextBlock Name="SecondParryratio" Text="{Binding Parryratio}"
+                            <TextBlock Name="SecondParryratio" Text="{Binding Parryratio}"
                                    Style="{StaticResource PropertyValueTextStyle}"
                                    RelativePanel.AlignRightWithPanel="True" />
-                    </RelativePanel>
-                </Grid>
+                        </RelativePanel>
+                    </Grid>
 
-                <StackPanel Name="SecondAngerStack" 
+                    <StackPanel Name="SecondAngerStack" 
                             Orientation="Horizontal" 
                             RelativePanel.Below="SecondPropertyGrid">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
                               Glyph="&#x1F4A2;" 
                               Margin="5" />
-                    <ProgressBar Name="SecondPlayerAnger" 
+                        <ProgressBar Name="SecondPlayerAnger" 
                                  Foreground="OrangeRed" 
                                  Width="150" 
                                  Height="10" 
                                  Margin="5" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Name="SecondExpStack" 
+                    <StackPanel Name="SecondExpStack" 
                             Orientation="Horizontal" 
                             RelativePanel.Below="SecondAngerStack">
-                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
+                        <FontIcon FontFamily="Segoe UI Emoji" FontSize="16"
                               Glyph="&#x23F3;" 
                               Margin="9,5,9,5" />
-                    <ProgressBar Name="SecondPlayerExp" Value="{Binding Path=Exp,Converter={StaticResource EVConverter}}"
+                        <ProgressBar Name="SecondPlayerExp" Value="{Binding Path=Exp,Converter={StaticResource EVConverter}}"
                                  Foreground="Green" 
                                  Background="LightGray" 
                                  Width="50" 
                                  Height="10" 
                                  Margin="5" />
-                    <TextBlock Name="SecondPlayerExpTextBlock" Text="{Binding Path=Exp,Converter={StaticResource EIConverter}}"
+                        <TextBlock Name="SecondPlayerExpTextBlock" Text="{Binding Path=Exp,Converter={StaticResource EIConverter}}"
                                FontSize="16"
                                FontFamily="Consolas" 
                                Margin="5" />
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Name="SecondLevelStack"
+                    <StackPanel Name="SecondLevelStack"
                             Orientation="Horizontal" 
                             RelativePanel.Below="SecondExpStack">
-                    <FontIcon FontFamily="Segoe UI Emoji"  FontSize="16"
+                        <FontIcon FontFamily="Segoe UI Emoji"  FontSize="16"
                               Glyph="&#x1F3C6;"
                               Margin="9,5,9,5" />
-                    <TextBlock Name="SecondPlayerLevel" Text="{Binding Level}"
+                        <TextBlock Name="SecondPlayerLevel" Text="{Binding Level}"
                                FontSize="16" 
                                FontFamily="Consolas" 
                                Margin="10" />
-                </StackPanel>
+                    </StackPanel>
 
-            </RelativePanel>
+                </RelativePanel>
+
+                <GridView IsItemClickEnabled="False"
+                          Grid.Column="1"
+                          ItemsSource="{x:Bind SecondStates}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="data:StateViewer">
+                            <FontIcon FontFamily="Segoe UI Emoji"
+                                      FontSize="24"
+                                      Glyph="{x:Bind Type,Converter={StaticResource STConverter}}" />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
 
             <ScrollViewer Grid.Column="1"
                       VerticalScrollBarVisibility="Auto" Margin="0,10,0,10">
