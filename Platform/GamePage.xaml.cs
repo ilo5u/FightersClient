@@ -181,20 +181,17 @@ namespace Platform
 
                     case Kernel.MsgType.DISCONNECT:
                         {
-                            if (App.Client.IsOnConnection)
+                            App.Client.IsOnConnection = false;
+                            if (App.Client.IsOnBattle)
                             {
-                                App.Client.IsOnConnection = false;
-                                if (App.Client.IsOnBattle)
-                                {
-                                    App.Client.IsOnBattle = false;
-                                    App.Client.BattleDriver.Wait();
-                                }
-
-                                await Dispatcher.RunAsync(
-                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                    OnDisconnectionCallBack
-                                    );
+                                App.Client.IsOnBattle = false;
+                                App.Client.BattleDriver.Wait();
                             }
+
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                OnDisconnectionCallBack
+                                );
                         }
                         return;
 
@@ -202,6 +199,8 @@ namespace Platform
                         break;
                 }
             }
+
+            Debug.WriteLine("网络关闭！");
         }
 
         private void OnSetRanklistCallBack(string userInfos)

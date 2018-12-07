@@ -120,6 +120,7 @@ namespace Platform
                         break;
                 }
             }
+            Debug.WriteLine("对战关闭！");
         }
 
         private void OnResultCallBack(string[] infos)

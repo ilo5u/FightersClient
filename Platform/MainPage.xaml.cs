@@ -141,10 +141,6 @@ namespace Platform
 
         async public void LogoutTask()
         {
-            App.Client.Core.SendMessage(
-                new Kernel.Message { type = Kernel.MsgType.LOGOUT, data = "" }
-                );
-
             if (App.Client.IsOnBattle)
             {
                 App.Client.IsOnBattle = false;
@@ -156,6 +152,10 @@ namespace Platform
                 App.Client.IsOnConnection = false;
                 App.Client.NetDriver.Wait();
             }
+
+            App.Client.Core.SendMessage(
+                new Kernel.Message { type = Kernel.MsgType.LOGOUT, data = "" }
+                );
 
             IsOnLogout = false;
             await Dispatcher.RunAsync(
