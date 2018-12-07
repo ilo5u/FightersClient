@@ -83,6 +83,11 @@ namespace Pokemen
 		return false;
 	}
 
+	BasePlayer::State BasePlayer::GetState() const
+	{
+		return this->m_state;
+	}
+
 	Id BasePlayer::GetId() const
 	{
 		return this->m_property.m_id;

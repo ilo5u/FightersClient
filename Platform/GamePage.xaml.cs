@@ -181,17 +181,20 @@ namespace Platform
 
                     case Kernel.MsgType.DISCONNECT:
                         {
-                            App.Client.IsOnConnection = false;
-                            if (App.Client.IsOnBattle)
+                            if (App.Client.IsOnConnection)
                             {
-                                App.Client.IsOnBattle = false;
-                                App.Client.BattleDriver.Wait();
-                            }
+                                App.Client.IsOnConnection = false;
+                                if (App.Client.IsOnBattle)
+                                {
+                                    App.Client.IsOnBattle = false;
+                                    App.Client.BattleDriver.Wait();
+                                }
 
-                            await Dispatcher.RunAsync(
-                                Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                OnDisconnectionCallBack
-                                );
+                                await Dispatcher.RunAsync(
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                    OnDisconnectionCallBack
+                                    );
+                            }
                         }
                         return;
 

@@ -320,6 +320,14 @@ namespace Pokemen
 		}
 	}
 
+	int Pokemen::GetState() const
+	{
+		if (this->m_instance == nullptr)
+			throw std::exception("CPokemenManager is not implement.");
+		else
+			return (int)this->m_instance->GetState();
+	}
+
 	bool Pokemen::Upgrade(int exp)
 	{
 		if (this->m_instance == nullptr)
@@ -578,11 +586,13 @@ namespace Pokemen
 					m_messagesMutex.unlock();
 				}
 			}	// 将小精灵的所有属性值打包发送
-			sprintf(m_battleMessage, "R\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+			sprintf(m_battleMessage, "R\n%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
 				m_firstPlayer.GetHpoints(), m_firstPlayer.GetAttack(), m_firstPlayer.GetDefense(), m_firstPlayer.GetAgility(),
 				m_firstPlayer.GetInterval(), m_firstPlayer.GetCritical(), m_firstPlayer.GetHitratio(), m_firstPlayer.GetParryratio(), m_firstPlayer.GetAnger(),
+				(int)m_firstPlayer.GetState(),
 				m_secondPlayer.GetHpoints(), m_secondPlayer.GetAttack(), m_secondPlayer.GetDefense(), m_secondPlayer.GetAgility(),
-				m_secondPlayer.GetInterval(), m_secondPlayer.GetCritical(), m_secondPlayer.GetHitratio(), m_secondPlayer.GetParryratio(), m_secondPlayer.GetAnger());
+				m_secondPlayer.GetInterval(), m_secondPlayer.GetCritical(), m_secondPlayer.GetHitratio(), m_secondPlayer.GetParryratio(), m_secondPlayer.GetAnger(),
+				(int)m_secondPlayer.GetState());
 
 			m_messagesMutex.lock();
 			m_messages.push({ BattleMessage::Type::DISPLAY, m_battleMessage });

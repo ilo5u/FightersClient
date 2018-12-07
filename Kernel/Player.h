@@ -102,6 +102,7 @@ namespace Pokemen
 	public:
 		bool SetAnger(int anger);
 		bool Upgrade(int extra);
+		State GetState() const;
 
 	public:
 		Id GetId() const;

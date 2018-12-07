@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace Platform.Models
 {
-    public class StateViewer
+    public class StateViewer : IEquatable<StateViewer>
     {
         public Converters.StateConverter.StateType Type { get; set; }
+
+        public bool Equals(StateViewer other)
+        {
+            return this.Type == other.Type;
+        }
     }
 }
