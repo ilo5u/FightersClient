@@ -42,7 +42,7 @@
 
         <Frame x:Name="BattleFrame" />
 
-        <ContentDialog x:Name="SelectOfPokemens" Title="选择一个精灵参加比赛"
+        <ContentDialog x:Name="SelectOfLeveLUpPkemens" Title="选择一个精灵参加比赛"
                        PrimaryButtonText="确认" SecondaryButtonText="取消">
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
@@ -50,7 +50,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <GridView x:Name="PokemensView" ItemClick="PokemensView_ItemClick"
+                <GridView x:Name="PokemensViewOfLevelUpPokemens" ItemClick="PokemensViewOfLevelUpPokemens_ItemClick"
                           IsItemClickEnabled="True"
                           ItemsSource="{x:Bind local:App.Client.OnlinePokemens}">
                     <GridView.ItemTemplate>
@@ -179,9 +179,153 @@
                     </GridView.ItemTemplate>
                 </GridView>
 
-                <ListBox Name="SkillSelect" Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" SelectionMode="Single">
-                    <ListBoxItem Name="FirstSkill" FontSize="24" IsSelected="True"/>
-                    <ListBoxItem Name="SecondSkill" FontSize="24" />
+                <ListBox Name="SkillSelectOfLevelUpPokemens" Grid.Row="1" SelectionChanged="SkillSelectOfLevelUpPokemens_SelectionChanged" SelectionMode="Single">
+                    <ListBoxItem Name="FirstSkillOfLevelUpPokemens" FontSize="24" IsSelected="True"/>
+                    <ListBoxItem Name="SecondSkillOfLevelUpPokemens" FontSize="24" />
+                </ListBox>
+            </Grid>
+        </ContentDialog>
+
+        <ContentDialog x:Name="SelectOfDadOrSonPokemens" Title="选择一个精灵参加比赛"
+                       PrimaryButtonText="确认" SecondaryButtonText="取消">
+            <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <GridView x:Name="PokemensViewOfDadOrSonPokemens" ItemClick="PokemensViewOfDadOrSonPokemens_ItemClick"
+                          IsItemClickEnabled="True"
+                          ItemsSource="{x:Bind local:LobbyPage.DadOrSonPokemens}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="model:PokemenViewer">
+                            <RelativePanel Width="200"
+                                       Margin="10">
+                                <TextBlock Name="NameOfPokemen"
+                                       FontSize="26"
+                                       FontFamily="Consolas"
+                                       Text="{x:Bind Name}"
+                                       Margin="10,10,0,0"/>
+
+                                <FontIcon FontSize="24" 
+                                      FontFamily="Segoe UI Emoji" 
+                                      Glyph="{x:Bind Type, Converter={StaticResource PTConverter}}" 
+                                      Margin="0,10,10,0"
+                                      RelativePanel.AlignRightWithPanel="True"
+                                      RelativePanel.AlignVerticalCenterWith="NameOfPokemen"/>
+
+                                <Image Name="ImageOfPokemen"
+                                   Source="{x:Bind Image}"
+                                   Width="200"
+                                   RelativePanel.Below="NameOfPokemen"
+                                   Margin="0,5,0,5"/>
+
+                                <Grid Name="PropertyGrid" RelativePanel.Below="ImageOfPokemen"
+                                  Width="200">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <RelativePanel Grid.Row="0" Grid.Column="0">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F9E1;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Hpoints}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+
+                                    <RelativePanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F5E1;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Attack}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+
+                                    <RelativePanel Grid.Row="2" Grid.Column="0">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x26D1;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Defense}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+
+                                    <RelativePanel Grid.Row="3" Grid.Column="0">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F3BF;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Agility}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+
+                                    <RelativePanel Grid.Row="0" Grid.Column="1">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F55B;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Interval}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+
+                                    <RelativePanel Grid.Row="1" Grid.Column="1">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F4A3;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Critical}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+
+                                    <RelativePanel Grid.Row="2" Grid.Column="1">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F3AF;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Hitratio}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+
+                                    <RelativePanel Grid.Row="3" Grid.Column="1">
+                                        <TextBlock FontSize="24"
+                                               FontFamily="Segoe UI Emoji"
+                                               Text="&#x1F3C3;" />
+                                        <TextBlock FontSize="24"
+                                               Text="{x:Bind Parryratio}" 
+                                               RelativePanel.AlignRightWithPanel="True"
+                                               Margin="0,0,10,0"/>
+                                    </RelativePanel>
+                                </Grid>
+
+                                <StackPanel Orientation="Horizontal" RelativePanel.Below="PropertyGrid">
+                                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
+                                    <TextBlock FontSize="24" FontFamily="Consolas" Margin="10" Text="{x:Bind Level}" />
+                                </StackPanel>
+                            </RelativePanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+
+                <ListBox Name="SkillSelectOfDadOrSonPokemens" Grid.Row="1" SelectionChanged="SkillSelectOfDadOrSonPokemens_SelectionChanged" SelectionMode="Single">
+                    <ListBoxItem Name="FirstSkillOfDadOrSonPokemens" FontSize="24" IsSelected="True"/>
+                    <ListBoxItem Name="SecondSkillOfDadOrSonPokemens" FontSize="24" />
                 </ListBox>
             </Grid>
         </ContentDialog>

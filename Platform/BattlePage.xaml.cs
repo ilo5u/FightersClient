@@ -177,8 +177,6 @@ namespace Platform
 
         private void RenewStates(ObservableCollection<StateViewer> stateViewers, int states)
         {
-            Debug.WriteLine(states.ToString());
-
             if ((states & (int)StateConverter.StateType.ANGRIED) > 0)
             {
                 if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.ANGRIED }))
