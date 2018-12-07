@@ -234,9 +234,6 @@ namespace Platform
                         );
                 }
             }
-
-            /* 排序 */
-            App.Client.RankedUsers.OrderBy(user => user.NumberOfPokemens);
         }
 
         private void OnRenewRanklistCallBack(string userInfos)

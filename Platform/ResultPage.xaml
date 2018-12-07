@@ -70,7 +70,7 @@
                            Width="150"
                            Margin="0,5,0,5"
                            RelativePanel.Below="OldPlayerName"
-                           RelativePanel.AlignHorizontalCenterWithPanel="True" />
+                           RelativePanel.AlignHorizontalCenterWith="OldPlayerName" />
 
                     <Grid Name="OldPropertyGrid" RelativePanel.Below="OldPlayerImage" Width="300"
                       RelativePanel.AlignLeftWithPanel="True">
@@ -157,7 +157,8 @@
                               RelativePanel.AlignVerticalCenterWith="NewPlayerName"/>
 
                     <Image Name="NewPlayerImage" Width="150" Margin="0,5,0,5"
-                           RelativePanel.Below="NewPlayerName" RelativePanel.AlignHorizontalCenterWithPanel="True" />
+                           RelativePanel.Below="NewPlayerName" 
+                           RelativePanel.AlignHorizontalCenterWith="NewPlayerName" />
 
                     <Grid Name="NewPropertyGrid" RelativePanel.Below="NewPlayerImage" Width="300"
                       RelativePanel.AlignLeftWithPanel="True">

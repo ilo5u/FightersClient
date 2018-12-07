@@ -12,15 +12,15 @@ namespace Platform.Converters
         {
             if (total < 5)
             {
-                return "💚";
+                return "🥉";
             }
             else if (total < 20)
             {
-                return "💙";
+                return "🥈";
             }
             else
             {
-                return "💛";
+                return "🥇";
             }
         }
     }

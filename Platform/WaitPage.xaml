@@ -9,6 +9,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <TextBlock Style="{ThemeResource HeaderTextBlockStyle}"
+                   Foreground="DarkGreen"
+                   Margin="10"
+                   >左侧包含对战列表和在线用户列表</TextBlock>
     </Grid>
 </Page>
