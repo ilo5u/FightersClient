@@ -292,6 +292,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		void SetCareer(Career::Type career);
 		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);
@@ -384,6 +385,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		void SetCareer(Career::Type career);
 		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);
@@ -476,6 +478,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		void SetCareer(Career::Type career);
 		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);
@@ -572,6 +575,7 @@ namespace Pokemen
 
 	public:
 		Career::Type GetCareer() const;
+		void SetCareer(Career::Type career);
 		Skill::Type GetPrimarySkill() const;
 		String Attack(BasePlayer& opponent);
 		Value  IsAttacked(Value damage);

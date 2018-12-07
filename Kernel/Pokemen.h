@@ -66,6 +66,7 @@ namespace Pokemen
 	{
 		enum class Type
 		{
+			INVALID,
 			DISPLAY,
 			RESULT
 		};

@@ -33,6 +33,10 @@ namespace Platform
             Current = this;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         async protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             string[] infos = (string[])e.Parameter;
@@ -104,13 +108,21 @@ namespace Platform
             NewPlayerLevel.Text = newProps[13];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="exp"></param>
         private void OnHandleWinCallBack(string exp)
         {
             ResultInfo.Text = "胜利";
             ResultInfo.Foreground = new SolidColorBrush(Colors.DarkGreen);
-            ExpDisplay.Text = exp.ToString() + "点";
+            ExpDisplay.Text = (int.Parse(exp) * 2).ToString() + "点";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="exp"></param>
         private void OnHandleLoseCallBack(string exp)
         {
             ResultInfo.Text = "失败";
@@ -118,6 +130,11 @@ namespace Platform
             ExpDisplay.Text = exp.ToString() + "点";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackToLobby_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(WaitPage));

@@ -81,6 +81,11 @@ namespace Pokemen
 		return this->m_career.type;
 	}
 
+	void Guardian::SetCareer(Career::Type career)
+	{
+		this->m_career.type = career;
+	}
+
 	Guardian::Skill::Type Guardian::GetPrimarySkill() const
 	{
 		return this->m_skill.primarySkill;

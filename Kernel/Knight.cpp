@@ -81,6 +81,11 @@ namespace Pokemen
 		return this->m_career.type;
 	}
 
+	void Knight::SetCareer(Career::Type career)
+	{
+		this->m_career.type = career;
+	}
+
 	Knight::Skill::Type Knight::GetPrimarySkill() const
 	{
 		return this->m_skill.primarySkill;

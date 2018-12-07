@@ -392,13 +392,34 @@ namespace Pokemen
 		return true;
 	}
 
-	void Pokemen::RenewProperty(const::Pokemen::Property& prop, int carrer)
+	void Pokemen::RenewProperty(const::Pokemen::Property& prop, int career)
 	{
 		if (this->m_instance == nullptr)
 			throw std::exception("CPokemenManager is not implement.");
 		else
 		{
 			this->m_instance->SetProperty(prop);
+			switch (this->m_instance->GetType())
+			{
+			case PokemenType::MASTER:
+				static_cast<PMaster>(this->m_instance)->SetCareer(static_cast<Master::Career::Type>(career));
+				break;
+
+			case PokemenType::KNIGHT:
+				static_cast<PKnight>(this->m_instance)->SetCareer(static_cast<Knight::Career::Type>(career));
+				break;
+
+			case PokemenType::GUARDIAN:
+				static_cast<PGuardian>(this->m_instance)->SetCareer(static_cast<Guardian::Career::Type>(career));
+				break;
+
+			case PokemenType::ASSASSIN:
+				static_cast<PAssassin>(this->m_instance)->SetCareer(static_cast<Assassin::Career::Type>(career));
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
 

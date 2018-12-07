@@ -81,6 +81,11 @@ namespace Pokemen
 		return this->m_career.type;
 	}
 
+	void Assassin::SetCareer(Career::Type career)
+	{
+		this->m_career.type = career;
+	}
+
 	Assassin::Skill::Type Assassin::GetPrimarySkill() const
 	{
 		return this->m_skill.primarySkill;

@@ -51,14 +51,11 @@
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <FontIcon Grid.Column="1" VerticalAlignment="Top" Margin="0,100,20,0"
-                      FontFamily="Segoe UI Emoji" Glyph="&#x1F3C5;" FontSize="48"/>
-
-                <RelativePanel Grid.Column="0" Width="Auto" Margin="10" >
+                <RelativePanel Grid.Column="0" Width="Auto" Margin="10" 
+                               HorizontalAlignment="Center">
                     <TextBlock Name="OldPlayerName" Style="{StaticResource PokemenNameTextStyle}"
                            RelativePanel.AlignLeftWithPanel="True"/>
 
@@ -67,10 +64,10 @@
                               RelativePanel.AlignVerticalCenterWith="OldPlayerName"/>
 
                     <Image Name="OldPlayerImage"
-                           Width="150"
-                           Margin="0,5,0,5"
+                           Width="150" Stretch="Fill"
+                           Margin="50,5,0,5"
                            RelativePanel.Below="OldPlayerName"
-                           RelativePanel.AlignHorizontalCenterWith="OldPlayerName" />
+                           RelativePanel.AlignLeftWithPanel="True" />
 
                     <Grid Name="OldPropertyGrid" RelativePanel.Below="OldPlayerImage" Width="300"
                       RelativePanel.AlignLeftWithPanel="True">
@@ -148,7 +145,8 @@
                     </StackPanel>
                 </RelativePanel>
 
-                <RelativePanel Grid.Column="2" Width="Auto" Margin="10" >
+                <RelativePanel Grid.Column="1" Width="Auto" Margin="10" 
+                               HorizontalAlignment="Center">
                     <TextBlock Name="NewPlayerName" Style="{StaticResource PokemenNameTextStyle}"
                            RelativePanel.AlignLeftWithPanel="True"/>
 
@@ -156,9 +154,10 @@
                               RelativePanel.RightOf="NewPlayerName" Margin="10,0,0,0"
                               RelativePanel.AlignVerticalCenterWith="NewPlayerName"/>
 
-                    <Image Name="NewPlayerImage" Width="150" Margin="0,5,0,5"
+                    <Image Name="NewPlayerImage" Width="150" 
+                           Margin="50,5,0,5"
                            RelativePanel.Below="NewPlayerName" 
-                           RelativePanel.AlignHorizontalCenterWith="NewPlayerName" />
+                           RelativePanel.AlignLeftWithPanel="True" />
 
                     <Grid Name="NewPropertyGrid" RelativePanel.Below="NewPlayerImage" Width="300"
                       RelativePanel.AlignLeftWithPanel="True">

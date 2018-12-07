@@ -33,41 +33,56 @@ namespace Platform
         /// 公共访问实例对象
         /// </summary>
         static public BattlePage Current;
-        public ObservableCollection<StateViewer> FirstStates = new ObservableCollection<StateViewer>();
-        public ObservableCollection<StateViewer> SecondStates = new ObservableCollection<StateViewer>();
 
+        /// <summary>
+        /// 玩家精灵的显示信息
+        /// </summary>
+        public ObservableCollection<StateViewer> PlayerStates = new ObservableCollection<StateViewer>();
+        public PokemenViewer PlayerDisplay = new PokemenViewer();
+
+        /// <summary>
+        /// 电脑精灵的显示信息
+        /// </summary>
+        public ObservableCollection<StateViewer> AIStates = new ObservableCollection<StateViewer>();
+        public PokemenViewer AIDisplay = new PokemenViewer();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public BattlePage()
         {
             this.InitializeComponent();
             Current = this;
         }
 
-        public PokemenViewer FirstPlayer = new PokemenViewer();
-        public PokemenViewer SecondPlayer = new PokemenViewer();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.DADORSON)
-                BackToLobby.Visibility = Visibility.Collapsed;
+                BackToLobby.Visibility = Visibility.Collapsed; // 隐藏“返回大厅”按钮
             else
                 BackToLobby.Visibility = Visibility.Visible;
 
-            FirstStates.Clear();
-            SecondStates.Clear();
+            PlayerStates = new ObservableCollection<StateViewer>();
+            AIStates = new ObservableCollection<StateViewer>();
+            PlayerDisplay = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
+            AIDisplay = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
 
             // 启动对战信息实时接收线程
             App.Client.IsOnBattle = true;
-            App.Client.BattleDriver = new Task(BattleTask);
-            App.Client.BattleDriver.Start();
-
-            FirstPlayer = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
-            SecondPlayer = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
-
+            (App.Client.BattleDriver = new Task(BattleTask)).Start();
             App.Client.Core.StartBattle();
 
             BattleControl.IsChecked = false;
             BattleControl.Content = "▶";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         async private void BattleTask()
         {
             Message message;
@@ -123,6 +138,10 @@ namespace Platform
             Debug.WriteLine("对战关闭！");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="infos"></param>
         private void OnResultCallBack(string[] infos)
         {
             switch (LobbyPage.Current.TypeOfBattle)
@@ -140,6 +159,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="firstPlayer"></param>
+        /// <param name="secondPlayer"></param>
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
         {
             string[] firstProperties = firstPlayer.Split(',');
@@ -156,7 +180,7 @@ namespace Platform
 
             FirstPlayerAnger.Value = int.Parse(firstProperties[8]);
 
-            RenewStates(FirstStates, int.Parse(firstProperties[9]));
+            RenewStates(PlayerStates, int.Parse(firstProperties[9]));
 
             string[] secondProperties = secondPlayer.Split(',');
 
@@ -172,10 +196,14 @@ namespace Platform
 
             SecondPlayerAnger.Value = int.Parse(secondProperties[8]);
 
-            RenewStates(SecondStates, int.Parse(secondProperties[9]));
+            RenewStates(AIStates, int.Parse(secondProperties[9]));
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stateViewers"></param>
+        /// <param name="states"></param>
         private void RenewStates(ObservableCollection<StateViewer> stateViewers, int states)
         {
             if ((states & (int)StateConverter.StateType.ANGRIED) > 0)
@@ -299,16 +327,29 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
         private void OnDisplayFirstPlayerCallBack(string message)
         {
             BattleMessageOfFirstPlayer.Text += message + '\n';
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
         private void OnDisplaySecondPlayerCallBack(string message)
         {
             BattleMessageOfSecondPlayer.Text += message + '\n';
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async private void BackToLobby_Click(object sender, RoutedEventArgs e)
         {
             if (App.Client.Core.IsBattleRunning())
@@ -333,6 +374,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BattleControl_Click(object sender, RoutedEventArgs e)
         {
             if (BattleControl.IsChecked == true)
