@@ -112,7 +112,7 @@ namespace Platform
                 if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.LEVELUP;
-                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -192,7 +192,7 @@ namespace Platform
                 if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.DADORSON;
-                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -254,9 +254,28 @@ namespace Platform
             SecondSkillOfDadOrSonPokemens.Content = SkillConverter.Convert(UserPlayer.Type, 1);
         }
 
-        async internal void OnAcceptCallBack()
+        bool IsOnWaitForPlayer = false;
+        async internal void OnAcceptCallBack(string opponent)
         {
+            if (!IsOnWaitForPlayer)
+                return;
             WaitForPlayer.Hide();
+
+            string[] pokemenInfoArrays = opponent.Split('\n');
+            AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[1]), int.Parse(pokemenInfoArrays[13]));
+            AIPlayer.SetProperty(
+                int.Parse(pokemenInfoArrays[0]),
+                pokemenInfoArrays[2],
+                int.Parse(pokemenInfoArrays[3]),
+                int.Parse(pokemenInfoArrays[4]),
+                int.Parse(pokemenInfoArrays[5]),
+                int.Parse(pokemenInfoArrays[6]),
+                int.Parse(pokemenInfoArrays[7]),
+                int.Parse(pokemenInfoArrays[8]),
+                int.Parse(pokemenInfoArrays[9]),
+                int.Parse(pokemenInfoArrays[10]),
+                int.Parse(pokemenInfoArrays[11])
+                );
 
             UserPlayerId = -1;
             do
@@ -270,13 +289,51 @@ namespace Platform
                     msgDialog.Commands.Add(new UICommand("确定"));
                     await msgDialog.ShowAsync();
                 }
-            } while (UserPlayerId != -1);
+            } while (UserPlayerId == -1);
 
             TypeOfBattle = BattleType.LEVELUP;
-            App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
+            App.Client.Core.SendMessage(new Kernel.Message
+            {
+                type = Kernel.MsgType.PVP_BATTLE,
+                data = UserPlayerId.ToString()
+            });
+
+            App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, true);
             BattleFrame.Navigate(typeof(BattlePage));
         }
 
+        /// <summary>
+        /// 收到发起方的开始信号
+        /// </summary>
+        /// <param name="opponent"></param>
+        internal void OnBattleCallBack(string opponent)
+        {
+            if (!IsOnWaitForPlayer)
+                return;
+            WaitForPlayer.Hide();
+
+            string[] pokemenInfoArrays = opponent.Split('\n');
+            AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[1]), int.Parse(pokemenInfoArrays[13]));
+            AIPlayer.SetProperty(
+                int.Parse(pokemenInfoArrays[0]),
+                pokemenInfoArrays[2],
+                int.Parse(pokemenInfoArrays[3]),
+                int.Parse(pokemenInfoArrays[4]),
+                int.Parse(pokemenInfoArrays[5]),
+                int.Parse(pokemenInfoArrays[6]),
+                int.Parse(pokemenInfoArrays[7]),
+                int.Parse(pokemenInfoArrays[8]),
+                int.Parse(pokemenInfoArrays[9]),
+                int.Parse(pokemenInfoArrays[10]),
+                int.Parse(pokemenInfoArrays[11])
+                );
+            App.Client.Core.SetBattlePlayersAndType(UserPlayerId, AIPlayer, PrimarySkillType, true);
+            BattleFrame.Navigate(typeof(BattlePage));
+        }
+
+        /// <summary>
+        /// 发送正忙信号
+        /// </summary>
         async internal void OnBusyCallBack()
         {
             WaitForPlayer.Hide();
@@ -286,6 +343,9 @@ namespace Platform
             await msgDialog.ShowAsync();
         }
 
+        /// <summary>
+        /// 发送拒绝信号
+        /// </summary>
         async internal void OnRefuseCallBack()
         {
             WaitForPlayer.Hide();
@@ -329,21 +389,38 @@ namespace Platform
             }
         }
 
-        bool IsOnWaitForPlayer = false;
         async private void OnlineBattle_Click(object sender, RoutedEventArgs e)
         {
             TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
             if (App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType)
-            {
+            { /* 接受对战请求 */
+                UserPlayerId = -1;
+                do
+                {
+                    /* 选择出战精灵 */
+                    SkillSelectOfLevelUpPokemens.Visibility = Visibility.Collapsed;
+                    await SelectOfLeveLUpPkemens.ShowAsync();
+                    if (UserPlayerId == -1)
+                    {
+                        var msgDialog = new MessageDialog("请选择一个精灵！") { Title = "" };
+                        msgDialog.Commands.Add(new UICommand("确定"));
+                        await msgDialog.ShowAsync();
+                    }
+                } while (UserPlayerId == -1);
+
                 App.Client.Core.SendMessage(new Kernel.Message
                 {
                     type = Kernel.MsgType.PVP_ACCEPT,
                     data = onlineuser.Text
                 });
                 App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType = false;
+
+                IsOnWaitForPlayer = true;
+                await WaitForPlayer.ShowAsync();
+                IsOnWaitForPlayer = false;
             }
             else
-            {
+            { /* 发起对战请求 */
                 App.Client.Core.SendMessage(new Kernel.Message
                 {
                     type = Kernel.MsgType.PVP_REQUEST,

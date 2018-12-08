@@ -90,6 +90,10 @@ namespace Kernel
 	public:
 		void SetAIPlayer();
 		Property GetProperty();
+		void SetProperty(int id, Platform::String^ name,
+			int hpoint, int attack, int defense, int agility,
+			int interval, int critical, int hitratio, int parryratio,
+			int career);
 
 	private:
 		::Pokemen::Pokemen instance;
@@ -117,7 +121,7 @@ namespace Kernel
 		Property GetPropertyAt(int pokemenId);
 
 	public:
-		void SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type);
+		void SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type, bool battle);
 		void StartBattle();
 		void SetBattleOn();
 		void SetBattlePasue();
@@ -130,6 +134,7 @@ namespace Kernel
 	private:
 		::NetIO::NetIO netDriver;
 		Battle stage;
+		bool battletype;
 		Pokemens pokemens;
 	};
 }
