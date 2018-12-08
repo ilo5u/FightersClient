@@ -34,6 +34,7 @@ namespace Platform
         /// </summary>
         static public LobbyPage Current;
         public Kernel.Pokemen AIPlayer;
+        public string OpponentUserName;
         int UserPlayerId;
         public PokemenViewer UserPlayer = new PokemenViewer();
         public int PrimarySkillType;
@@ -98,7 +99,8 @@ namespace Platform
         public enum BattleType
         {
             LEVELUP,
-            DADORSON
+            DADORSON,
+            PVP
         }
         public BattleType TypeOfBattle;
         async private void LevelUp_Click(object sender, RoutedEventArgs e)
@@ -261,7 +263,7 @@ namespace Platform
                 return;
             WaitForPlayer.Hide();
 
-            string[] pokemenInfoArrays = opponent.Split('\n');
+            string[] pokemenInfoArrays = opponent.Split(',');
             AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[1]), int.Parse(pokemenInfoArrays[13]));
             AIPlayer.SetProperty(
                 int.Parse(pokemenInfoArrays[0]),
@@ -274,7 +276,9 @@ namespace Platform
                 int.Parse(pokemenInfoArrays[8]),
                 int.Parse(pokemenInfoArrays[9]),
                 int.Parse(pokemenInfoArrays[10]),
-                int.Parse(pokemenInfoArrays[11])
+                int.Parse(pokemenInfoArrays[11]),
+                int.Parse(pokemenInfoArrays[12]),
+                int.Parse(pokemenInfoArrays[13])
                 );
 
             UserPlayerId = -1;
@@ -291,11 +295,11 @@ namespace Platform
                 }
             } while (UserPlayerId == -1);
 
-            TypeOfBattle = BattleType.LEVELUP;
+            TypeOfBattle = BattleType.PVP;
             App.Client.Core.SendMessage(new Kernel.Message
             {
                 type = Kernel.MsgType.PVP_BATTLE,
-                data = UserPlayerId.ToString()
+                data = OpponentUserName + '\n' + UserPlayerId.ToString()
             });
 
             App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, true);
@@ -312,7 +316,7 @@ namespace Platform
                 return;
             WaitForPlayer.Hide();
 
-            string[] pokemenInfoArrays = opponent.Split('\n');
+            string[] pokemenInfoArrays = opponent.Split(',');
             AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[1]), int.Parse(pokemenInfoArrays[13]));
             AIPlayer.SetProperty(
                 int.Parse(pokemenInfoArrays[0]),
@@ -325,8 +329,11 @@ namespace Platform
                 int.Parse(pokemenInfoArrays[8]),
                 int.Parse(pokemenInfoArrays[9]),
                 int.Parse(pokemenInfoArrays[10]),
-                int.Parse(pokemenInfoArrays[11])
+                int.Parse(pokemenInfoArrays[11]),
+                int.Parse(pokemenInfoArrays[12]),
+                int.Parse(pokemenInfoArrays[13])
                 );
+            TypeOfBattle = BattleType.PVP;
             App.Client.Core.SetBattlePlayersAndType(UserPlayerId, AIPlayer, PrimarySkillType, true);
             BattleFrame.Navigate(typeof(BattlePage));
         }
@@ -339,18 +346,6 @@ namespace Platform
             WaitForPlayer.Hide();
 
             var msgDialog = new MessageDialog("对方正忙！") { Title = "" };
-            msgDialog.Commands.Add(new UICommand("确定"));
-            await msgDialog.ShowAsync();
-        }
-
-        /// <summary>
-        /// 发送拒绝信号
-        /// </summary>
-        async internal void OnRefuseCallBack()
-        {
-            WaitForPlayer.Hide();
-
-            var msgDialog = new MessageDialog("对方拒绝了您的请求！") { Title = "" };
             msgDialog.Commands.Add(new UICommand("确定"));
             await msgDialog.ShowAsync();
         }
@@ -411,7 +406,7 @@ namespace Platform
                 App.Client.Core.SendMessage(new Kernel.Message
                 {
                     type = Kernel.MsgType.PVP_ACCEPT,
-                    data = onlineuser.Text
+                    data = onlineuser.Text + '\n' + UserPlayerId.ToString()
                 });
                 App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType = false;
 
@@ -426,6 +421,7 @@ namespace Platform
                     type = Kernel.MsgType.PVP_REQUEST,
                     data = onlineuser.Text
                 });
+                OpponentUserName = onlineuser.Text;
 
                 IsOnWaitForPlayer = true;
                 ContentDialogResult result = await WaitForPlayer.ShowAsync();

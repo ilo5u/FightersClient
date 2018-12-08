@@ -101,7 +101,10 @@ namespace Kernel
 		};
 	}
 
-	void Pokemen::SetProperty(int id, Platform::String ^ name, int hpoint, int attack, int defense, int agility, int interval, int critical, int hitratio, int parryratio, int career)
+	void Pokemen::SetProperty(int id, Platform::String ^ name, 
+		int hpoint, int attack, int defense, int agility,
+		int interval, int critical, int hitratio, int parryratio, 
+		int career, int exp, int level)
 	{
 		instance.RenewProperty(
 			{
@@ -109,7 +112,7 @@ namespace Kernel
 				WStringToString(name->Data()).c_str(),
 				hpoint, attack, defense, agility,
 				interval, critical, hitratio, parryratio,
-				instance.GetExp(), instance.GetLevel()
+				exp, level
 			}, career
 		);
 	}
@@ -195,10 +198,6 @@ namespace Kernel
 
 		case MsgType::PVP_BUSY:
 			sendPacket.type = PacketType::PVP_BUSY;
-			break;
-
-		case MsgType::PVP_REFUSE:
-			sendPacket.type = PacketType::PVP_REFUSE;
 			break;
 
 		case MsgType::PVP_MESSAGE:
@@ -463,9 +462,9 @@ namespace Kernel
 					ref new Platform::String(StringToWString(recvPacket.data).c_str())
 				};
 
-			case PacketType::PVP_REFUSE:
+			case PacketType::PVP_CANCEL:
 				return {
-					MsgType::PVP_REFUSE,
+					MsgType::PVP_CANCEL,
 					ref new Platform::String(StringToWString(recvPacket.data).c_str())
 				};
 

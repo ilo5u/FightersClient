@@ -241,20 +241,57 @@ namespace Platform
                         }
                         break;
 
-                    case Kernel.MsgType.PVP_REFUSE:
-                        {
-                            await Dispatcher.RunAsync(
-                                Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                () => OnPVPRefuseCallBack()
-                                );
-                        }
-                        break;
-
                     case Kernel.MsgType.PVP_BATTLE:
                         {
                             await Dispatcher.RunAsync(
                                 Windows.UI.Core.CoreDispatcherPriority.Normal,
                                 () => OnPVPBattleCallBack(message.data)
+                                );
+                        }
+                        break;
+
+                    case Kernel.MsgType.PVP_MESSAGE:
+                        {
+                            string[] infos = message.data.Split('\n');
+                            if (infos[0] == "R")
+                            {
+                                // 更新属性值
+                                await Dispatcher.RunAsync(
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                    () => BattlePage.Current.OnRenewDisplayCallBack(infos[2], infos[1])
+                                    );
+                            }
+                            else if (infos[0] == "S")
+                            {
+                                // 下方小精灵攻击
+                                await Dispatcher.RunAsync(
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                    () => BattlePage.Current.OnDisplayFirstPlayerCallBack(infos[1])
+                                    );
+                            }
+                            else if (infos[0] == "F")
+                            {
+                                // 上方小精灵攻击
+                                await Dispatcher.RunAsync(
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                    () => BattlePage.Current.OnDisplaySecondPlayerCallBack(infos[1])
+                                    );
+                            }
+                        }
+                        break;
+
+                    case Kernel.MsgType.PVP_RESULT:
+                        {
+                            string[] infos = message.data.Split('\n');
+                            if (infos[0].Equals("F"))
+                                infos[0] = "S";
+                            else
+                                infos[0] = "F";
+
+                            App.Client.IsOnBattle = false;
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => BattlePage.Current.OnResultCallBack(infos)
                                 );
                         }
                         break;
@@ -299,11 +336,6 @@ namespace Platform
             {
                 Debug.WriteLine(e.Message);
             }
-        }
-
-        private void OnPVPRefuseCallBack()
-        {
-            LobbyPage.Current.OnRefuseCallBack();
         }
 
         private void OnPVPBusyCallBack()

@@ -93,6 +93,7 @@ namespace Platform
                 switch (message.type)
                 {
                     case MsgType.PVE_MESSAGE:
+                    case MsgType.PVP_MESSAGE:
                         {
                             if (infos[0] == "R")
                             {
@@ -122,6 +123,7 @@ namespace Platform
                         break;
 
                     case MsgType.PVE_RESULT:
+                    case MsgType.PVP_RESULT:
                         {
                             App.Client.IsOnBattle = false;
                             await Dispatcher.RunAsync(
@@ -142,7 +144,7 @@ namespace Platform
         /// 
         /// </summary>
         /// <param name="infos"></param>
-        private void OnResultCallBack(string[] infos)
+        internal void OnResultCallBack(string[] infos)
         {
             switch (LobbyPage.Current.TypeOfBattle)
             {
@@ -152,6 +154,10 @@ namespace Platform
 
                 case LobbyPage.BattleType.DADORSON:
                     Frame.Navigate(typeof(BonusPage), infos[0]);
+                    break;
+
+                case LobbyPage.BattleType.PVP:
+                    Frame.Navigate(typeof(PVPPage), infos[0]);
                     break;
 
                 default:
@@ -164,7 +170,7 @@ namespace Platform
         /// </summary>
         /// <param name="firstPlayer"></param>
         /// <param name="secondPlayer"></param>
-        private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
+        internal void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
         {
             string[] firstProperties = firstPlayer.Split(',');
 
@@ -331,7 +337,7 @@ namespace Platform
         /// 
         /// </summary>
         /// <param name="message"></param>
-        private void OnDisplayFirstPlayerCallBack(string message)
+        internal void OnDisplayFirstPlayerCallBack(string message)
         {
             BattleMessageOfFirstPlayer.Text += message + '\n';
         }
@@ -340,7 +346,7 @@ namespace Platform
         /// 
         /// </summary>
         /// <param name="message"></param>
-        private void OnDisplaySecondPlayerCallBack(string message)
+        internal void OnDisplaySecondPlayerCallBack(string message)
         {
             BattleMessageOfSecondPlayer.Text += message + '\n';
         }
