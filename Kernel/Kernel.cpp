@@ -158,8 +158,40 @@ namespace Kernel
 			}
 			break;
 
+		case MsgType::UPDATE_RANKLIST:
+			sendPacket.type = PacketType::UPDATE_RANKLIST;
+			break;
+
 		case MsgType::GET_POKEMENS_BY_USER:
 			sendPacket.type = PacketType::GET_POKEMENS_BY_USER;
+			break;
+
+		case MsgType::PVP_REQUEST:
+			sendPacket.type = PacketType::PVP_REQUEST;
+			break;
+
+		case MsgType::PVP_CANCEL:
+			sendPacket.type = PacketType::PVP_CANCEL;
+			break;
+
+		case MsgType::PVP_ACCEPT:
+			sendPacket.type = PacketType::PVP_ACCEPT;
+			break;
+
+		case MsgType::PVP_BUSY:
+			sendPacket.type = PacketType::PVP_BUSY;
+			break;
+
+		case MsgType::PVP_REFUSE:
+			sendPacket.type = PacketType::PVP_REFUSE;
+			break;
+
+		case MsgType::PVP_MESSAGE:
+			sendPacket.type = PacketType::PVP_MESSAGE;
+			break;
+
+		case MsgType::PVP_RESULT:
+			sendPacket.type = PacketType::PVP_RESULT;
 			break;
 
 		default:
@@ -369,6 +401,42 @@ namespace Kernel
 			case PacketType::SET_RANKLIST:
 				return {
 					MsgType::SET_RANKLIST,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::PVP_REQUEST:
+				return {
+					MsgType::PVP_REQUEST,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::PVP_ACCEPT:
+				return {
+					MsgType::PVP_ACCEPT,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::PVP_BUSY:
+				return {
+					MsgType::PVP_BUSY,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::PVP_REFUSE:
+				return {
+					MsgType::PVP_REFUSE,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::PVP_MESSAGE:
+				return {
+					MsgType::PVP_MESSAGE,
+					ref new Platform::String(StringToWString(recvPacket.data).c_str())
+				};
+
+			case PacketType::PVP_RESULT:
+				return {
+					MsgType::PVP_RESULT,
 					ref new Platform::String(StringToWString(recvPacket.data).c_str())
 				};
 

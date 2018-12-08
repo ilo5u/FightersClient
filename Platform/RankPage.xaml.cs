@@ -83,5 +83,16 @@ namespace Platform
                 }
                 );
         }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.Core.SendMessage(
+                new Message
+                {
+                    type = MsgType.UPDATE_RANKLIST,
+                    data = ""
+                }
+                );
+        }
     }
 }

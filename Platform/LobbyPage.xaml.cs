@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -253,6 +254,47 @@ namespace Platform
             SecondSkillOfDadOrSonPokemens.Content = SkillConverter.Convert(UserPlayer.Type, 1);
         }
 
+        async internal void OnAcceptCallBack()
+        {
+            WaitForPlayer.Hide();
+
+            UserPlayerId = -1;
+            do
+            {
+                /* 选择出战精灵 */
+                SkillSelectOfLevelUpPokemens.Visibility = Visibility.Collapsed;
+                await SelectOfLeveLUpPkemens.ShowAsync();
+                if (UserPlayerId == -1)
+                {
+                    var msgDialog = new MessageDialog("请选择一个精灵！") { Title = "" };
+                    msgDialog.Commands.Add(new UICommand("确定"));
+                    await msgDialog.ShowAsync();
+                }
+            } while (UserPlayerId != -1);
+
+            TypeOfBattle = BattleType.LEVELUP;
+            App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType);
+            BattleFrame.Navigate(typeof(BattlePage));
+        }
+
+        async internal void OnBusyCallBack()
+        {
+            WaitForPlayer.Hide();
+
+            var msgDialog = new MessageDialog("对方正忙！") { Title = "" };
+            msgDialog.Commands.Add(new UICommand("确定"));
+            await msgDialog.ShowAsync();
+        }
+
+        async internal void OnRefuseCallBack()
+        {
+            WaitForPlayer.Hide();
+
+            var msgDialog = new MessageDialog("对方拒绝了您的请求！") { Title = "" };
+            msgDialog.Commands.Add(new UICommand("确定"));
+            await msgDialog.ShowAsync();
+        }
+
         private void SkillSelectOfDadOrSonPokemens_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FirstSkillOfDadOrSonPokemens.IsSelected == true)
@@ -287,10 +329,30 @@ namespace Platform
             }
         }
 
-        private void OnlineBattle_Click(object sender, RoutedEventArgs e)
+        bool IsOnWaitForPlayer = false;
+        async private void OnlineBattle_Click(object sender, RoutedEventArgs e)
         {
             TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
-            Debug.WriteLine(onlineuser.Text);
+            App.Client.Core.SendMessage(new Kernel.Message
+            {
+                type = Kernel.MsgType.PVP_REQUEST,
+                data = onlineuser.Text
+            });
+
+            IsOnWaitForPlayer = true;
+            ContentDialogResult result = await WaitForPlayer.ShowAsync();
+            IsOnWaitForPlayer = false;
         }
+
+        private void WaitForPlayer_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            App.Client.Core.SendMessage(new Kernel.Message
+            {
+                type = Kernel.MsgType.PVP_CANCEL,
+                data = ""
+            });
+        }
+
+
     }
 }

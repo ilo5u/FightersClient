@@ -11,6 +11,7 @@ namespace Platform.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private string name;
+        private bool battle;
         public string Name
         {
             get
@@ -23,6 +24,21 @@ namespace Platform.Models
                 if (this.PropertyChanged != null)
                 {
                     this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Name"));
+                }
+            }
+        }
+        public bool Battle
+        {
+            get
+            {
+                return battle;
+            }
+            set
+            {
+                battle = value;
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Battle"));
                 }
             }
         }

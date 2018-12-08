@@ -39,67 +39,80 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <GridView Name="UsersGrid"
-                  Grid.Column="0"
+        <Grid>
+            <RelativePanel>
+                <Button Name="Refresh"
+                    Content="刷新"
+                    FontSize="16"
+                    Style="{ThemeResource AccentButtonStyle}"
+                        RelativePanel.AlignLeftWithPanel="True"
+                    Margin="20,5,0,5"
+                    Click="Refresh_Click"/>
+
+                <GridView Name="UsersGrid"
+                  RelativePanel.Below="Refresh"
                   ItemsSource="{x:Bind local:App.Client.RankedUsers}"
                   IsItemClickEnabled="True"
                   ItemClick="UsersGrid_ItemClick">
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="data:UserInfoViewer">
-                    <Grid Width="300">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="data:UserInfoViewer">
+                            <Grid Width="300">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
 
-                        </Grid.RowDefinitions>
+                                </Grid.RowDefinitions>
 
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon FontFamily="Segoe UI Emoji" 
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal">
+                                        <FontIcon FontFamily="Segoe UI Emoji" 
                                           Glyph="&#x1f642;"
                                           Margin="5" />
-                                <TextBlock Text="{x:Bind Name}"
+                                        <TextBlock Text="{x:Bind Name}"
                                            Margin="5"
                                            VerticalAlignment="Bottom"/>
-                            </StackPanel>
+                                    </StackPanel>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="胜率"
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="胜率"
                                            Margin="5" 
                                            VerticalAlignment="Bottom"/>
-                                <TextBlock Text="{x:Bind Rate}" 
+                                        <TextBlock Text="{x:Bind Rate}" 
                                            Margin="5"
                                            VerticalAlignment="Bottom"/>
-                            </StackPanel>
-                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
 
-                        <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                     Grid.Row="1">
-                            <TextBlock Text="精灵数目" 
+                                    <TextBlock Text="精灵数目" 
                                        Margin="5"
                                        VerticalAlignment="Bottom"/>
-                            <TextBlock Text="{x:Bind NumberOfPokemens}"
+                                    <TextBlock Text="{x:Bind NumberOfPokemens}"
                                        Margin="5"
                                        VerticalAlignment="Bottom"/>
-                            <TextBlock Text="{x:Bind Honor}"
+                                    <TextBlock Text="{x:Bind Honor}"
                                        Margin="5"
                                        VerticalAlignment="Bottom"/>
-                        </StackPanel>
+                                </StackPanel>
 
-                        <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                     Grid.Row="2">
-                            <TextBlock Text="称号"
+                                    <TextBlock Text="称号"
                                        Margin="5" />
-                            <TextBlock Text="{x:Bind Glory}"
+                                    <TextBlock Text="{x:Bind Glory}"
                                        Margin="5" />
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
-
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </RelativePanel>
+        </Grid>
+        
         <Grid Grid.Column="1">
+
             <StackPanel Name="WaitForPokemens"
                     Orientation="Vertical">
                 <ProgressRing IsActive="True"

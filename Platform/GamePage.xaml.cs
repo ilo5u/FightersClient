@@ -203,6 +203,53 @@ namespace Platform
                         }
                         break;
 
+                    case Kernel.MsgType.PVP_REQUEST:
+                        {
+                            if (App.Client.IsOnBattle)
+                            {
+                                App.Client.Core.SendMessage(new Kernel.Message
+                                {
+                                    type = Kernel.MsgType.PVP_BUSY,
+                                    data = ""
+                                });
+                            }
+                            else
+                            {
+                                await Dispatcher.RunAsync(
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                    () => OnPVPRequestCallBack(message.data)
+                                    );
+                            }
+                        }
+                        break;
+
+                    case Kernel.MsgType.PVP_ACCEPT:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnPVPAcceptCallBack()
+                                );
+                        }
+                        break;
+
+                    case Kernel.MsgType.PVP_BUSY:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnPVPBusyCallBack()
+                                );
+                        }
+                        break;
+
+                    case Kernel.MsgType.PVP_REFUSE:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnPVPRefuseCallBack()
+                                );
+                        }
+                        break;
+
                     case Kernel.MsgType.DISCONNECT:
                         {
                             App.Client.IsOnConnection = false;
@@ -225,6 +272,32 @@ namespace Platform
             }
 
             Debug.WriteLine("网络关闭！");
+        }
+
+        private void OnPVPRequestCallBack(string requester)
+        {
+            try
+            {
+                App.Client.OnlineUsers.First(user => user.Name.Equals(requester)).Battle = true;
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void OnPVPRefuseCallBack()
+        {
+            LobbyPage.Current.OnRefuseCallBack();
+        }
+
+        private void OnPVPBusyCallBack()
+        {
+            LobbyPage.Current.OnBusyCallBack();
+        }
+
+        private void OnPVPAcceptCallBack()
+        {
+            LobbyPage.Current.OnAcceptCallBack();
         }
 
         /// <summary>
