@@ -115,13 +115,13 @@ namespace Platform
                 if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.LEVELUP;
-                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false, "");
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
                 {
-                    var msgDialog = new Windows.UI.Popups.MessageDialog("请选择一个精灵！") { Title = "" };
-                    msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("确定"));
+                    var msgDialog = new MessageDialog("请选择一个精灵！") { Title = "" };
+                    msgDialog.Commands.Add(new UICommand("确定"));
                     await msgDialog.ShowAsync();
                 }
             }
@@ -195,13 +195,13 @@ namespace Platform
                 if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.DADORSON;
-                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false, "");
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false);
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
                 {
-                    var msgDialog = new Windows.UI.Popups.MessageDialog("请选择一个精灵！") { Title = "" };
-                    msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("确定"));
+                    var msgDialog = new MessageDialog("请选择一个精灵！") { Title = "" };
+                    msgDialog.Commands.Add(new UICommand("确定"));
                     await msgDialog.ShowAsync();
                 }
             }
@@ -265,10 +265,10 @@ namespace Platform
             WaitForPlayer.Hide();
 
             string[] pokemenInfoArrays = opponent.Split(',');
-            AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[1]), int.Parse(pokemenInfoArrays[13]));
+            AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[13]));
             AIPlayer.SetProperty(
                 int.Parse(pokemenInfoArrays[0]),
-                pokemenInfoArrays[2],
+                int.Parse(pokemenInfoArrays[1]),
                 int.Parse(pokemenInfoArrays[3]),
                 int.Parse(pokemenInfoArrays[4]),
                 int.Parse(pokemenInfoArrays[5]),
@@ -303,7 +303,7 @@ namespace Platform
                 data = OpponentUserName + '\n' + UserPlayerId.ToString()
             });
 
-            App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, true, OpponentUserName);
+            App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, true);
             BattleFrame.Navigate(typeof(BattlePage));
         }
 
@@ -318,10 +318,10 @@ namespace Platform
             WaitForPlayer.Hide();
 
             string[] pokemenInfoArrays = opponent.Split(',');
-            AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[1]), int.Parse(pokemenInfoArrays[13]));
+            AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[13]));
             AIPlayer.SetProperty(
                 int.Parse(pokemenInfoArrays[0]),
-                pokemenInfoArrays[2],
+                int.Parse(pokemenInfoArrays[1]),
                 int.Parse(pokemenInfoArrays[3]),
                 int.Parse(pokemenInfoArrays[4]),
                 int.Parse(pokemenInfoArrays[5]),

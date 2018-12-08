@@ -72,7 +72,8 @@ namespace Platform
             PlayerDisplay = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
             AIDisplay = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
 
-            if (LobbyPage.Current.SenderOrReciver)
+            if (LobbyPage.Current.SenderOrReciver
+                || LobbyPage.Current.TypeOfBattle != LobbyPage.BattleType.PVP)
             {
                 // 启动对战信息实时接收线程
                 App.Client.IsOnBattle = true;
