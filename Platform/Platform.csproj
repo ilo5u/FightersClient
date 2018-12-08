@@ -102,6 +102,7 @@
     <Compile Include="BonusPage.xaml.cs">
       <DependentUpon>BonusPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BattleTypeConverter.cs" />
     <Compile Include="Converters\CareerConverter.cs" />
     <Compile Include="Converters\ExpConverter.cs" />
     <Compile Include="Converters\ExpInfoConverter.cs" />

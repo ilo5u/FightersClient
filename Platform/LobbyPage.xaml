@@ -32,6 +32,7 @@
 
         <con:PokemenTypeConverter x:Key="PTConverter" />
         <con:ShrinkNameConverter x:Key="SNConverter" />
+        <con:BattleTypeConverter x:Key="BTConverter" />
     </Page.Resources>
 
     <Grid>
@@ -330,6 +331,15 @@
             </Grid>
         </ContentDialog>
 
+        <ContentDialog x:Name="WaitForPlayer"
+                       Title="请稍等..."
+                       CloseButtonText="取消"
+                       CloseButtonClick="WaitForPlayer_CloseButtonClick">
+            <Grid>
+                <ProgressRing IsActive="True"></ProgressRing>
+            </Grid>
+        </ContentDialog>
+
         <SplitView Name="BattleList"
                    Grid.Column="1"
                    PanePlacement="Right" DisplayMode="Overlay" OpenPaneLength="240">
@@ -545,7 +555,9 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Button Background="White" 
                                                 Foreground="DarkGreen" FontWeight="Bold"
-                                                FontFamily="Segoe MDL2 Assets" Content="&#xE13D;" FontSize="24">
+                                                FontFamily="Segoe MDL2 Assets"
+                                                Content="&#xE13D;"
+                                                FontSize="24">
                                             <Button.Flyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="OnlineUserName"
@@ -554,18 +566,21 @@
                                                 </MenuFlyout>
                                             </Button.Flyout>
                                         </Button>
+                                        <Button Name="OnlineBattle"
+                                                Background="White"
+                                                Content="{Binding Battle,Converter={StaticResource BTConverter}}"
+                                                FontSize="24"
+                                                FontFamily="Segoe UI Emoji" 
+                                                Click="OnlineBattle_Click"
+                                                DataContext="{Binding ElementName=OnlineUser}"/>
                                         <TextBlock Name="OnlineUser"
-                                                   Text="{Binding ElementName=OnlineUserName, Path=Text, Converter={StaticResource SNConverter}}" Width="240" HorizontalAlignment="Center"
+                                                   Text="{Binding ElementName=OnlineUserName, Path=Text, Converter={StaticResource SNConverter}}" 
+                                                   Width="180" 
+                                                   HorizontalAlignment="Center"
                                                    FontFamily="Consolas"
                                                    FontSize="24" 
                                                    Margin="10" 
-                                                   Foreground="DarkGreen"/>
-                                        <Button Name="OnlineBattle"
-                                                Content="&#x1F3F9;"
-                                                FontFamily="Segoe UI Emoji" 
-                                                Click="OnlineBattle_Click"
-                                                HorizontalAlignment="Right"
-                                                DataContext="{Binding ElementName=OnlineUser}"/>
+                                                   Foreground="DarkGreen" />
                                     </StackPanel>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
