@@ -80,10 +80,10 @@
                                        Margin="5"
                                        VerticalAlignment="Bottom"/>
                             <TextBlock Text="{x:Bind NumberOfPokemens}"
-                                       Margin="5,0,5,0"
+                                       Margin="5"
                                        VerticalAlignment="Bottom"/>
                             <TextBlock Text="{x:Bind Honor}"
-                                       Margin="5,0,5,0"
+                                       Margin="5"
                                        VerticalAlignment="Bottom"/>
                         </StackPanel>
 

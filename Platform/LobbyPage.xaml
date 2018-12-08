@@ -548,13 +548,24 @@
                                                 FontFamily="Segoe MDL2 Assets" Content="&#xE13D;" FontSize="24">
                                             <Button.Flyout>
                                                 <MenuFlyout>
-                                                    <MenuFlyoutItem Name="OnlineUserName" Text="{x:Bind Name}" FontSize="24"/>
+                                                    <MenuFlyoutItem Name="OnlineUserName"
+                                                                    Text="{x:Bind Name}" 
+                                                                    FontSize="24"/>
                                                 </MenuFlyout>
                                             </Button.Flyout>
                                         </Button>
-                                        <TextBlock Text="{Binding ElementName=OnlineUserName, Path=Text, Converter={StaticResource SNConverter}}" Width="240" HorizontalAlignment="Center"
-                                               FontFamily="Consolas" FontSize="24" Margin="10" Foreground="DarkGreen"/>
-                                        
+                                        <TextBlock Name="OnlineUser"
+                                                   Text="{Binding ElementName=OnlineUserName, Path=Text, Converter={StaticResource SNConverter}}" Width="240" HorizontalAlignment="Center"
+                                                   FontFamily="Consolas"
+                                                   FontSize="24" 
+                                                   Margin="10" 
+                                                   Foreground="DarkGreen"/>
+                                        <Button Name="OnlineBattle"
+                                                Content="&#x1F3F9;"
+                                                FontFamily="Segoe UI Emoji" 
+                                                Click="OnlineBattle_Click"
+                                                HorizontalAlignment="Right"
+                                                DataContext="{Binding ElementName=OnlineUser}"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </GridView.ItemTemplate>

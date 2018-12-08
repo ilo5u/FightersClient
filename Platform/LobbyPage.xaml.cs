@@ -3,6 +3,7 @@ using Platform.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -284,6 +285,12 @@ namespace Platform
             {
                 PrimarySkillType = 1;
             }
+        }
+
+        private void OnlineBattle_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
+            Debug.WriteLine(onlineuser.Text);
         }
     }
 }

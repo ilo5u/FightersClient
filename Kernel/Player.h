@@ -315,6 +315,7 @@ namespace Pokemen
 
 	private:
 		void _LevelUpPropertiesDistributor_();
+		void _InitSkill_();
 	};
 	typedef Master * PMaster;
 
@@ -408,6 +409,7 @@ namespace Pokemen
 
 	private:
 		void _LevelUpPropertiesDistributor_();
+		void _InitSkill_();
 	};
 	typedef Knight * PKnight;
 
@@ -447,7 +449,7 @@ namespace Pokemen
 			//  ÿª§’ﬂ°§≈¡¿≠∂°
 			struct Paladin
 			{
-				const static Value defenseIncIndex = +100;
+				const static Value defenseIncIndex = +20;
 				const static Value damageDecIndex = -10;
 				const static Value sunkInSilenceChanceIncIndex = +50;
 				const static Value reboundDamageChanceDecIndex = -20;
@@ -501,6 +503,7 @@ namespace Pokemen
 
 	private:
 		void _LevelUpPropertiesDistributor_();
+		void _InitSkill_();
 	};
 	typedef Guardian * PGuardian;
 
@@ -545,7 +548,7 @@ namespace Pokemen
 				const static Value bleedRoundsIncIndex = +3;
 				const static Value slowChanceIncIndex = +100;
 				const static Value damageDecIndex = -20;
-				const static Value intervalDecIndex = -200;
+				const static Value intervalDecIndex = -100;
 				const static Value stolenIncIndex = +50;
 				const static Value hpointsDecIndex = -10;
 				const static Value agilityIncIndex = +20;
@@ -598,6 +601,7 @@ namespace Pokemen
 
 	private:
 		void _LevelUpPropertiesDistributor_();
+		void _InitSkill_();
 	};
 	typedef Assassin * PAssassin;
 }
