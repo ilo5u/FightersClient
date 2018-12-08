@@ -227,7 +227,7 @@ namespace Platform
                         {
                             await Dispatcher.RunAsync(
                                 Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                () => OnPVPAcceptCallBack()
+                                () => OnPVPAcceptCallBack(message.data)
                                 );
                         }
                         break;
@@ -246,6 +246,15 @@ namespace Platform
                             await Dispatcher.RunAsync(
                                 Windows.UI.Core.CoreDispatcherPriority.Normal,
                                 () => OnPVPRefuseCallBack()
+                                );
+                        }
+                        break;
+
+                    case Kernel.MsgType.PVP_BATTLE:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnPVPBattleCallBack(message.data)
                                 );
                         }
                         break;
@@ -274,6 +283,11 @@ namespace Platform
             Debug.WriteLine("网络关闭！");
         }
 
+        private void OnPVPBattleCallBack(string opponent)
+        {
+            LobbyPage.Current.OnBattleCallBack(opponent);
+        }
+
         private void OnPVPRequestCallBack(string requester)
         {
             Debug.WriteLine(requester + "请求对战");
@@ -297,9 +311,9 @@ namespace Platform
             LobbyPage.Current.OnBusyCallBack();
         }
 
-        private void OnPVPAcceptCallBack()
+        private void OnPVPAcceptCallBack(string opponent)
         {
-            LobbyPage.Current.OnAcceptCallBack();
+            LobbyPage.Current.OnAcceptCallBack(opponent);
         }
 
         /// <summary>

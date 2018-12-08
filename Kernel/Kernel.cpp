@@ -101,8 +101,23 @@ namespace Kernel
 		};
 	}
 
+	void Pokemen::SetProperty(int id, Platform::String ^ name, int hpoint, int attack, int defense, int agility, int interval, int critical, int hitratio, int parryratio, int career)
+	{
+		instance.RenewProperty(
+			{
+				id,
+				WStringToString(name->Data()).c_str(),
+				hpoint, attack, defense, agility,
+				interval, critical, hitratio, parryratio,
+				instance.GetExp(), instance.GetLevel()
+			}, career
+		);
+	}
+
 	Core::Core() :
-		netDriver(), stage(), pokemens()
+		netDriver(), 
+		stage(), battletype(false),
+		pokemens()
 	{
 	}
 
@@ -217,73 +232,99 @@ namespace Kernel
 			switch (msg.type)
 			{
 			case BattleMessage::Type::DISPLAY:
-				return Message{
-					MsgType::PVE_MESSAGE,
-					ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
-				};
+				if (!battletype)
+				{
+					return Message{
+						MsgType::PVE_MESSAGE,
+						ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
+					};
+				}
+				else
+				{
+					Packet packet;
+					packet.type = PacketType::PVP_MESSAGE;
+					sprintf(packet.data, "%s", msg.options.c_str());
+					netDriver.SendPacket(packet);
+
+					return Message{
+						MsgType::PVP_MESSAGE,
+						ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
+					};
+				}
 				
 			case BattleMessage::Type::RESULT:
 			{
 				/* 向服务器回传战斗结果 */
 				Packet packet;
-				packet.type = PacketType::PVE_RESULT;
 				sprintf(packet.data, "%s", msg.options.c_str());
 
-				/* 升级对应小精灵 */
-				int pokemenId;
-				int raiseExp = 0;
-				if (msg.options[0] == 'F')
+				if (!battletype)
 				{
-					sscanf(msg.options.c_str(), "F\n%d\n%d\n", &pokemenId, &raiseExp);
-					raiseExp += raiseExp;
-				}
-				else if (msg.options[0] == 'S')
-					sscanf(msg.options.c_str(), "S\n%d\n%d\n", &pokemenId, &raiseExp);
-				Pokemens::iterator it = std::find_if(
-					pokemens.begin(), pokemens.end(), [&pokemenId](const HPokemen& pokemen) {
+					/* 升级对应小精灵 */
+					int pokemenId;
+					int raiseExp = 0;
+					if (msg.options[0] == 'F')
+					{
+						sscanf(msg.options.c_str(), "F\n%d\n%d\n", &pokemenId, &raiseExp);
+						raiseExp += raiseExp;
+					}
+					else if (msg.options[0] == 'S')
+						sscanf(msg.options.c_str(), "S\n%d\n%d\n", &pokemenId, &raiseExp);
+					Pokemens::iterator it = std::find_if(
+						pokemens.begin(), pokemens.end(), [&pokemenId](const HPokemen& pokemen) {
 						return pokemen->GetId() == pokemenId;
 					}
-				);
-				if (it != pokemens.end())
-				{
-					/* 向UI回传UPDATE信息 */
-					char prop[BUFSIZ];
-					sprintf(prop,
-						"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
-						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
-						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
-						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
-						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
 					);
-					msg.options.append(prop);
+					if (it != pokemens.end())
+					{
+						/* 向UI回传UPDATE信息 */
+						char prop[BUFSIZ];
+						sprintf(prop,
+							"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+							(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
+							(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
+							(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
+							(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
+						);
+						msg.options.append(prop);
 
-					/* 升级 */
-					(*it)->Upgrade(raiseExp);
+						/* 升级 */
+						(*it)->Upgrade(raiseExp);
 
-					sprintf(prop,
-						"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
-						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
-						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
-						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
-						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
-					);
-					msg.options.append(prop);
+						sprintf(prop,
+							"%d,%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+							(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
+							(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
+							(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
+							(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
+						);
+						msg.options.append(prop);
 
-					sprintf(packet.data + std::strlen(packet.data),
-						"%d\n%d\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",
-						(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
-						(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
-						(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
-						(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
-					);
-					/* 向服务器回传UPDATE信息 */
-					netDriver.SendPacket(packet);
+						sprintf(packet.data + std::strlen(packet.data),
+							"%d\n%d\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",
+							(*it)->GetId(), (int)(*it)->GetType(), (*it)->GetName().c_str(),
+							(*it)->GetHpoints(), (*it)->GetAttack(), (*it)->GetDefense(), (*it)->GetAgility(),
+							(*it)->GetInterval(), (*it)->GetCritical(), (*it)->GetHitratio(), (*it)->GetParryratio(),
+							(*it)->GetCareer(), (*it)->GetExp(), (*it)->GetLevel()
+						);
+						/* 向服务器回传UPDATE信息 */
+						packet.type = PacketType::PVE_RESULT;
+						netDriver.SendPacket(packet);
+					}
+					return Message{
+						MsgType::PVE_RESULT,
+						ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
+					};
 				}
-
-				return Message{
-					MsgType::PVE_RESULT,
-					ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
-				};
+				else
+				{
+					packet.type = PacketType::PVP_RESULT;
+					netDriver.SendPacket(packet);
+					return Message{
+						MsgType::PVP_RESULT,
+						ref new Platform::String(StringToWString(msg.options.c_str()).c_str())
+					};
+				}
 			}
 
 			default:
@@ -516,8 +557,9 @@ namespace Kernel
 		return { };
 	}
 
-	void Core::SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type)
+	void Core::SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type, bool battle)
 	{
+		battletype = battle;
 		ai->SetAIPlayer();
 		for (Pokemens::const_iterator it = pokemens.begin();
 			it != pokemens.end(); ++it)
