@@ -338,6 +338,16 @@ namespace Platform
             BattleFrame.Navigate(typeof(BattlePage));
         }
 
+        internal void OnCancelCallBack(string canceler)
+        {
+            if (IsOnWaitForPlayer)
+            {
+                IsOnWaitForPlayer = false;
+                WaitForPlayer.Hide();
+            }
+            App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType = false;
+        }
+
         /// <summary>
         /// 发送正忙信号
         /// </summary>
@@ -440,6 +450,8 @@ namespace Platform
                 type = Kernel.MsgType.PVP_CANCEL,
                 data = ""
             });
+            IsOnWaitForPlayer = false;
+            App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType = false;
         }
 
 
