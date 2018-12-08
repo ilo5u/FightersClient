@@ -30,7 +30,6 @@ namespace Kernel
 		PVP_UPDATE = 0x0080,
 		PVP_ACCEPT = 0x0090,
 		PVP_CANCEL = 0x00A0,
-		PVP_REFUSE = 0x00B0,
 		PVP_BUSY = 0x00C0,
 
 		SET_ONLINE_USERS = 0x0100,
@@ -93,7 +92,7 @@ namespace Kernel
 		void SetProperty(int id, Platform::String^ name,
 			int hpoint, int attack, int defense, int agility,
 			int interval, int critical, int hitratio, int parryratio,
-			int career);
+			int career, int exp, int level);
 
 	private:
 		::Pokemen::Pokemen instance;
@@ -121,7 +120,7 @@ namespace Kernel
 		Property GetPropertyAt(int pokemenId);
 
 	public:
-		void SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type, bool battle);
+		void SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type, bool battle, Platform::String^ opponent);
 		void StartBattle();
 		void SetBattleOn();
 		void SetBattlePasue();
@@ -135,6 +134,7 @@ namespace Kernel
 		::NetIO::NetIO netDriver;
 		Battle stage;
 		bool battletype;
+		::Pokemen::String opponent;
 		Pokemens pokemens;
 	};
 }

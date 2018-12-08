@@ -61,7 +61,8 @@ namespace Platform
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.DADORSON)
+            if (LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.DADORSON
+                || LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.PVP)
                 BackToLobby.Visibility = Visibility.Collapsed; // 隐藏“返回大厅”按钮
             else
                 BackToLobby.Visibility = Visibility.Visible;
@@ -71,13 +72,20 @@ namespace Platform
             PlayerDisplay = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
             AIDisplay = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
 
-            // 启动对战信息实时接收线程
-            App.Client.IsOnBattle = true;
-            (App.Client.BattleDriver = new Task(BattleTask)).Start();
-            App.Client.Core.StartBattle();
+            if (LobbyPage.Current.SenderOrReciver)
+            {
+                // 启动对战信息实时接收线程
+                App.Client.IsOnBattle = true;
+                (App.Client.BattleDriver = new Task(BattleTask)).Start();
+                App.Client.Core.StartBattle();
 
-            BattleControl.IsChecked = false;
-            BattleControl.Content = "▶";
+                BattleControl.IsChecked = false;
+                BattleControl.Content = "▶";
+            }
+            else
+            {
+                BattleControl.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>
@@ -93,6 +101,7 @@ namespace Platform
                 switch (message.type)
                 {
                     case MsgType.PVE_MESSAGE:
+                    case MsgType.PVP_MESSAGE:
                         {
                             if (infos[0] == "R")
                             {
@@ -122,6 +131,7 @@ namespace Platform
                         break;
 
                     case MsgType.PVE_RESULT:
+                    case MsgType.PVP_RESULT:
                         {
                             App.Client.IsOnBattle = false;
                             await Dispatcher.RunAsync(
@@ -142,7 +152,7 @@ namespace Platform
         /// 
         /// </summary>
         /// <param name="infos"></param>
-        private void OnResultCallBack(string[] infos)
+        internal void OnResultCallBack(string[] infos)
         {
             switch (LobbyPage.Current.TypeOfBattle)
             {
@@ -152,6 +162,10 @@ namespace Platform
 
                 case LobbyPage.BattleType.DADORSON:
                     Frame.Navigate(typeof(BonusPage), infos[0]);
+                    break;
+
+                case LobbyPage.BattleType.PVP:
+                    Frame.Navigate(typeof(PVPPage), infos[0]);
                     break;
 
                 default:
@@ -164,7 +178,7 @@ namespace Platform
         /// </summary>
         /// <param name="firstPlayer"></param>
         /// <param name="secondPlayer"></param>
-        private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
+        internal void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
         {
             string[] firstProperties = firstPlayer.Split(',');
 
@@ -331,7 +345,7 @@ namespace Platform
         /// 
         /// </summary>
         /// <param name="message"></param>
-        private void OnDisplayFirstPlayerCallBack(string message)
+        internal void OnDisplayFirstPlayerCallBack(string message)
         {
             BattleMessageOfFirstPlayer.Text += message + '\n';
         }
@@ -340,7 +354,7 @@ namespace Platform
         /// 
         /// </summary>
         /// <param name="message"></param>
-        private void OnDisplaySecondPlayerCallBack(string message)
+        internal void OnDisplaySecondPlayerCallBack(string message)
         {
             BattleMessageOfSecondPlayer.Text += message + '\n';
         }

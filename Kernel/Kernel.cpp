@@ -101,7 +101,10 @@ namespace Kernel
 		};
 	}
 
-	void Pokemen::SetProperty(int id, Platform::String ^ name, int hpoint, int attack, int defense, int agility, int interval, int critical, int hitratio, int parryratio, int career)
+	void Pokemen::SetProperty(int id, Platform::String ^ name, 
+		int hpoint, int attack, int defense, int agility,
+		int interval, int critical, int hitratio, int parryratio, 
+		int career, int exp, int level)
 	{
 		instance.RenewProperty(
 			{
@@ -109,7 +112,7 @@ namespace Kernel
 				WStringToString(name->Data()).c_str(),
 				hpoint, attack, defense, agility,
 				interval, critical, hitratio, parryratio,
-				instance.GetExp(), instance.GetLevel()
+				exp, level
 			}, career
 		);
 	}
@@ -197,10 +200,6 @@ namespace Kernel
 			sendPacket.type = PacketType::PVP_BUSY;
 			break;
 
-		case MsgType::PVP_REFUSE:
-			sendPacket.type = PacketType::PVP_REFUSE;
-			break;
-
 		case MsgType::PVP_MESSAGE:
 			sendPacket.type = PacketType::PVP_MESSAGE;
 			break;
@@ -243,7 +242,7 @@ namespace Kernel
 				{
 					Packet packet;
 					packet.type = PacketType::PVP_MESSAGE;
-					sprintf(packet.data, "%s", msg.options.c_str());
+					sprintf(packet.data, "%s\n%s", msg.options.c_str(), this->opponent.c_str());
 					netDriver.SendPacket(packet);
 
 					return Message{
@@ -319,6 +318,7 @@ namespace Kernel
 				else
 				{
 					packet.type = PacketType::PVP_RESULT;
+					sprintf(packet.data + std::strlen(packet.data), "\n%s", this->opponent.c_str());
 					netDriver.SendPacket(packet);
 					return Message{
 						MsgType::PVP_RESULT,
@@ -463,9 +463,9 @@ namespace Kernel
 					ref new Platform::String(StringToWString(recvPacket.data).c_str())
 				};
 
-			case PacketType::PVP_REFUSE:
+			case PacketType::PVP_CANCEL:
 				return {
-					MsgType::PVP_REFUSE,
+					MsgType::PVP_CANCEL,
 					ref new Platform::String(StringToWString(recvPacket.data).c_str())
 				};
 
@@ -557,9 +557,13 @@ namespace Kernel
 		return { };
 	}
 
-	void Core::SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type, bool battle)
+	void Core::SetBattlePlayersAndType(int pokemenId, Kernel::Pokemen^ ai, int type,
+		bool battle, Platform::String^ opponent)
 	{
 		battletype = battle;
+		if (battletype)
+			this->opponent = WStringToString(opponent->Data());
+
 		ai->SetAIPlayer();
 		for (Pokemens::const_iterator it = pokemens.begin();
 			it != pokemens.end(); ++it)
