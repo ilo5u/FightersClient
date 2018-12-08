@@ -336,7 +336,9 @@
                        CloseButtonText="取消"
                        CloseButtonClick="WaitForPlayer_CloseButtonClick">
             <Grid>
-                <ProgressRing IsActive="True"></ProgressRing>
+                <ProgressRing IsActive="True"
+                              Width="100"
+                              Height="100"></ProgressRing>
             </Grid>
         </ContentDialog>
 
@@ -568,7 +570,7 @@
                                         </Button>
                                         <Button Name="OnlineBattle"
                                                 Background="White"
-                                                Content="{Binding Battle,Converter={StaticResource BTConverter}}"
+                                                Content="{x:Bind BattleType,Converter={StaticResource BTConverter}}"
                                                 FontSize="24"
                                                 FontFamily="Segoe UI Emoji" 
                                                 Click="OnlineBattle_Click"

@@ -276,12 +276,14 @@ namespace Platform
 
         private void OnPVPRequestCallBack(string requester)
         {
+            Debug.WriteLine(requester + "请求对战");
             try
             {
-                App.Client.OnlineUsers.First(user => user.Name.Equals(requester)).Battle = true;
+                App.Client.OnlineUsers.First(user => user.Name.Equals(requester)).BattleType = true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
             }
         }
 
