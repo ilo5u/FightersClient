@@ -61,7 +61,8 @@ namespace Platform
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.DADORSON)
+            if (LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.DADORSON
+                || LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.PVP)
                 BackToLobby.Visibility = Visibility.Collapsed; // 隐藏“返回大厅”按钮
             else
                 BackToLobby.Visibility = Visibility.Visible;
@@ -71,13 +72,20 @@ namespace Platform
             PlayerDisplay = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
             AIDisplay = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
 
-            // 启动对战信息实时接收线程
-            App.Client.IsOnBattle = true;
-            (App.Client.BattleDriver = new Task(BattleTask)).Start();
-            App.Client.Core.StartBattle();
+            if (LobbyPage.Current.SenderOrReciver)
+            {
+                // 启动对战信息实时接收线程
+                App.Client.IsOnBattle = true;
+                (App.Client.BattleDriver = new Task(BattleTask)).Start();
+                App.Client.Core.StartBattle();
 
-            BattleControl.IsChecked = false;
-            BattleControl.Content = "▶";
+                BattleControl.IsChecked = false;
+                BattleControl.Content = "▶";
+            }
+            else
+            {
+                BattleControl.Visibility = Visibility.Collapsed;
+            }
         }
 
         /// <summary>

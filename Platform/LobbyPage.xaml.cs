@@ -38,6 +38,7 @@ namespace Platform
         int UserPlayerId;
         public PokemenViewer UserPlayer = new PokemenViewer();
         public int PrimarySkillType;
+        public bool SenderOrReciver;
 
         static public ObservableCollection<PokemenViewer> DadOrSonPokemens = new ObservableCollection<PokemenViewer>();
 
@@ -114,7 +115,7 @@ namespace Platform
                 if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.LEVELUP;
-                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false);
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false, "");
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -194,7 +195,7 @@ namespace Platform
                 if (UserPlayerId != -1)
                 {
                     TypeOfBattle = BattleType.DADORSON;
-                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false);
+                    App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false, "");
                     BattleFrame.Navigate(typeof(BattlePage));
                 }
                 else
@@ -302,7 +303,7 @@ namespace Platform
                 data = OpponentUserName + '\n' + UserPlayerId.ToString()
             });
 
-            App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, true);
+            App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, true, OpponentUserName);
             BattleFrame.Navigate(typeof(BattlePage));
         }
 
@@ -334,7 +335,6 @@ namespace Platform
                 int.Parse(pokemenInfoArrays[13])
                 );
             TypeOfBattle = BattleType.PVP;
-            App.Client.Core.SetBattlePlayersAndType(UserPlayerId, AIPlayer, PrimarySkillType, true);
             BattleFrame.Navigate(typeof(BattlePage));
         }
 
@@ -413,6 +413,8 @@ namespace Platform
                 IsOnWaitForPlayer = true;
                 await WaitForPlayer.ShowAsync();
                 IsOnWaitForPlayer = false;
+
+                SenderOrReciver = false;
             }
             else
             { /* 发起对战请求 */
@@ -426,6 +428,8 @@ namespace Platform
                 IsOnWaitForPlayer = true;
                 ContentDialogResult result = await WaitForPlayer.ShowAsync();
                 IsOnWaitForPlayer = false;
+
+                SenderOrReciver = true;
             }
         }
 
