@@ -254,8 +254,11 @@ namespace Platform
             SecondSkillOfDadOrSonPokemens.Content = SkillConverter.Convert(UserPlayer.Type, 1);
         }
 
+        bool IsOnWaitForPlayer = false;
         async internal void OnAcceptCallBack(string opponent)
         {
+            if (!IsOnWaitForPlayer)
+                return;
             WaitForPlayer.Hide();
 
             string[] pokemenInfoArrays = opponent.Split('\n');
@@ -305,6 +308,10 @@ namespace Platform
         /// <param name="opponent"></param>
         internal void OnBattleCallBack(string opponent)
         {
+            if (!IsOnWaitForPlayer)
+                return;
+            WaitForPlayer.Hide();
+
             string[] pokemenInfoArrays = opponent.Split('\n');
             AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[1]), int.Parse(pokemenInfoArrays[13]));
             AIPlayer.SetProperty(
@@ -382,7 +389,6 @@ namespace Platform
             }
         }
 
-        bool IsOnWaitForPlayer = false;
         async private void OnlineBattle_Click(object sender, RoutedEventArgs e)
         {
             TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
@@ -409,7 +415,9 @@ namespace Platform
                 });
                 App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType = false;
 
+                IsOnWaitForPlayer = true;
                 await WaitForPlayer.ShowAsync();
+                IsOnWaitForPlayer = false;
             }
             else
             { /* 发起对战请求 */
