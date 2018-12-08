@@ -61,5 +61,10 @@ namespace Platform
             ResultInfo.Text = "胜利";
             ResultInfo.Foreground = new SolidColorBrush(Colors.DarkGreen);
         }
+
+        private void BackToLobby_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(WaitPage));
+        }
     }
 }
