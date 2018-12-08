@@ -333,15 +333,27 @@ namespace Platform
         async private void OnlineBattle_Click(object sender, RoutedEventArgs e)
         {
             TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
-            App.Client.Core.SendMessage(new Kernel.Message
+            if (App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType)
             {
-                type = Kernel.MsgType.PVP_REQUEST,
-                data = onlineuser.Text
-            });
+                App.Client.Core.SendMessage(new Kernel.Message
+                {
+                    type = Kernel.MsgType.PVP_ACCEPT,
+                    data = onlineuser.Text
+                });
+                App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType = false;
+            }
+            else
+            {
+                App.Client.Core.SendMessage(new Kernel.Message
+                {
+                    type = Kernel.MsgType.PVP_REQUEST,
+                    data = onlineuser.Text
+                });
 
-            IsOnWaitForPlayer = true;
-            ContentDialogResult result = await WaitForPlayer.ShowAsync();
-            IsOnWaitForPlayer = false;
+                IsOnWaitForPlayer = true;
+                ContentDialogResult result = await WaitForPlayer.ShowAsync();
+                IsOnWaitForPlayer = false;
+            }
         }
 
         private void WaitForPlayer_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

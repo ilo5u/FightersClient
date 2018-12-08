@@ -11,7 +11,7 @@ namespace Platform.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private string name;
-        private bool battle;
+        private bool battletype;
         public string Name
         {
             get
@@ -27,18 +27,18 @@ namespace Platform.Models
                 }
             }
         }
-        public bool Battle
+        public bool BattleType
         {
             get
             {
-                return battle;
+                return battletype;
             }
             set
             {
-                battle = value;
+                battletype = value;
                 if (this.PropertyChanged != null)
                 {
-                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("Battle"));
+                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("BattleType"));
                 }
             }
         }
