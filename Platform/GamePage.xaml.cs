@@ -80,7 +80,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 隐藏标题栏（对战、个人资料、排行榜）
         /// </summary>
         internal void HideTag()
         {
@@ -88,7 +88,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 显示标题栏（对战、个人资料、排行榜）
         /// </summary>
         internal void ShowTag()
         {
@@ -105,23 +105,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="flag"></param>
-        public void RenewTitleDisplay(bool flag)
-        {
-            if (flag)
-            {
-                GameTag.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                GameTag.Visibility = Visibility.Visible;
-            }
-        }
-
-        /// <summary>
-        /// 
+        /// 接收后台的网络数据
         /// </summary>
         async private void NetIOTask()
         {
@@ -232,6 +216,15 @@ namespace Platform
                         }
                         break;
 
+                    case Kernel.MsgType.PVP_CANCEL:
+                        {
+                            await Dispatcher.RunAsync(
+                                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                () => OnPVPCancelCallBack(message.data)
+                                );
+                        }
+                        break;
+
                     case Kernel.MsgType.PVP_BUSY:
                         {
                             await Dispatcher.RunAsync(
@@ -298,6 +291,7 @@ namespace Platform
 
                     case Kernel.MsgType.DISCONNECT:
                         {
+                            Debug.WriteLine("断开连接！");
                             App.Client.IsOnConnection = false;
                             if (App.Client.IsOnBattle)
                             {
@@ -320,29 +314,47 @@ namespace Platform
             Debug.WriteLine("网络关闭！");
         }
 
+        private void OnPVPCancelCallBack(string canceler)
+        {
+            LobbyPage.Current.OnCancelCallBack(canceler);
+        }
+
+        /// <summary>
+        /// 收到在线对战开始信号，接收者打开对战界面
+        /// </summary>
+        /// <param name="opponent"></param>
         private void OnPVPBattleCallBack(string opponent)
         {
             LobbyPage.Current.OnBattleCallBack(opponent);
         }
 
+        /// <summary>
+        /// 收到在线对战请求信号，更新在线用户列表
+        /// </summary>
+        /// <param name="requester"></param>
         private void OnPVPRequestCallBack(string requester)
         {
-            Debug.WriteLine(requester + "请求对战");
             try
             {
                 App.Client.OnlineUsers.First(user => user.Name.Equals(requester)).BattleType = true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e.Message);
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void OnPVPBusyCallBack()
         {
             LobbyPage.Current.OnBusyCallBack();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="opponent"></param>
         private void OnPVPAcceptCallBack(string opponent)
         {
             LobbyPage.Current.OnAcceptCallBack(opponent);
