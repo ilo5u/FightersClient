@@ -31,6 +31,10 @@ namespace Platform
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             DisplayOfPokemen = (PokemenViewer)e.Parameter;
@@ -46,6 +50,35 @@ namespace Platform
                 Promote.IsEnabled = true;
             else
                 Promote.IsEnabled = false;
+
+            if (Promote.IsEnabled == true)
+            {
+                switch (DisplayOfPokemen.Type)
+                {
+                    case 1:
+                        FirstCareer.Text = "光明大法师";
+                        SecondCareer.Text = "黑暗大法师";
+                        break;
+
+                    case 2:
+                        FirstCareer.Text = "阿瑞斯";
+                        SecondCareer.Text = "雅典娜";
+                        break;
+
+                    case 3:
+                        FirstCareer.Text = "帕拉丁";
+                        SecondCareer.Text = "小丑";
+                        break;
+
+                    case 4:
+                        FirstCareer.Text = "深渊猎手";
+                        SecondCareer.Text = "米歇尔";
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
 
         private void BackToAll_Click(object sender, RoutedEventArgs e)

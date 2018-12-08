@@ -35,12 +35,21 @@ namespace Platform
             Current = this;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             WaitForPokemens.Visibility = Visibility.Collapsed;
             PokemensGrid.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UsersGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
             WaitForPokemens.Visibility = Visibility.Visible;
@@ -52,6 +61,10 @@ namespace Platform
             new Task(() => WaitForPokemensReady(username)).Start();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
         async private void WaitForPokemensReady(string username)
         {
             App.Client.IsRankedPokemensReady = new System.Threading.Semaphore(0, 1);

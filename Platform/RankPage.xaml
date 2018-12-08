@@ -66,20 +66,25 @@
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="胜率"
-                                           Margin="5" />
+                                           Margin="5" 
+                                           VerticalAlignment="Bottom"/>
                                 <TextBlock Text="{x:Bind Rate}" 
-                                           Margin="5"/>
+                                           Margin="5"
+                                           VerticalAlignment="Bottom"/>
                             </StackPanel>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
                                     Grid.Row="1">
                             <TextBlock Text="精灵数目" 
-                                       Margin="5"/>
+                                       Margin="5"
+                                       VerticalAlignment="Bottom"/>
                             <TextBlock Text="{x:Bind NumberOfPokemens}"
-                                       Margin="5,0,5,0"/>
+                                       Margin="5"
+                                       VerticalAlignment="Bottom"/>
                             <TextBlock Text="{x:Bind Honor}"
-                                       Margin="5,0,5,0"/>
+                                       Margin="5"
+                                       VerticalAlignment="Bottom"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"

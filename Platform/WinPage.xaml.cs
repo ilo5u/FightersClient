@@ -39,7 +39,29 @@ namespace Platform
 
         internal void ShowNewPokemen()
         {
-            NewPokemen = App.Client.OnlinePokemens.Last();
+            PokemenViewer pokemen = App.Client.OnlinePokemens.Last();
+            NewPokemen.Id = pokemen.Id;
+
+            NewPokemen.Type = pokemen.Type;
+            NewPokemen.Image = pokemen.Image;
+            NewPokemen.Name = pokemen.Name;
+
+            NewPokemen.Hpoints = pokemen.Hpoints;
+            NewPokemen.Attack = pokemen.Attack;
+            NewPokemen.Defense = pokemen.Defense;
+            NewPokemen.Agility = pokemen.Agility;
+
+            NewPokemen.Interval = pokemen.Interval;
+            NewPokemen.Critical = pokemen.Critical;
+            NewPokemen.Hitratio = pokemen.Hitratio;
+            NewPokemen.Parryratio = pokemen.Parryratio;
+
+            NewPokemen.Career = pokemen.Career;
+            NewPokemen.Exp = pokemen.Exp;
+            NewPokemen.Level = pokemen.Level;
+
+            NewPokemen.PrimarySkill = pokemen.PrimarySkill;
+            NewPokemen.SecondSkill = pokemen.SecondSkill;
 
             WaitForNewPokemen.Visibility = Visibility.Collapsed;
             NewPokemenDisplay.Visibility = Visibility.Visible;

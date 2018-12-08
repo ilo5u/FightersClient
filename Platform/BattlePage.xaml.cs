@@ -3,6 +3,7 @@ using Platform.Converters;
 using Platform.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -33,35 +34,55 @@ namespace Platform
         /// </summary>
         static public BattlePage Current;
 
+        /// <summary>
+        /// 玩家精灵的显示信息
+        /// </summary>
+        public ObservableCollection<StateViewer> PlayerStates = new ObservableCollection<StateViewer>();
+        public PokemenViewer PlayerDisplay = new PokemenViewer();
+
+        /// <summary>
+        /// 电脑精灵的显示信息
+        /// </summary>
+        public ObservableCollection<StateViewer> AIStates = new ObservableCollection<StateViewer>();
+        public PokemenViewer AIDisplay = new PokemenViewer();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public BattlePage()
         {
             this.InitializeComponent();
             Current = this;
         }
 
-        public PokemenViewer FirstPlayer = new PokemenViewer();
-        public PokemenViewer SecondPlayer = new PokemenViewer();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.DADORSON)
-                BackToLobby.Visibility = Visibility.Collapsed;
+                BackToLobby.Visibility = Visibility.Collapsed; // 隐藏“返回大厅”按钮
             else
                 BackToLobby.Visibility = Visibility.Visible;
 
+            PlayerStates = new ObservableCollection<StateViewer>();
+            AIStates = new ObservableCollection<StateViewer>();
+            PlayerDisplay = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
+            AIDisplay = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
+
             // 启动对战信息实时接收线程
             App.Client.IsOnBattle = true;
-            App.Client.BattleDriver = new Task(BattleTask);
-            App.Client.BattleDriver.Start();
-
-            FirstPlayer = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
-            SecondPlayer = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
-
+            (App.Client.BattleDriver = new Task(BattleTask)).Start();
             App.Client.Core.StartBattle();
 
             BattleControl.IsChecked = false;
             BattleControl.Content = "▶";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         async private void BattleTask()
         {
             Message message;
@@ -77,7 +98,7 @@ namespace Platform
                             {
                                 // 更新属性值
                                 await Dispatcher.RunAsync(
-                                    Windows.UI.Core.CoreDispatcherPriority.Normal, 
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
                                     () => OnRenewDisplayCallBack(infos[1], infos[2])
                                     );
                             }
@@ -93,7 +114,7 @@ namespace Platform
                             {
                                 // 下方小精灵攻击
                                 await Dispatcher.RunAsync(
-                                    Windows.UI.Core.CoreDispatcherPriority.Normal, 
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
                                     () => OnDisplaySecondPlayerCallBack(infos[1])
                                     );
                             }
@@ -114,8 +135,13 @@ namespace Platform
                         break;
                 }
             }
+            Debug.WriteLine("对战关闭！");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="infos"></param>
         private void OnResultCallBack(string[] infos)
         {
             switch (LobbyPage.Current.TypeOfBattle)
@@ -133,6 +159,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="firstPlayer"></param>
+        /// <param name="secondPlayer"></param>
         private void OnRenewDisplayCallBack(string firstPlayer, string secondPlayer)
         {
             string[] firstProperties = firstPlayer.Split(',');
@@ -149,6 +180,8 @@ namespace Platform
 
             FirstPlayerAnger.Value = int.Parse(firstProperties[8]);
 
+            RenewStates(PlayerStates, int.Parse(firstProperties[9]));
+
             string[] secondProperties = secondPlayer.Split(',');
 
             SecondHpoints.Text = secondProperties[0];
@@ -162,18 +195,161 @@ namespace Platform
             SecondParryratio.Text = secondProperties[7];
 
             SecondPlayerAnger.Value = int.Parse(secondProperties[8]);
+
+            RenewStates(AIStates, int.Parse(secondProperties[9]));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="stateViewers"></param>
+        /// <param name="states"></param>
+        private void RenewStates(ObservableCollection<StateViewer> stateViewers, int states)
+        {
+            if ((states & (int)StateConverter.StateType.ANGRIED) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.ANGRIED }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.ANGRIED });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.ANGRIED });
+            }
+
+            if ((states & (int)StateConverter.StateType.ARMOR) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.ARMOR }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.ARMOR });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.ARMOR });
+            }
+
+            if ((states & (int)StateConverter.StateType.AVATAR) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.AVATAR }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.AVATAR });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.AVATAR });
+            }
+
+            if ((states & (int)StateConverter.StateType.BLEED) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.BLEED }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.BLEED });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.BLEED });
+            }
+
+            if ((states & (int)StateConverter.StateType.DIZZYING) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.DIZZYING }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.DIZZYING });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.DIZZYING });
+            }
+
+            if ((states & (int)StateConverter.StateType.INSPIRED) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.INSPIRED }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.INSPIRED });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.INSPIRED });
+            }
+
+            if ((states & (int)StateConverter.StateType.RAGED) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.RAGED }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.RAGED });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.RAGED });
+            }
+
+            if ((states & (int)StateConverter.StateType.REBOUND) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.REBOUND }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.REBOUND });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.REBOUND });
+            }
+
+            if ((states & (int)StateConverter.StateType.SILENT) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.SILENT }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.SILENT });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.SILENT });
+            }
+
+            if ((states & (int)StateConverter.StateType.SLOWED) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.SLOWED }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.SLOWED });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.SLOWED });
+            }
+
+            if ((states & (int)StateConverter.StateType.SUNDERED) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.SUNDERED }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.SUNDERED });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.SUNDERED });
+            }
+
+            if ((states & (int)StateConverter.StateType.WEAKEN) > 0)
+            {
+                if (!stateViewers.Contains(new StateViewer { Type = StateConverter.StateType.WEAKEN }))
+                    stateViewers.Add(new StateViewer { Type = StateConverter.StateType.WEAKEN });
+            }
+            else
+            {
+                stateViewers.Remove(new StateViewer { Type = StateConverter.StateType.WEAKEN });
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
         private void OnDisplayFirstPlayerCallBack(string message)
         {
             BattleMessageOfFirstPlayer.Text += message + '\n';
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
         private void OnDisplaySecondPlayerCallBack(string message)
         {
             BattleMessageOfSecondPlayer.Text += message + '\n';
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async private void BackToLobby_Click(object sender, RoutedEventArgs e)
         {
             if (App.Client.Core.IsBattleRunning())
@@ -198,6 +374,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BattleControl_Click(object sender, RoutedEventArgs e)
         {
             if (BattleControl.IsChecked == true)

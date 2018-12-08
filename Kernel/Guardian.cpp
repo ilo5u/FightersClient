@@ -70,15 +70,18 @@ namespace Pokemen
 	}
 
 	Guardian::Skill::Skill(Type primarySkill) :
-		primarySkill(primarySkill),
-		sunkInSilenceChance(+20), reboundDamageChance(+40),
-		reboundDamageIndex(+50), defenseIndex(+200)
+		primarySkill(primarySkill)
 	{
 	}
 
 	Guardian::Career::Type Guardian::GetCareer() const
 	{
 		return this->m_career.type;
+	}
+
+	void Guardian::SetCareer(Career::Type career)
+	{
+		this->m_career.type = career;
 	}
 
 	Guardian::Skill::Type Guardian::GetPrimarySkill() const
@@ -91,15 +94,14 @@ namespace Pokemen
 		this->m_battleMessage[0] = 0x0;
 
 		/* ×´Ì¬ÅÐ¾ö */
-		if (this->InState(State::DEAD) || opponent.InState(State::DEAD))
+		if (this->InState(State::DEAD))
 			return { };
 
 		if (this->InState(State::ARMOR))
 		{
 			if (this->m_stateRoundsCnt.armor == 1)
 			{
-				this->m_property.m_defense -=
-					this->m_effects.armor.defense;
+				this->m_property.m_defense -= this->m_effects.armor.defense;
 				this->SubState(State::ARMOR);
 			}
 			else
@@ -168,7 +170,33 @@ namespace Pokemen
 			{ // ±©»÷
 				damage = static_cast<Value>((double)damage * 1.5);
 			}
-			
+
+			this->_InitSkill_();
+			/* ÐÞÕý¼¼ÄÜÐ§¹û */
+			int sunkInSilenceChance = this->m_skill.sunkInSilenceChance;
+			int reboundDamageChance = this->m_skill.reboundDamageChance;
+			int silentRounds = CommonBasicValues::silentRounds;
+			switch (this->m_career.type)
+			{
+			case Career::Type::Paladin:
+				sunkInSilenceChance
+					+= (sunkInSilenceChance, Career::Paladin::sunkInSilenceChanceIncIndex);
+				reboundDamageChance
+					+= (reboundDamageChance, Career::Paladin::reboundDamageChanceDecIndex);
+				break;
+
+			case Career::Type::Joker:
+				sunkInSilenceChance
+					+= (sunkInSilenceChance, Career::Joker::sunkInSilenceChanceIncIndex);
+				reboundDamageChance
+					+= (reboundDamageChance, Career::Joker::reboundDamageChanceIncIndex);
+				silentRounds += Career::Joker::silentRoundsIncIndex;
+				break;
+
+			default:
+				break;
+			}
+
 			/* ¼¼ÄÜÅÐ¾ö */
 			if (!this->InState(State::SILENT) && this->InState(State::ANGRIED))
 			{
@@ -207,19 +235,19 @@ namespace Pokemen
 				case Skill::Type::REBOUND_DAMAGE:
 					/* Ö÷ÐÞ±³´Ì */
 				{
-					if (_Hit_Target(this->m_skill.reboundDamageChance, 0))
+					if (_Hit_Target(reboundDamageChance, 0))
 					{
 						/* ±³´Ì */
 						sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
 							"±³´Ì¡£");
 						this->AddState(State::REBOUND);
 					}
-					else if (_Hit_Target(this->m_skill.sunkInSilenceChance, 5))
+					else if (_Hit_Target(sunkInSilenceChance, 5))
 					{
 						/* ³ÁÄ¬ */
 						sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
 							"³ÁÄ¬¡£");
-						opponent.SetSilentRounds(CommonBasicValues::silentRounds);
+						opponent.SetSilentRounds(silentRounds);
 						opponent.AddState(State::SILENT);
 					}
 				}
@@ -228,15 +256,15 @@ namespace Pokemen
 				case Skill::Type::SUNK_IN_SILENCE:
 				{
 					/* Ö÷ÐÞ³ÁÄ¬ */
-					if (_Hit_Target(this->m_skill.sunkInSilenceChance, 0))
+					if (_Hit_Target(sunkInSilenceChance, 0))
 					{
 						/* ³ÁÄ¬ */
 						sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
 							"³ÁÄ¬¡£");
-						opponent.SetSilentRounds(CommonBasicValues::silentRounds);
+						opponent.SetSilentRounds(silentRounds);
 						opponent.AddState(State::SILENT);
 					}
-					else if (_Hit_Target(this->m_skill.reboundDamageChance, 5))
+					else if (_Hit_Target(reboundDamageChance, 5))
 					{
 						/* ±³´Ì */
 						sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
@@ -304,7 +332,7 @@ namespace Pokemen
 			{
 				this->m_property.m_hpoints -= BloodingDamageCalculator(CommonBasicValues::bleedDamage, this->m_property.m_defense);
 				sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
-					"³öÑªÊÜµ½%dµãÉËº¦¡£",
+					"³öÑªÔì³É%dµãÉËº¦¡£",
 					BloodingDamageCalculator(CommonBasicValues::bleedDamage, this->m_property.m_defense));
 				if (this->m_property.m_hpoints <= 0)
 				{
@@ -353,28 +381,18 @@ namespace Pokemen
 			{
 			case Career::Type::Paladin:
 			{
-				this->m_property.m_defense 
+				this->m_property.m_defense
 					+= ConvertValueByPercent(this->m_property.m_defense, Career::Paladin::defenseIncIndex);
 				this->m_property.m_attack
 					+= ConvertValueByPercent(this->m_property.m_attack, Career::Paladin::damageDecIndex);
-				this->m_skill.sunkInSilenceChance
-					+= (this->m_skill.sunkInSilenceChance, Career::Paladin::sunkInSilenceChanceIncIndex);
-				this->m_skill.reboundDamageChance
-					+= (this->m_skill.reboundDamageChance, Career::Paladin::reboundDamageChanceDecIndex);
-				this->m_skill.reboundDamageIndex 
-					+= (this->m_skill.reboundDamageIndex, Career::Paladin::reboundDamageIncIndex);
-				this->m_property.m_agility 
+				this->m_property.m_agility
 					+= (this->m_property.m_agility, Career::Paladin::agilityDecIndex);
 			}
 			break;
 
 			case Career::Type::Joker:
 			{
-				this->m_skill.sunkInSilenceChance
-					+= (this->m_skill.sunkInSilenceChance, Career::Joker::sunkInSilenceChanceIncIndex);
-				this->m_skill.reboundDamageChance
-					+= (this->m_skill.reboundDamageChance, Career::Joker::reboundDamageChanceIncIndex);
-				this->m_property.m_defense 
+				this->m_property.m_defense
 					+= (this->m_property.m_defense, Career::Joker::defenseDecIndex);
 			}
 			break;
@@ -440,6 +458,14 @@ namespace Pokemen
 		this->m_property.m_attack += attackInc;
 		this->m_property.m_defense += defenseInc;
 		this->m_property.m_agility += agilityInc;
+	}
+
+	void Guardian::_InitSkill_()
+	{
+		this->m_skill.sunkInSilenceChance = +20;
+		this->m_skill.reboundDamageChance = +40;
+		this->m_skill.reboundDamageIndex = +50;
+		this->m_skill.defenseIndex = +100;
 	}
 
 }

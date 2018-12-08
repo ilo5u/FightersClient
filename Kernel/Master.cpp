@@ -66,15 +66,18 @@ namespace Pokemen
 	}
 
 	Master::Skill::Skill(Type primarySkill) :
-		primarySkill(primarySkill),
-		ragedChance(10), selfHealingChance(30),
-		selfHealingIndex(+20), weakenIndex(-20)
+		primarySkill(primarySkill)
 	{
 	}
 
 	Master::Career::Type Master::GetCareer() const
 	{
 		return this->m_career.type;
+	}
+
+	void Master::SetCareer(Career::Type career)
+	{
+		this->m_career.type = career;
 	}
 
 	Master::Skill::Type Master::GetPrimarySkill() const
@@ -89,8 +92,6 @@ namespace Pokemen
 	{
 		this->m_battleMessage[0] = 0x0;
 		// 处理异常状态
-		if (this->InState(State::DEAD) || opponent.InState(State::DEAD))
-			return { };
 
 		if (this->InState(State::WEAKEN))
 		{
@@ -149,21 +150,48 @@ namespace Pokemen
 			if (this->m_stateRoundsCnt.dizzying == 1)
 			{
 				this->SubState(State::DIZZYING);
-				return { };
 			}
 			else
 			{
 				--this->m_stateRoundsCnt.dizzying;
 			}
+			return m_battleMessage;
+		}
+
+		if (this->InState(State::DEAD))
+		{
+			return m_battleMessage;
 		}
 
 		if (_Hit_Target(this->m_property.m_hitratio, opponent.GetParryratio()))
 		{	// 命中目标
 			Value damage = this->m_property.m_attack;
 
-			if (_Hit_Target(this->m_property.m_critical, opponent.GetCritical())) 
+			if (_Hit_Target(this->m_property.m_critical, opponent.GetCritical()))
 			{ // 暴击
 				damage = static_cast<Value>((double)damage * 1.5);
+			}
+
+			this->_InitSkill_();
+			/* 修正技能效果 */
+			int selfHealingChance = this->m_skill.selfHealingChance;
+			int selfHealingIndex = this->m_skill.selfHealingIndex;
+			int weakenIndex = this->m_skill.weakenIndex;
+			switch (this->m_career.type)
+			{
+			case Career::Type::GreatMasterOfLight:
+				selfHealingChance += ConvertValueByPercent(selfHealingChance, Career::Lighter::selfHealingChanceIncIndex);
+				selfHealingIndex += ConvertValueByPercent(selfHealingIndex, Career::Lighter::healingIncIndex);
+				weakenIndex += ConvertValueByPercent(weakenIndex, Career::Lighter::weakenDecIndex);
+				break;
+
+			case Career::Type::GreatMasterOfDark:
+				selfHealingChance += ConvertValueByPercent(selfHealingChance, Career::Darker::selfHealingChanceDecIndex);
+				weakenIndex += ConvertValueByPercent(weakenIndex, Career::Darker::weakenIncIndex);
+				break;
+
+			default:
+				break;
 			}
 
 			if (!this->InState(State::SILENT) && this->InState(State::ANGRIED))
@@ -180,15 +208,15 @@ namespace Pokemen
 					{
 					case Career::Type::Normal:
 						inc = static_cast<Value>((double)this->m_property.m_attack / 10.0);
-					break;
+						break;
 
 					case Career::Type::GreatMasterOfLight:
 						inc = static_cast<Value>((double)this->m_property.m_attack / 20.0);
-					break;
+						break;
 
 					case Career::Type::GreatMasterOfDark:
 						inc = static_cast<Value>((double)this->m_property.m_attack / 5.0);
-					break;
+						break;
 
 					default:
 						break;
@@ -201,7 +229,7 @@ namespace Pokemen
 				{
 					// 治愈系技能
 					sprintf(m_battleMessage + std::strlen(m_battleMessage),
-						"死者苏生，恢复%d点生命值。", 
+						"死者苏生，恢复%d点生命值。",
 						static_cast<Value>((double)this->m_property.m_hpoints / ((double)this->m_angriedCnt * (double)this->m_angriedCnt)));
 					this->m_property.m_hpoints = std::min<Value>(
 						this->m_hpointsLimitation,
@@ -211,15 +239,15 @@ namespace Pokemen
 					{
 					case Career::Type::Normal:
 						this->m_angriedCnt += 4;
-					break;
+						break;
 
 					case Career::Type::GreatMasterOfLight:
 						this->m_angriedCnt += 3;
-					break;
+						break;
 
 					case Career::Type::GreatMasterOfDark:
 						this->m_angriedCnt += 5;
-					break;
+						break;
 
 					default:
 						break;
@@ -231,8 +259,8 @@ namespace Pokemen
 					// 狂暴后进入虚弱状态
 					sprintf(m_battleMessage + std::strlen(m_battleMessage), "虚弱。");
 
-					this->m_effects.weaken.attack = ConvertValueByPercent(this->m_property.m_attack, this->m_skill.weakenIndex);
-					this->m_effects.weaken.defense = ConvertValueByPercent(this->m_property.m_defense, this->m_skill.weakenIndex);
+					this->m_effects.weaken.attack = ConvertValueByPercent(this->m_property.m_attack, weakenIndex);
+					this->m_effects.weaken.defense = ConvertValueByPercent(this->m_property.m_defense, weakenIndex);
 					this->m_property.m_attack += this->m_effects.weaken.attack;
 					this->m_property.m_defense += this->m_effects.weaken.defense;
 
@@ -248,22 +276,22 @@ namespace Pokemen
 				{
 					if (_Hit_Target(this->m_skill.ragedChance, 0))
 					{
-						sprintf(m_battleMessage + std::strlen(m_battleMessage), 
+						sprintf(m_battleMessage + std::strlen(m_battleMessage),
 							"愤怒。");
 
 						this->AddState(State::RAGED);
 					}
-					else if (_Hit_Target(this->m_skill.selfHealingChance, 5))
+					else if (_Hit_Target(selfHealingChance, 5))
 					{
-						sprintf(m_battleMessage + std::strlen(m_battleMessage), 
+						sprintf(m_battleMessage + std::strlen(m_battleMessage),
 							"自愈，回复%d点生命值。",
-							HealingHpointsCalculator(this->m_property.m_hpoints, this->m_skill.selfHealingIndex));
+							HealingHpointsCalculator(this->m_property.m_hpoints, selfHealingIndex));
 
 						this->m_skill.selfHealingChance = std::max<Value>((Value)10, this->m_skill.selfHealingChance - 1);
 						this->m_skill.ragedChance = std::min<Value>((Value)30, this->m_skill.ragedChance + 1);
 
 						this->m_property.m_hpoints = std::min<Value>(
-							this->m_property.m_hpoints + HealingHpointsCalculator(this->m_property.m_hpoints, this->m_skill.selfHealingIndex),
+							this->m_property.m_hpoints + HealingHpointsCalculator(this->m_property.m_hpoints, selfHealingIndex),
 							this->m_hpointsLimitation
 							);
 					}
@@ -272,17 +300,17 @@ namespace Pokemen
 
 				case Skill::Type::SELF_HEALING:
 				{
-					if (_Hit_Target(this->m_skill.selfHealingChance, 0))
+					if (_Hit_Target(selfHealingChance, 0))
 					{
-						sprintf(m_battleMessage + std::strlen(m_battleMessage), 
+						sprintf(m_battleMessage + std::strlen(m_battleMessage),
 							"自愈，回复%d点生命值。",
-							HealingHpointsCalculator(this->m_property.m_hpoints, this->m_skill.selfHealingIndex));
+							HealingHpointsCalculator(this->m_property.m_hpoints, selfHealingIndex));
 
 						this->m_skill.selfHealingChance = std::max<Value>((Value)15, this->m_skill.selfHealingChance - 1);
 						this->m_skill.ragedChance = std::min<Value>((Value)20, this->m_skill.ragedChance + 1);
 
 						this->m_property.m_hpoints = std::min<Value>(
-							this->m_property.m_hpoints + HealingHpointsCalculator(this->m_property.m_hpoints, this->m_skill.selfHealingIndex),
+							this->m_property.m_hpoints + HealingHpointsCalculator(this->m_property.m_hpoints, selfHealingIndex),
 							this->m_hpointsLimitation
 							);
 					}
@@ -369,7 +397,7 @@ namespace Pokemen
 			{
 				this->m_property.m_hpoints -= BloodingDamageCalculator(CommonBasicValues::bleedDamage, this->m_property.m_defense);
 				sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
-					"出血受到%d点伤害。",
+					"出血造成%d点伤害。",
 					BloodingDamageCalculator(CommonBasicValues::bleedDamage, this->m_property.m_defense));
 				if (this->m_property.m_hpoints <= 0)
 				{
@@ -399,20 +427,15 @@ namespace Pokemen
 			{
 			case Career::Type::GreatMasterOfLight:
 			{
-				this->m_skill.selfHealingIndex += ConvertValueByPercent(this->m_skill.selfHealingIndex, Career::Lighter::healingIncIndex);
-				this->m_skill.selfHealingChance += ConvertValueByPercent(this->m_skill.selfHealingChance, Career::Lighter::selfHealingChanceIncIndex);
 				this->m_property.m_attack += ConvertValueByPercent(this->m_property.m_attack, Career::Lighter::damageDecIndex);
 				this->m_property.m_hpoints += ConvertValueByPercent(this->m_property.m_hpoints, Career::Lighter::hpointsIncIndex);
-				this->m_skill.weakenIndex += ConvertValueByPercent(this->m_skill.weakenIndex, Career::Lighter::weakenDecIndex);
 			}
 			break;
 
 			case Career::Type::GreatMasterOfDark:
 			{
-				this->m_skill.selfHealingChance += ConvertValueByPercent(this->m_skill.selfHealingChance, Career::Darker::selfHealingChanceDecIndex);
 				this->m_property.m_defense += ConvertValueByPercent(this->m_property.m_defense, Career::Darker::defenseDecIndex);
 				this->m_property.m_attack += ConvertValueByPercent(this->m_property.m_attack, Career::Darker::damageIncIndex);
-				this->m_skill.weakenIndex += ConvertValueByPercent(this->m_skill.weakenIndex, Career::Darker::weakenIncIndex);
 			}
 			break;
 
@@ -481,5 +504,13 @@ namespace Pokemen
 		this->m_property.m_attack += attackInc;
 		this->m_property.m_defense += defenseInc;
 		this->m_property.m_agility += agilityInc;
+	}
+
+	void Master::_InitSkill_()
+	{
+		this->m_skill.ragedChance = +10;
+		this->m_skill.selfHealingChance = +30;
+		this->m_skill.selfHealingIndex = +20;
+		this->m_skill.weakenIndex = -20;
 	}
 }

@@ -34,12 +34,19 @@ namespace Platform
         /// </summary>
         static public GamePage Current;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public GamePage()
         {
             this.InitializeComponent();
             Current = this;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         async protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             MainPage.Current.RenewTitleDisplay(true);
@@ -61,7 +68,7 @@ namespace Platform
                 await new ContentDialog()
                 {
                     Title = "提示",
-                    Content = "欢迎来宠物小精灵对战平台。\n我们为您准备了三只初始精灵，您可以在'Profile'选项查看。\n\n祝您游戏愉快！",
+                    Content = "欢迎来宠物小精灵对战平台。\n我们为您准备了三只初始精灵，您可以在'个人资料'选项查看。\n\n祝您游戏愉快！",
                     FontFamily = new FontFamily("Consolas"),
                     FontSize = 36,
                     PrimaryButtonText = "我知道了",
@@ -72,21 +79,35 @@ namespace Platform
             GameFrame.Navigate(typeof(LobbyPage));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         internal void HideTag()
         {
             GameTag.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         internal void ShowTag()
         {
             GameTag.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             MainPage.Current.RenewTitleDisplay(false);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="flag"></param>
         public void RenewTitleDisplay(bool flag)
         {
             if (flag)
@@ -99,6 +120,9 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         async private void NetIOTask()
         {
             Kernel.Message message;
@@ -199,12 +223,17 @@ namespace Platform
                         break;
                 }
             }
+
+            Debug.WriteLine("网络关闭！");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userInfos"></param>
         private void OnSetRanklistCallBack(string userInfos)
         {
             string[] numberAndUserInfos = userInfos.Split('\n');
-            Debug.WriteLine(userInfos);
             int total = int.Parse(numberAndUserInfos[0]);
             for (int pos = 1; pos <= total; ++pos)
             {
@@ -232,11 +261,13 @@ namespace Platform
                         );
                 }
             }
-
-            /* 排序 */
-            App.Client.RankedUsers.OrderBy(user => user.NumberOfPokemens);
+            App.Client.RankedUsers.OrderByDescending(user => user.NumberOfPokemens);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userInfos"></param>
         private void OnRenewRanklistCallBack(string userInfos)
         {
             /* 更新列表数据 */
@@ -264,9 +295,13 @@ namespace Platform
             }
 
             /* 排序 */
-            App.Client.RankedUsers.OrderBy(user => user.NumberOfPokemens);
+            App.Client.RankedUsers.OrderByDescending(user => user.NumberOfPokemens);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pokemenInfos"></param>
         private void OnSetPokemensByUserCallBack(string pokemenInfos)
         {
             string[] pokemenInfoArray = pokemenInfos.Split('\n');
@@ -292,6 +327,10 @@ namespace Platform
                 );
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pokemenInfo"></param>
         private void OnAddPokemenCallBack(string pokemenInfo)
         {
             Debug.WriteLine(pokemenInfo);
@@ -299,6 +338,9 @@ namespace Platform
             WinPage.Current.ShowNewPokemen();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         async public void OnDisconnectionCallBack()
         {
             MessageDialog msg = new MessageDialog("与服务器断开连接。") { Title = "错误" };
@@ -311,6 +353,10 @@ namespace Platform
                 );
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pokemenInfos"></param>
         private void OnUpdatePokemensCallBack(string pokemenInfos)
         {
             string[] pokemenInfoArray = pokemenInfos.Split('\n');
@@ -356,6 +402,10 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userInfos"></param>
         private void OnSetOnlineUsersCallBack(string userInfos)
         {
             Debug.WriteLine(userInfos);
@@ -365,6 +415,10 @@ namespace Platform
                 App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[i] });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userInfos"></param>
         private void OnUpdateOnlineUsersCallBack(string userInfos)
         {
             Debug.WriteLine(userInfos);
@@ -382,6 +436,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LobbyTag_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (GameFrame.SourcePageType == typeof(LobbyPage))
@@ -403,6 +462,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ProfileTag_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (GameFrame.SourcePageType == typeof(ProfilePage))
@@ -424,6 +488,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RankTag_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (GameFrame.SourcePageType == typeof(RankPage))

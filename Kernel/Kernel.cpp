@@ -201,7 +201,10 @@ namespace Kernel
 				int pokemenId;
 				int raiseExp = 0;
 				if (msg.options[0] == 'F')
+				{
 					sscanf(msg.options.c_str(), "F\n%d\n%d\n", &pokemenId, &raiseExp);
+					raiseExp += raiseExp;
+				}
 				else if (msg.options[0] == 'S')
 					sscanf(msg.options.c_str(), "S\n%d\n%d\n", &pokemenId, &raiseExp);
 				Pokemens::iterator it = std::find_if(

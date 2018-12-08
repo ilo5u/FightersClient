@@ -13,7 +13,13 @@ namespace Platform.Converters
             if (rounds == 0)
                 return (0.00).ToString() + "%";
             else
-                return (((double)wins / (double)rounds) * 100.0).ToString() + "%";
+            {
+                string rate = (((double)wins / (double)rounds) * 100.0).ToString();
+                if (rate.Length > 4)
+                    return rate.Substring(0, 4) + "%";
+                else
+                    return rate + "%";
+            }
         }
     }
 }
