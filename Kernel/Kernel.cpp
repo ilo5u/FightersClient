@@ -7,7 +7,7 @@ namespace Kernel
 	std::string WStringToString(const wchar_t* wstr)
 	{
 		int iLen = WideCharToMultiByte(CP_ACP, 0, wstr,
-			std::wcslen(wstr), NULL, 0, NULL, NULL);
+			(int)std::wcslen(wstr), NULL, 0, NULL, NULL);
 
 		if (iLen <= 0)
 			return { "" };
@@ -17,7 +17,7 @@ namespace Kernel
 			return { "" };
 
 		WideCharToMultiByte(CP_ACP, 0, wstr,
-			std::wcslen(wstr), szDst, iLen, NULL, NULL);
+			(int)std::wcslen(wstr), szDst, iLen, NULL, NULL);
 		szDst[iLen] = '\0';
 
 		std::string str{ szDst };
@@ -29,7 +29,7 @@ namespace Kernel
 	std::wstring StringToWString(const char* str)
 	{
 		int iLen = MultiByteToWideChar(CP_ACP, 0, str,
-			std::strlen(str), NULL, 0);
+			(int)std::strlen(str), NULL, 0);
 
 		if (iLen <= 0)
 			return { L"" };
@@ -39,7 +39,7 @@ namespace Kernel
 			return { L"" };
 
 		MultiByteToWideChar(CP_ACP, 0, str,
-			std::strlen(str), wszDst, iLen);
+			(int)std::strlen(str), wszDst, iLen);
 		wszDst[iLen] = L'\0';
 
 		if (wszDst[0] == 0xFEFF)
