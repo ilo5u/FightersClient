@@ -430,7 +430,20 @@ namespace Platform
                 IsOnWaitForPlayer = false;
                 WaitForPlayer.Hide();
             }
-            App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType = false;
+
+            try
+            {
+                OnlineUserViewer onlineUser = new OnlineUserViewer
+                {
+                    Name = OpponentUserName,
+                    BattleType = false
+                };
+                App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)));
+                App.Client.OnlineUsers.Insert(0, onlineUser);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
@@ -488,55 +501,61 @@ namespace Platform
         {
             TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
             OpponentUserName = onlineuser.Text;
-            if (App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType)
-            { /* 接受对战请求 */
-                UserPlayerId = -1;
-                do
-                {
-                    /* 选择出战精灵 */
-                    SkillSelectOfLevelUpPokemens.Visibility = Visibility.Collapsed;
-                    await SelectOfLeveLUpPkemens.ShowAsync();
-                    if (UserPlayerId == -1)
+            try
+            {
+                if (App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType)
+                { /* 接受对战请求 */
+                    UserPlayerId = -1;
+                    do
                     {
-                        var msgDialog = new MessageDialog("请选择一个精灵！") { Title = "" };
-                        msgDialog.Commands.Add(new UICommand("确定"));
-                        await msgDialog.ShowAsync();
-                    }
-                } while (UserPlayerId == -1);
+                        /* 选择出战精灵 */
+                        SkillSelectOfLevelUpPokemens.Visibility = Visibility.Collapsed;
+                        await SelectOfLeveLUpPkemens.ShowAsync();
+                        if (UserPlayerId == -1)
+                        {
+                            var msgDialog = new MessageDialog("请选择一个精灵！") { Title = "" };
+                            msgDialog.Commands.Add(new UICommand("确定"));
+                            await msgDialog.ShowAsync();
+                        }
+                    } while (UserPlayerId == -1);
 
-                App.Client.Core.SendMessage(new Kernel.Message
-                {
-                    type = Kernel.MsgType.PVP_ACCEPT,
-                    data = onlineuser.Text + '\n' + UserPlayerId.ToString()
-                });
+                    App.Client.Core.SendMessage(new Kernel.Message
+                    {
+                        type = Kernel.MsgType.PVP_ACCEPT,
+                        data = onlineuser.Text + '\n' + UserPlayerId.ToString()
+                    });
 
-                OnlineUserViewer onlineUser = new OnlineUserViewer
-                {
-                    Name = OpponentUserName,
-                    BattleType = false
-                };
-                App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)));
-                App.Client.OnlineUsers.Insert(0, onlineUser);
+                    OnlineUserViewer onlineUser = new OnlineUserViewer
+                    {
+                        Name = OpponentUserName,
+                        BattleType = false
+                    };
+                    App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)));
+                    App.Client.OnlineUsers.Insert(0, onlineUser);
 
-                IsOnWaitForPlayer = true;
-                await WaitForPlayer.ShowAsync();
-                IsOnWaitForPlayer = false;
+                    IsOnWaitForPlayer = true;
+                    await WaitForPlayer.ShowAsync();
+                    IsOnWaitForPlayer = false;
 
-                SenderOrReciver = false;
+                    SenderOrReciver = false;
+                }
+                else
+                { /* 发起对战请求 */
+                    App.Client.Core.SendMessage(new Kernel.Message
+                    {
+                        type = Kernel.MsgType.PVP_REQUEST,
+                        data = onlineuser.Text
+                    });
+
+                    IsOnWaitForPlayer = true;
+                    ContentDialogResult result = await WaitForPlayer.ShowAsync();
+                    IsOnWaitForPlayer = false;
+
+                    SenderOrReciver = true;
+                }
             }
-            else
-            { /* 发起对战请求 */
-                App.Client.Core.SendMessage(new Kernel.Message
-                {
-                    type = Kernel.MsgType.PVP_REQUEST,
-                    data = onlineuser.Text
-                });
-
-                IsOnWaitForPlayer = true;
-                ContentDialogResult result = await WaitForPlayer.ShowAsync();
-                IsOnWaitForPlayer = false;
-
-                SenderOrReciver = true;
+            catch (Exception)
+            {
             }
         }
 
@@ -553,13 +572,20 @@ namespace Platform
                 data = ""
             });
             IsOnWaitForPlayer = false;
-            OnlineUserViewer onlineUser = new OnlineUserViewer
+
+            try
             {
-                Name = OpponentUserName,
-                BattleType = false
-            };
-            App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)));
-            App.Client.OnlineUsers.Insert(0, onlineUser);
+                OnlineUserViewer onlineUser = new OnlineUserViewer
+                {
+                    Name = OpponentUserName,
+                    BattleType = false
+                };
+                App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)));
+                App.Client.OnlineUsers.Insert(0, onlineUser);
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }
