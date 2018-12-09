@@ -577,7 +577,19 @@ namespace Platform
             string[] userInfoArray = userInfos.Split('\n');
             int total = int.Parse(userInfoArray[0]);
             for (int i = 1; i <= total; ++i)
-                App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[i] });
+            {
+                if (!string.IsNullOrEmpty(userInfoArray[i]))
+                {
+                    try
+                    {
+                        App.Client.OnlineUsers.First(user => user.Name.Equals(userInfoArray[i])).ToString();
+                    }
+                    catch (Exception)
+                    {
+                        App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[i] });
+                    }
+                }
+            }
         }
 
         /// <summary>

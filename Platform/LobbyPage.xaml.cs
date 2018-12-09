@@ -503,7 +503,7 @@ namespace Platform
             OpponentUserName = onlineuser.Text;
             try
             {
-                if (App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType)
+                if (App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType)
                 { /* 接受对战请求 */
                     UserPlayerId = -1;
                     do
@@ -522,7 +522,7 @@ namespace Platform
                     App.Client.Core.SendMessage(new Kernel.Message
                     {
                         type = Kernel.MsgType.PVP_ACCEPT,
-                        data = onlineuser.Text + '\n' + UserPlayerId.ToString()
+                        data = OpponentUserName + '\n' + UserPlayerId.ToString()
                     });
 
                     OnlineUserViewer onlineUser = new OnlineUserViewer
@@ -544,7 +544,7 @@ namespace Platform
                     App.Client.Core.SendMessage(new Kernel.Message
                     {
                         type = Kernel.MsgType.PVP_REQUEST,
-                        data = onlineuser.Text
+                        data = OpponentUserName
                     });
 
                     IsOnWaitForPlayer = true;
