@@ -336,7 +336,13 @@ namespace Platform
         {
             try
             {
-                App.Client.OnlineUsers.First(user => user.Name.Equals(requester)).BattleType = true;
+                App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(requester)));
+                OnlineUserViewer onlineUser = new OnlineUserViewer
+                {
+                    Name = requester,
+                    BattleType = true
+                };
+                App.Client.OnlineUsers.Insert(0, onlineUser);
             }
             catch (Exception)
             {

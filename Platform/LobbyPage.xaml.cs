@@ -509,7 +509,14 @@ namespace Platform
                     type = Kernel.MsgType.PVP_ACCEPT,
                     data = onlineuser.Text + '\n' + UserPlayerId.ToString()
                 });
-                App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType = false;
+
+                OnlineUserViewer onlineUser = new OnlineUserViewer
+                {
+                    Name = OpponentUserName,
+                    BattleType = false
+                };
+                App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)));
+                App.Client.OnlineUsers.Insert(0, onlineUser);
 
                 IsOnWaitForPlayer = true;
                 await WaitForPlayer.ShowAsync();
@@ -546,7 +553,13 @@ namespace Platform
                 data = ""
             });
             IsOnWaitForPlayer = false;
-            App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType = false;
+            OnlineUserViewer onlineUser = new OnlineUserViewer
+            {
+                Name = OpponentUserName,
+                BattleType = false
+            };
+            App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)));
+            App.Client.OnlineUsers.Insert(0, onlineUser);
         }
     }
 }
