@@ -206,7 +206,9 @@ namespace Platform
             {
 
             }
-            else if (e.Key >= Windows.System.VirtualKey.A && e.Key <= Windows.System.VirtualKey.Z)
+            else if (e.Key >= Windows.System.VirtualKey.A 
+                && e.Key <= Windows.System.VirtualKey.Z
+                && Username.Text.Length < 10)
             {
 
             }
@@ -256,7 +258,9 @@ namespace Platform
             {
 
             }
-            else if (e.Key >= Windows.System.VirtualKey.A && e.Key <= Windows.System.VirtualKey.Z)
+            else if (e.Key >= Windows.System.VirtualKey.A 
+                && e.Key <= Windows.System.VirtualKey.Z
+                && Password.Password.Length < 20)
             {
 
             }

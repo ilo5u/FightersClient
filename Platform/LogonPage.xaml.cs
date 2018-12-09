@@ -36,7 +36,7 @@ namespace Platform
             Current = this;
         }
 
-        private bool IsShiftPressed;
+        private bool IsShiftPressed = false;
         private void Username_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == Windows.System.VirtualKey.Shift)
@@ -54,7 +54,9 @@ namespace Platform
             {
 
             }
-            else if (e.Key >= Windows.System.VirtualKey.A && e.Key <= Windows.System.VirtualKey.Z)
+            else if (e.Key >= Windows.System.VirtualKey.A
+                && e.Key <= Windows.System.VirtualKey.Z
+                && Username.Text.Length < 10)
             {
 
             }
@@ -77,7 +79,9 @@ namespace Platform
             {
 
             }
-            else if (e.Key >= Windows.System.VirtualKey.A && e.Key <= Windows.System.VirtualKey.Z)
+            else if (e.Key >= Windows.System.VirtualKey.A 
+                && e.Key <= Windows.System.VirtualKey.Z
+                && Password.Password.Length < 20)
             {
 
             }
