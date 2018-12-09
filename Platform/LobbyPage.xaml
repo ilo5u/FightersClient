@@ -550,6 +550,13 @@
                                    Text="在线玩家"
                                    RelativePanel.AlignHorizontalCenterWithPanel="True"
                                    RelativePanel.AlignTopWithPanel="True"/>
+                        <FontIcon Glyph="🔄" 
+                                Name="RefreshOnlineUsers"
+                                FontFamily="Segoe UI Eomji"
+                                FontSize="16" Margin="10,0,0,0"
+                                RelativePanel.AlignVerticalCenterWith="ListOfUsers"
+                                RelativePanel.RightOf="ListOfUsers" 
+                                Tapped="RefreshOnlineUsers_Click"/>
                         <GridView RelativePanel.Below="ListOfUsers" Width="240"
                                   ItemsSource="{x:Bind local:App.Client.OnlineUsers}">
                             <GridView.ItemTemplate>

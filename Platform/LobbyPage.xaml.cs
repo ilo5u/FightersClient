@@ -587,5 +587,19 @@ namespace Platform
             {
             }
         }
+
+        /// <summary>
+        /// 刷新在线用户列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshOnlineUsers_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.Core.SendMessage(new Kernel.Message
+            {
+                type = Kernel.MsgType.GET_ONLINE_USERS,
+                data = ""
+            });
+        }
     }
 }
