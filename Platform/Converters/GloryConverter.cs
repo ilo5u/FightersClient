@@ -12,15 +12,15 @@ namespace Platform.Converters
         {
             if (top < 1)
             {
-                return "🌑";
+                return "初出茅庐 🌑";
             }
             else if (top < 5)
             {
-                return "🌓";
+                return "斗宗强者 🌓";
             }
             else
             {
-                return "🌕";
+                return "誉满天下 🌕";
             }
         }
     }
