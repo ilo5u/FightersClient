@@ -328,6 +328,14 @@ namespace Pokemen
 			return (int)this->m_instance->GetState();
 	}
 
+	void Pokemen::ClearState()
+	{
+		if (this->m_instance == nullptr)
+			throw std::exception("CPokemenManager is not implement.");
+		else
+			this->m_instance->ClearState();
+	}
+
 	bool Pokemen::Upgrade(int exp)
 	{
 		if (this->m_instance == nullptr)
@@ -558,6 +566,8 @@ namespace Pokemen
 	{
 		m_firstPlayer.SetMaxHpoints();
 		m_secondPlayer.SetMaxHpoints();
+		m_firstPlayer.ClearState();
+		m_secondPlayer.ClearState();
 		int intervalOfFirst  = m_firstPlayer.GetInterval();
 		int intervalOfSecond = m_secondPlayer.GetInterval();
 

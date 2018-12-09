@@ -582,7 +582,7 @@ namespace Platform
                 {
                     try
                     {
-                        App.Client.OnlineUsers.First(user => user.Name.Equals(userInfoArray[i])).ToString();
+                        App.Client.OnlineUsers.First(user => user.Name.Equals(userInfoArray[i]));
                     }
                     catch (Exception)
                     {

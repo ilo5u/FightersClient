@@ -44,6 +44,7 @@ namespace Pokemen
 		int GetPrimarySkill() const;
 
 		int GetState() const;
+		void ClearState();
 
 	public:
 		bool Upgrade(int exp);

@@ -88,6 +88,14 @@ namespace Pokemen
 		return this->m_state;
 	}
 
+	void BasePlayer::ClearState()
+	{
+		this->m_anger = 0;
+		this->m_effects = { 0, 0, 0, 0, 0 };
+		this->m_stateRoundsCnt = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		this->m_state = static_cast<State>(0x0);
+	}
+
 	Id BasePlayer::GetId() const
 	{
 		return this->m_property.m_id;
