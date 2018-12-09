@@ -1,3 +1,8 @@
+/*  ------------------------------------------
+* 描述：
+*       客户端与服务器通信模块
+* ----------------------------------------- */
+
 #include "pch.h"
 #include <thread>
 
@@ -34,6 +39,10 @@ namespace NetIO
 		return m_isConnected;
 	}
 
+	/// <summary>
+	/// 连接请求
+	/// </summary>
+	/// <returns></returns>
 	bool NetIO::Connect()
 	{
 		try
@@ -149,6 +158,9 @@ namespace NetIO
 		return true;
 	}
 
+	/// <summary>
+	/// 接收线程
+	/// </summary>
 	void NetIO::_RecvThread_()
 	{
 		int iRecvBytes = 0;
@@ -173,6 +185,9 @@ namespace NetIO
 		}
 	}
 
+	/// <summary>
+	/// 发送线程
+	/// </summary>
 	void NetIO::_SendThread_()
 	{
 		Packet sendPacket;

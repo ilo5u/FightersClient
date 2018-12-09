@@ -1,12 +1,18 @@
 ﻿#pragma once
 
+/// <summary>
+/// C++/CX接口
+/// 用以对接C++和C Sharp
+/// </summary>
 namespace Kernel
 {
-	typedef ::Pokemen::BattleStage Battle;
+	typedef ::Pokemen::BattleStage   Battle;
 	typedef ::Pokemen::BattleMessage BattleMessage;
+
 	typedef ::Pokemen::Pokemen * HPokemen;
-	typedef std::list<HPokemen> Pokemens;
-	typedef Packet::Type       PacketType;
+	typedef std::list<HPokemen>  Pokemens;
+
+	typedef Packet::Type         PacketType;
 
 	public enum struct MsgType
 	{
@@ -55,6 +61,9 @@ namespace Kernel
 		Platform::String^ data;
 	};
 
+	/// <summary>
+	/// 小精灵属性包
+	/// </summary>
 	public value struct Property sealed
 	{
 		int id;
@@ -79,6 +88,9 @@ namespace Kernel
 		int secondSkill;
 	};
 
+	/// <summary>
+	/// 小精灵
+	/// </summary>
 	public ref class Pokemen sealed
 	{
 	public:
@@ -98,6 +110,9 @@ namespace Kernel
 		::Pokemen::Pokemen instance;
 	};
 
+	/// <summary>
+	/// 工作内核
+	/// </summary>
 	public ref class Core sealed
 	{
 	public:
@@ -105,7 +120,7 @@ namespace Kernel
 		virtual ~Core();
 
 	public:
-		void SendMessage(Message msg);
+		void    SendMessage(Message msg);
 		Message ReadOfflineMessage();
 		Message ReadOnlineMessage();
 
@@ -127,13 +142,17 @@ namespace Kernel
 
 		// 强制关闭比赛
 		void ShutdownBattle();
-
 		bool IsBattleRunning();
 
 	private:
+		/* 网络通信控制 */
 		::NetIO::NetIO netDriver;
+
+		/* 比赛平台控制 */
 		Battle stage;
-		bool battletype;
+		bool   battletype;
+
+		/* 用户精灵列表 */
 		Pokemens pokemens;
 	};
 }
