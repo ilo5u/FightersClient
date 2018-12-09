@@ -33,13 +33,42 @@ namespace Platform
         /// 公共访问实例对象
         /// </summary>
         static public LobbyPage Current;
-        public Kernel.Pokemen AIPlayer;
+
+        /// <summary>
+        /// 电脑精灵信息
+        /// 从后台获取
+        /// </summary>
+        public Kernel.Pokemen   AIPlayer;
+
+        /// <summary>
+        /// 在线对战的对方玩家的名称
+        /// </summary>
         public string OpponentUserName;
-        int UserPlayerId;
-        public PokemenViewer UserPlayer = new PokemenViewer();
-        public int PrimarySkillType;
+
+        /// <summary>
+        /// 在线对战时，当前用户为发起方还是接受方
+        /// </summary>
         public bool SenderOrReciver;
 
+        /// <summary>
+        /// 当前用户的出战精灵的ID
+        /// </summary>
+        int UserPlayerId;
+
+        /// <summary>
+        /// 当前用户出战精灵的UI显示
+        /// </summary>
+        public PokemenViewer UserPlayer = new PokemenViewer();
+
+        /// <summary>
+        /// 当前用户出战精灵的主技能
+        /// </summary>
+        public int PrimarySkillType;
+
+        /// <summary>
+        /// 决斗赛时
+        /// 经筛选后的精灵
+        /// </summary>
         static public ObservableCollection<PokemenViewer> DadOrSonPokemens = new ObservableCollection<PokemenViewer>();
 
         public LobbyPage()
@@ -48,17 +77,27 @@ namespace Platform
             Current = this;
         }
 
+        /// <summary>
+        /// 导航至等待界面
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             BattleFrame.Navigate(typeof(WaitPage));
         }
 
+        /// <summary>
+        /// 隐藏左部的对战列表
+        /// </summary>
         internal void HideBattle()
         {
             BattleList.IsPaneOpen = false;
             BattleList.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 显示左部的对战列表
+        /// </summary>
         internal void ShowBattle()
         {
             BattleList.Visibility = Visibility.Visible;
@@ -69,6 +108,9 @@ namespace Platform
             BattleFrame.Navigate(typeof(WaitPage));
         }
 
+        /// <summary>
+        /// 加载电脑精灵的UI显示
+        /// </summary>
         private void SetAIDisplay()
         {
             Kernel.Property pokemen = AIPlayer.GetProperty();
@@ -97,6 +139,9 @@ namespace Platform
             SecondarySkillOfOpponent.Text = SkillConverter.Convert(pokemen.type, pokemen.secondSkill);
         }
 
+        /// <summary>
+        /// 比赛类型
+        /// </summary>
         public enum BattleType
         {
             LEVELUP,
@@ -104,6 +149,12 @@ namespace Platform
             PVP
         }
         public BattleType TypeOfBattle;
+
+        /// <summary>
+        /// 升级赛
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
             UserPlayerId = -1;
@@ -128,6 +179,11 @@ namespace Platform
         }
 
         bool IsOnSelect = false;
+        /// <summary>
+        /// 决斗赛
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DadOrSon_Click(object sender, RoutedEventArgs e)
         {
             if (!IsOnSelect)
@@ -147,6 +203,9 @@ namespace Platform
             IsOnSelect = false;
         }
 
+        /// <summary>
+        /// 筛选决斗赛的精灵
+        /// </summary>
         private void OnSelectBeginCallBack()
         {
             DadOrSonPokemens.Clear();
@@ -186,6 +245,15 @@ namespace Platform
             }
         }
 
+        internal void HideWait()
+        {
+            WaitForPlayer.Hide();
+            IsOnWaitForPlayer = false;
+        }
+
+        /// <summary>
+        /// 用户选择决斗赛的出战精灵
+        /// </summary>
         async private void OnSelectOverCallBack()
         {
             SkillSelectOfDadOrSonPokemens.Visibility = Visibility.Collapsed;
@@ -207,6 +275,9 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 比赛难度
+        /// </summary>
         private enum BattleLevel
         {
             OPEN,
@@ -257,13 +328,18 @@ namespace Platform
             SecondSkillOfDadOrSonPokemens.Content = SkillConverter.Convert(UserPlayer.Type, 1);
         }
 
-        bool IsOnWaitForPlayer = false;
+        public bool IsOnWaitForPlayer = false;
+        /// <summary>
+        /// 在线对战请求被对方接受
+        /// </summary>
+        /// <param name="opponent"></param>
         async internal void OnAcceptCallBack(string opponent)
         {
             if (!IsOnWaitForPlayer)
                 return;
             WaitForPlayer.Hide();
 
+            /* 加载对方精灵的信息 */
             string[] pokemenInfoArrays = opponent.Split(',');
             AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[13]));
             AIPlayer.SetProperty(
@@ -282,6 +358,7 @@ namespace Platform
                 int.Parse(pokemenInfoArrays[13])
                 );
 
+            /* 当前用户选择出战精灵 */
             UserPlayerId = -1;
             do
             {
@@ -296,6 +373,7 @@ namespace Platform
                 }
             } while (UserPlayerId == -1);
 
+            /* 回馈给服务器出战精灵的ID */
             TypeOfBattle = BattleType.PVP;
             App.Client.Core.SendMessage(new Kernel.Message
             {
@@ -303,6 +381,7 @@ namespace Platform
                 data = OpponentUserName + '\n' + UserPlayerId.ToString()
             });
 
+            /* 设置比赛平台 */
             App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, true);
             BattleFrame.Navigate(typeof(BattlePage));
         }
@@ -316,7 +395,9 @@ namespace Platform
             if (!IsOnWaitForPlayer)
                 return;
             WaitForPlayer.Hide();
+            IsOnWaitForPlayer = false;
 
+            /* 加载对方精灵的信息 */
             string[] pokemenInfoArrays = opponent.Split(',');
             AIPlayer = new Kernel.Pokemen(int.Parse(pokemenInfoArrays[13]));
             AIPlayer.SetProperty(
@@ -338,6 +419,10 @@ namespace Platform
             BattleFrame.Navigate(typeof(BattlePage));
         }
 
+        /// <summary>
+        /// 对方取消比赛
+        /// </summary>
+        /// <param name="canceler"></param>
         internal void OnCancelCallBack(string canceler)
         {
             if (IsOnWaitForPlayer)
@@ -349,11 +434,15 @@ namespace Platform
         }
 
         /// <summary>
-        /// 发送正忙信号
+        /// 对方正忙
         /// </summary>
         async internal void OnBusyCallBack()
         {
+            if (!IsOnWaitForPlayer)
+                return;
             WaitForPlayer.Hide();
+
+            IsOnWaitForPlayer = false;
 
             var msgDialog = new MessageDialog("对方正忙！") { Title = "" };
             msgDialog.Commands.Add(new UICommand("确定"));
@@ -394,9 +483,11 @@ namespace Platform
             }
         }
 
+        /* 发起或接受在线对战请求 */
         async private void OnlineBattle_Click(object sender, RoutedEventArgs e)
         {
             TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
+            OpponentUserName = onlineuser.Text;
             if (App.Client.OnlineUsers.First(user => user.Name.Equals(onlineuser.Text)).BattleType)
             { /* 接受对战请求 */
                 UserPlayerId = -1;
@@ -433,7 +524,6 @@ namespace Platform
                     type = Kernel.MsgType.PVP_REQUEST,
                     data = onlineuser.Text
                 });
-                OpponentUserName = onlineuser.Text;
 
                 IsOnWaitForPlayer = true;
                 ContentDialogResult result = await WaitForPlayer.ShowAsync();
@@ -443,6 +533,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 取消在线对战
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void WaitForPlayer_CloseButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             App.Client.Core.SendMessage(new Kernel.Message
@@ -453,7 +548,5 @@ namespace Platform
             IsOnWaitForPlayer = false;
             App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType = false;
         }
-
-
     }
 }

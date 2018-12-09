@@ -23,6 +23,9 @@ namespace Platform
     /// </summary>
     public sealed partial class PVPPage : Page
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public PVPPage()
         {
             this.InitializeComponent();
@@ -50,18 +53,29 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void OnHandleLoseCallBack()
         {
             ResultInfo.Text = "失败";
             ResultInfo.Foreground = new SolidColorBrush(Colors.DarkRed);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void OnHandleWinCallBack()
         {
             ResultInfo.Text = "胜利";
             ResultInfo.Foreground = new SolidColorBrush(Colors.DarkGreen);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackToLobby_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(WaitPage));

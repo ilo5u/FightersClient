@@ -27,8 +27,14 @@ namespace Platform
     /// </summary>
     public sealed partial class RankPage : Page
     {
+        /// <summary>
+        /// 公共访问实例
+        /// </summary>
         public static RankPage Current;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public RankPage()
         {
             this.InitializeComponent();
@@ -74,6 +80,7 @@ namespace Platform
                 data = username
             });
 
+            /* 查询用户的精灵接收完毕 */
             App.Client.IsRankedPokemensReady.WaitOne();
             await Dispatcher.RunAsync(
                 Windows.UI.Core.CoreDispatcherPriority.Normal,
@@ -84,6 +91,11 @@ namespace Platform
                 );
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             App.Client.Core.SendMessage(

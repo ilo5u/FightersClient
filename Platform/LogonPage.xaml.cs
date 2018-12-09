@@ -100,6 +100,11 @@ namespace Platform
         }
 
         bool IsOnLogon = false;
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async private void Logon_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(Username.Text))
@@ -132,6 +137,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 向服务器发起注册请求
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         async private void LogonTask(string username, string password)
         {
             try
@@ -148,7 +158,7 @@ namespace Platform
                     }
                 }
 
-                /* 投递登陆请求 */
+                /* 投递注册请求 */
                 if (App.Client.Core.IsConnected())
                 {
                     Kernel.Message message;
@@ -165,7 +175,7 @@ namespace Platform
                             OnLogonSuccessCallBack
                             );
                     }
-                    else if (message.type == Kernel.MsgType.LOGON_FAILED)
+                    else
                     {
                         await Dispatcher.RunAsync(
                             Windows.UI.Core.CoreDispatcherPriority.Normal,
@@ -175,9 +185,8 @@ namespace Platform
 
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e.Message);
             }
             finally
             {
@@ -185,6 +194,10 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 注册失败
+        /// </summary>
+        /// <param name="msg"></param>
         async private void OnLogonFailedCallBack(string msg)
         {
             LogonProgress.IsActive = false;
@@ -195,6 +208,9 @@ namespace Platform
             await error.ShowAsync();
         }
 
+        /// <summary>
+        /// 注册成功，跳转至登陆界面
+        /// </summary>
         async private void OnLogonSuccessCallBack()
         {
             LogonProgress.IsActive = false;

@@ -34,6 +34,10 @@ namespace Platform
             Current = this;
         }
 
+        /// <summary>
+        /// 当用户处于登陆、注册界面和游戏界面时，标题栏不同
+        /// </summary>
+        /// <param name="flag"></param>
         public void RenewTitleDisplay(bool flag)
         {
             if (flag)
@@ -56,6 +60,10 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 返回主页，加载登陆界面
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             RenewTitleDisplay(false);
@@ -113,6 +121,11 @@ namespace Platform
         }
 
         bool IsOnLogout = false;
+        /// <summary>
+        /// 注销
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async private void Logout_Click(object sender, RoutedEventArgs e)
         {
             if (!IsOnLogout)
@@ -139,20 +152,36 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 后台线程，释放IO和Battle资源
+        /// </summary>
         async public void LogoutTask()
         {
             if (App.Client.IsOnBattle)
             {
                 App.Client.IsOnBattle = false;
-                App.Client.BattleDriver.Wait();
+                if (App.Client.BattleDriver != null)
+                {
+                    App.Client.BattleDriver.Wait();
+                }
             }
 
             if (App.Client.IsOnConnection)
             {
                 App.Client.IsOnConnection = false;
-                App.Client.NetDriver.Wait();
+                if (App.Client.NetDriver != null)
+                {
+                    App.Client.NetDriver.Wait();
+                }
             }
 
+            if (LobbyPage.Current != null
+                && LobbyPage.Current.IsOnWaitForPlayer)
+            {
+                LobbyPage.Current.HideWait();
+            }
+
+            /* 注销请求 */
             App.Client.Core.SendMessage(
                 new Kernel.Message { type = Kernel.MsgType.LOGOUT, data = "" }
                 );
@@ -164,6 +193,9 @@ namespace Platform
                 );
         }
 
+        /// <summary>
+        /// 返回登陆界面
+        /// </summary>
         public void OnLogoutCallBack()
         {
             Saving.Visibility = Visibility.Collapsed;

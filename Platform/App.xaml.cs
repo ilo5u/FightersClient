@@ -48,11 +48,14 @@ namespace Platform
         /// <summary>
         /// 观察集
         /// </summary>
-        public ObservableCollection<PokemenViewer> OnlinePokemens;
+        public ObservableCollection<PokemenViewer>    OnlinePokemens;
         public ObservableCollection<OnlineUserViewer> OnlineUsers;
-        public ObservableCollection<UserInfoViewer> RankedUsers;
-        public ObservableCollection<PokemenViewer> RankedPokemens;
+        public ObservableCollection<UserInfoViewer>   RankedUsers;
+        public ObservableCollection<PokemenViewer>    RankedPokemens;
 
+        /// <summary>
+        /// 通知RankPage显示对应用户的小精灵
+        /// </summary>
         public Semaphore IsRankedPokemensReady;
 
         /// <summary>

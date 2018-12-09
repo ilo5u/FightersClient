@@ -24,12 +24,23 @@ namespace Platform
     /// </summary>
     public sealed partial class LosePage : Page
     {
+        /// <summary>
+        /// 三个精灵
+        /// </summary>
         public ObservableCollection<PokemenViewer> SelectsOfPokemens = new ObservableCollection<PokemenViewer>();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public LosePage()
         {
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// 筛选三个精灵
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             PokemenId = -1;
@@ -62,15 +73,25 @@ namespace Platform
         }
 
         int PokemenId;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             PokemenId = ((PokemenViewer)e.ClickedItem).Id;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (PokemenId == -1)
-            {
+            { /* 用户未作出选择 */
                 if (sender is FrameworkElement instruc)
                 {
                     FlyoutBase.ShowAttachedFlyout(instruc);

@@ -86,6 +86,11 @@ namespace Platform
             Frame.Navigate(typeof(DisplayAllPage));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FirstCareer_Click(object sender, RoutedEventArgs e)
         {
             App.Client.Core.SendMessage(
@@ -97,6 +102,11 @@ namespace Platform
             Promote.IsEnabled = false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SecondCareer_Click(object sender, RoutedEventArgs e)
         {
             App.Client.Core.SendMessage(

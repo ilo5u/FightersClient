@@ -36,6 +36,11 @@ namespace Platform
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// 登陆
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         async private void Login_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(Username.Text))
@@ -67,6 +72,11 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 工作线程，向服务端发出登陆请求
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         async private void LoginTask(string username, string password)
         {
             try
@@ -89,7 +99,7 @@ namespace Platform
                     Kernel.Message message;
                     int reqCnt = 0;
                     while (reqCnt < 3)
-                    {
+                    { /* 请求三次 */
                         message.type = Kernel.MsgType.LOGIN_REQUEST;
                         message.data = username + '\n' + password;
                         App.Client.Core.SendMessage(message);
@@ -115,9 +125,8 @@ namespace Platform
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e.Message);
             }
             finally
             {
@@ -125,6 +134,10 @@ namespace Platform
             }
         }
 
+        /// <summary>
+        /// 登陆失败
+        /// </summary>
+        /// <param name="msg"></param>
         async private void OnLoginFailedCallBack(string msg)
         {
             LoginProgress.IsActive = false;
@@ -135,6 +148,10 @@ namespace Platform
             await error.ShowAsync();
         }
 
+        /// <summary>
+        /// 登陆成功
+        /// </summary>
+        /// <param name="numberOfPokemens"></param>
         private void OnLoginSuccessCallBack(int numberOfPokemens)
         {
             LoginProgress.IsActive = false;
@@ -143,28 +160,29 @@ namespace Platform
                 s => s.Name.Equals(Username.Text)
                 );
             if (SavePassword.IsChecked == true)
-            {
+            { /* 保存密码 */
                 if (index == -1)
                 {
                     App.Client.LocalRecords.Add(
                         new App.Record { Name = Username.Text, Password = Password.Password }
                         );
-                    Task task = new Task(WriteBackPasswords);
-                    task.Start();
+                    new Task(WriteBackPasswords).Start();
                 }
             }
             else
-            {
+            { /* 不保存密码 */
                 if (index != -1)
-                {
+                { 
                     App.Client.LocalRecords.RemoveAt(index);
-                    Task task = new Task(WriteBackPasswords);
-                    task.Start();
+                    new Task(WriteBackPasswords).Start();
                 }
             }
             Frame.Navigate(typeof(GamePage), numberOfPokemens);
         }
 
+        /// <summary>
+        /// 写入密码到本地记录
+        /// </summary>
         async private void WriteBackPasswords()
         {
             StorageFile file 

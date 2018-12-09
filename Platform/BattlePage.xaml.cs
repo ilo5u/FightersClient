@@ -67,10 +67,10 @@ namespace Platform
             else
                 BackToLobby.Visibility = Visibility.Visible;
 
-            PlayerStates = new ObservableCollection<StateViewer>();
-            AIStates = new ObservableCollection<StateViewer>();
+            PlayerStates  = new ObservableCollection<StateViewer>();
+            AIStates      = new ObservableCollection<StateViewer>();
             PlayerDisplay = (PokemenViewer)App.Client.Core.GetPropertyAt(LobbyPage.Current.UserPlayer.Id);
-            AIDisplay = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
+            AIDisplay     = (PokemenViewer)LobbyPage.Current.AIPlayer.GetProperty();
 
             if (LobbyPage.Current.SenderOrReciver
                 || LobbyPage.Current.TypeOfBattle != LobbyPage.BattleType.PVP)
@@ -146,11 +146,10 @@ namespace Platform
                         break;
                 }
             }
-            Debug.WriteLine("对战关闭！");
         }
 
         /// <summary>
-        /// 
+        /// 比赛结束
         /// </summary>
         /// <param name="infos"></param>
         internal void OnResultCallBack(string[] infos)
@@ -175,7 +174,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 更新精灵UI信息
         /// </summary>
         /// <param name="firstPlayer"></param>
         /// <param name="secondPlayer"></param>
@@ -215,7 +214,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 更新精灵状态UI
         /// </summary>
         /// <param name="stateViewers"></param>
         /// <param name="states"></param>
@@ -369,9 +368,9 @@ namespace Platform
         {
             if (App.Client.Core.IsBattleRunning())
             {
-                var msgDialog = new Windows.UI.Popups.MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
-                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("确定"));
-                msgDialog.Commands.Add(new Windows.UI.Popups.UICommand("取消"));
+                var msgDialog = new MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
+                msgDialog.Commands.Add(new UICommand("确定"));
+                msgDialog.Commands.Add(new UICommand("取消"));
 
                 if ((await msgDialog.ShowAsync()).Label == "确定")
                 {

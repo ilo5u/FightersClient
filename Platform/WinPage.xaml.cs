@@ -23,20 +23,38 @@ namespace Platform
     /// </summary>
     public sealed partial class WinPage : Page
     {
+        /// <summary>
+        /// 公共访问实例
+        /// </summary>
         static public WinPage Current;
+
+        /// <summary>
+        /// 用户新获得的精灵
+        /// </summary>
         public PokemenViewer NewPokemen = new PokemenViewer();
+
+        /// <summary>
+        /// 
+        /// </summary>
         public WinPage()
         {
             this.InitializeComponent();
             Current = this;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             WaitForNewPokemen.Visibility = Visibility.Visible;
             NewPokemenDisplay.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// 显示新的精灵
+        /// </summary>
         internal void ShowNewPokemen()
         {
             PokemenViewer pokemen = App.Client.OnlinePokemens.Last();
@@ -67,6 +85,11 @@ namespace Platform
             NewPokemenDisplay.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackToLobby_Click(object sender, RoutedEventArgs e)
         {
             LobbyPage.Current.BackToLobby();

@@ -44,21 +44,24 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 进入游戏界面
+        /// 初始化
+        /// 跳转至对战界面
         /// </summary>
         /// <param name="e"></param>
         async protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             MainPage.Current.RenewTitleDisplay(true);
 
-            App.Client.OnlineUsers = new System.Collections.ObjectModel.ObservableCollection<Models.OnlineUserViewer>();
-            App.Client.OnlinePokemens = new System.Collections.ObjectModel.ObservableCollection<Models.PokemenViewer>();
-            App.Client.RankedUsers = new System.Collections.ObjectModel.ObservableCollection<Models.UserInfoViewer>();
-            App.Client.RankedPokemens = new System.Collections.ObjectModel.ObservableCollection<Models.PokemenViewer>();
+            App.Client.OnlineUsers    = new System.Collections.ObjectModel.ObservableCollection<OnlineUserViewer>();
+            App.Client.OnlinePokemens = new System.Collections.ObjectModel.ObservableCollection<PokemenViewer>();
+            App.Client.RankedUsers    = new System.Collections.ObjectModel.ObservableCollection<UserInfoViewer>();
+            App.Client.RankedPokemens = new System.Collections.ObjectModel.ObservableCollection<PokemenViewer>();
 
             App.Client.Core.SendMessage(
                 new Kernel.Message { type = Kernel.MsgType.GET_ONLINE_USERS, data = "" }
                 );
+            /* 打开与后台网络的通信 */
             App.Client.IsOnConnection = true;
             App.Client.NetDriver = new Task(NetIOTask);
             App.Client.NetDriver.Start();
@@ -113,9 +116,6 @@ namespace Platform
             while (App.Client.IsOnConnection)
             {
                 message = App.Client.Core.ReadOnlineMessage();
-                if (message.type != Kernel.MsgType.INVALID)
-                    Debug.WriteLine("收到消息：类型=" + message.type.ToString());
-
                 switch (message.type)
                 {
                     case Kernel.MsgType.UPDATE_POKEMENS:
@@ -190,7 +190,7 @@ namespace Platform
                     case Kernel.MsgType.PVP_REQUEST:
                         {
                             if (App.Client.IsOnBattle)
-                            {
+                            { /* 用户正在与电脑对战 */
                                 App.Client.Core.SendMessage(new Kernel.Message
                                 {
                                     type = Kernel.MsgType.PVP_BUSY,
@@ -344,7 +344,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 对方正忙，取消比赛
         /// </summary>
         private void OnPVPBusyCallBack()
         {
@@ -352,7 +352,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 对方接受比赛请求
         /// </summary>
         /// <param name="opponent"></param>
         private void OnPVPAcceptCallBack(string opponent)
@@ -361,7 +361,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 设置排行榜
         /// </summary>
         /// <param name="userInfos"></param>
         private void OnSetRanklistCallBack(string userInfos)
@@ -398,7 +398,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 更新排行榜
         /// </summary>
         /// <param name="userInfos"></param>
         private void OnRenewRanklistCallBack(string userInfos)
@@ -432,7 +432,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 获取其他用户的小精灵
         /// </summary>
         /// <param name="pokemenInfos"></param>
         private void OnSetPokemensByUserCallBack(string pokemenInfos)
@@ -461,7 +461,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 当前用户获得一个新的小精灵
         /// </summary>
         /// <param name="pokemenInfo"></param>
         private void OnAddPokemenCallBack(string pokemenInfo)
@@ -472,7 +472,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 与服务器异常断开连接
         /// </summary>
         async public void OnDisconnectionCallBack()
         {
@@ -487,7 +487,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 当前用户的小精灵有数据更新
         /// </summary>
         /// <param name="pokemenInfos"></param>
         private void OnUpdatePokemensCallBack(string pokemenInfos)
@@ -536,12 +536,11 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 设置在线用户
         /// </summary>
         /// <param name="userInfos"></param>
         private void OnSetOnlineUsersCallBack(string userInfos)
         {
-            Debug.WriteLine(userInfos);
             string[] userInfoArray = userInfos.Split('\n');
             int total = int.Parse(userInfoArray[0]);
             for (int i = 1; i <= total; ++i)
@@ -549,7 +548,7 @@ namespace Platform
         }
 
         /// <summary>
-        /// 
+        /// 当前在线用户有更新
         /// </summary>
         /// <param name="userInfos"></param>
         private void OnUpdateOnlineUsersCallBack(string userInfos)
@@ -563,9 +562,8 @@ namespace Platform
                 else if (userInfoArray[1] == "ON")
                     App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[0] });
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                DebugPrint.Text += e.ToString();
             }
         }
 
