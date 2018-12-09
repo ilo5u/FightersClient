@@ -394,7 +394,21 @@ namespace Platform
                         );
                 }
             }
-            App.Client.RankedUsers.OrderByDescending(user => user.NumberOfPokemens);
+
+            var ordered = App.Client.RankedUsers.OrderByDescending(user => user.NumberOfPokemens);
+            System.Collections.ObjectModel.ObservableCollection<UserInfoViewer> backup = new System.Collections.ObjectModel.ObservableCollection<UserInfoViewer>();
+            foreach (var item in ordered)
+            {
+                backup.Add(new UserInfoViewer
+                {
+                    Name = item.Name,
+                    NumberOfPokemens = item.NumberOfPokemens,
+                    Rate = item.Rate,
+                    Honor = item.Honor,
+                    Glory = item.Glory
+                });
+            }
+            App.Client.RankedUsers = backup;
         }
 
         /// <summary>
@@ -428,7 +442,20 @@ namespace Platform
             }
 
             /* 排序 */
-            App.Client.RankedUsers.OrderByDescending(user => user.NumberOfPokemens);
+            var ordered = App.Client.RankedUsers.OrderByDescending(user => user.NumberOfPokemens);
+            System.Collections.ObjectModel.ObservableCollection<UserInfoViewer> backup = new System.Collections.ObjectModel.ObservableCollection<UserInfoViewer>();
+            foreach (var item in ordered)
+            {
+                backup.Add(new UserInfoViewer
+                {
+                    Name = item.Name,
+                    NumberOfPokemens = item.NumberOfPokemens,
+                    Rate = item.Rate,
+                    Honor = item.Honor,
+                    Glory = item.Glory
+                });
+            }
+            App.Client.RankedUsers = backup;
         }
 
         /// <summary>
