@@ -415,12 +415,12 @@
 
                     <StackPanel Grid.Row="10" Orientation="Horizontal">
                         <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x23F3;" />
-                        <TextBlock Name="LevelOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        <TextBlock Name="ExpOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="11" Orientation="Horizontal">
                         <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3C6;" />
-                        <TextBlock Name="ExpOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        <TextBlock Name="LevelOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
                     </StackPanel>
 
                     <RelativePanel Grid.Row="12">
