@@ -338,6 +338,7 @@ namespace Platform
             if (!IsOnWaitForPlayer)
                 return;
             WaitForPlayer.Hide();
+            IsOnWaitForPlayer = false;
 
             /* 加载对方精灵的信息 */
             string[] pokemenInfoArrays = opponent.Split(',');
@@ -505,6 +506,8 @@ namespace Platform
             {
                 if (App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType)
                 { /* 接受对战请求 */
+                    SenderOrReciver = false;
+
                     UserPlayerId = -1;
                     do
                     {
@@ -536,11 +539,11 @@ namespace Platform
                     IsOnWaitForPlayer = true;
                     await WaitForPlayer.ShowAsync();
                     IsOnWaitForPlayer = false;
-
-                    SenderOrReciver = false;
                 }
                 else
                 { /* 发起对战请求 */
+                    SenderOrReciver = true;
+
                     App.Client.Core.SendMessage(new Kernel.Message
                     {
                         type = Kernel.MsgType.PVP_REQUEST,
@@ -550,8 +553,6 @@ namespace Platform
                     IsOnWaitForPlayer = true;
                     ContentDialogResult result = await WaitForPlayer.ShowAsync();
                     IsOnWaitForPlayer = false;
-
-                    SenderOrReciver = true;
                 }
             }
             catch (Exception)
