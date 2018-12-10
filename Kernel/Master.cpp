@@ -207,7 +207,7 @@ namespace Pokemen
 					switch (this->m_career.type)
 					{
 					case Career::Type::Normal:
-						inc = static_cast<Value>((double)this->m_property.m_attack / 10.0);
+						inc = static_cast<Value>((double)this->m_property.m_attack / 15.0);
 						break;
 
 					case Career::Type::GreatMasterOfLight:
@@ -215,7 +215,7 @@ namespace Pokemen
 						break;
 
 					case Career::Type::GreatMasterOfDark:
-						inc = static_cast<Value>((double)this->m_property.m_attack / 5.0);
+						inc = static_cast<Value>((double)this->m_property.m_attack / 10.0);
 						break;
 
 					default:
@@ -242,7 +242,7 @@ namespace Pokemen
 						break;
 
 					case Career::Type::GreatMasterOfLight:
-						this->m_angriedCnt += 3;
+						this->m_angriedCnt += 2;
 						break;
 
 					case Career::Type::GreatMasterOfDark:

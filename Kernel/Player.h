@@ -164,10 +164,10 @@ namespace Pokemen
 			static const Value hpointsInc = 100;
 			static const Value levelupPropertiesInc = 21;
 
-			static const Value bleedRounds = 5;
+			static const Value bleedRounds = 4;
 			static const Value weakenRounds = 3;
-			static const Value dizzyingRounds = 2;
-			static const Value sunderedRounds = 3;
+			static const Value dizzyingRounds = 3;
+			static const Value sunderedRounds = 4;
 			static const Value silentRounds = 4;
 			static const Value slowedRounds = 5;
 
@@ -560,8 +560,8 @@ namespace Pokemen
 			{
 				const static Value slowChanceIncIndex = +400;
 				const static Value slowRoundsIncIndex = +2;
-				const static Value damageIncIndex = +100;
-				const static Value defenseIncIndex = +30;
+				const static Value damageIncIndex = +50;
+				const static Value defenseIncIndex = +50;
 				const static Value stolenDecIndex = -20;
 			};
 

@@ -271,7 +271,8 @@ namespace Pokemen
 				this->m_stateRoundsCnt.avatar = BasicProperties::avatarRounds;
 				this->AddState(State::AVATAR);
 			}
-			else if (!this->InState(State::SILENT))
+			else if (!this->InState(State::SILENT) 
+				|| (this->InState(State::SILENT) && this->m_career.type == Career::Type::Ares))
 			{
 				switch (this->m_skill.primarySkill)
 				{
@@ -513,9 +514,9 @@ namespace Pokemen
 
 	void Knight::_InitSkill_()
 	{
-		this->m_skill.sunderArmChance = +10;
+		this->m_skill.sunderArmChance = +30;
 		this->m_skill.makeDizzyChance = +10;
-		this->m_skill.sunderArmIndex = -10;
+		this->m_skill.sunderArmIndex = -20;
 		this->m_skill.avatarIndex = +100;
 	}
 }

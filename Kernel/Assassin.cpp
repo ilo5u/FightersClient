@@ -173,7 +173,7 @@ namespace Pokemen
 
 			if (_Hit_Target((this->m_property.m_critical + this->m_property.m_agility) / 2, opponent.GetCritical()))
 			{ // ±©»÷
-				damage = static_cast<Value>((double)damage * 2.5);
+				damage = static_cast<Value>((double)damage * 2.0);
 			}
 
 			this->_InitSkill_();
@@ -277,8 +277,7 @@ namespace Pokemen
 				case Skill::Type::SLOW:
 				{
 					/* Ö÷ÐÞ¼õËÙ */
-					if (_Hit_Target(slowChance, 0)
-						&& !opponent.InState(State::SLOWED))
+					if (_Hit_Target(slowChance, 0))
 					{
 						/* ¼õËÙ */
 						sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),

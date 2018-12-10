@@ -346,105 +346,107 @@
                    Grid.Column="1"
                    PanePlacement="Right" DisplayMode="Overlay" OpenPaneLength="240">
             <SplitView.Pane>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <ScrollViewer VerticalScrollMode="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Name="IconOfOppoent" Style="{StaticResource PropertyIconTextStyle}" />
-                        <TextBlock Name="NameOfOpponent" Style="{StaticResource PokemenNameTextStyle}" Text="Name" />
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon Name="IconOfOppoent" Style="{StaticResource PropertyIconTextStyle}" />
+                            <TextBlock Name="NameOfOpponent" Style="{StaticResource PokemenNameTextStyle}" Text="Name" />
+                        </StackPanel>
 
-                    <Image Grid.Row="1" Name="ImageOfOpponent" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        <Image Grid.Row="1" Name="ImageOfOpponent" HorizontalAlignment="Center" VerticalAlignment="Center" 
                            Width="180"/>
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F9E1;" />
-                        <TextBlock Name="HpointsOfOpponent" Style="{StaticResource PropertyValueTextStyle}" />
-                    </StackPanel>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F9E1;" />
+                            <TextBlock Name="HpointsOfOpponent" Style="{StaticResource PropertyValueTextStyle}" />
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="3" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F5E1;" />
-                        <TextBlock Name="AttackOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="3" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F5E1;" />
+                            <TextBlock Name="AttackOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="4" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x26D1;" />
-                        <TextBlock Name="DefenseOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="4" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x26D1;" />
+                            <TextBlock Name="DefenseOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="5" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3BF;" />
-                        <TextBlock Name="AgilityOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="5" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3BF;" />
+                            <TextBlock Name="AgilityOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="6" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F55B;" />
-                        <TextBlock Name="BreakOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="6" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F55B;" />
+                            <TextBlock Name="BreakOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="7" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F4A3;" />
-                        <TextBlock Name="CriticalOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="7" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F4A3;" />
+                            <TextBlock Name="CriticalOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="8" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3AF;" />
-                        <TextBlock Name="HitratioOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="8" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3AF;" />
+                            <TextBlock Name="HitratioOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="9" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3C3;" />
-                        <TextBlock Name="ParryratioOfOpponent" Style="{StaticResource PropertyValueTextStyle}" />
-                    </StackPanel>
+                        <StackPanel Grid.Row="9" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3C3;" />
+                            <TextBlock Name="ParryratioOfOpponent" Style="{StaticResource PropertyValueTextStyle}" />
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="10" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x23F3;" />
-                        <TextBlock Name="ExpOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="10" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x23F3;" />
+                            <TextBlock Name="ExpOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Row="11" Orientation="Horizontal">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3C6;" />
-                        <TextBlock Name="LevelOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
-                    </StackPanel>
+                        <StackPanel Grid.Row="11" Orientation="Horizontal">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Glyph="&#x1F3C6;" />
+                            <TextBlock Name="LevelOfOpponent" Style="{StaticResource PropertyValueTextStyle}"/>
+                        </StackPanel>
 
-                    <RelativePanel Grid.Row="12">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2755;"
+                        <RelativePanel Grid.Row="12">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2755;"
                                   RelativePanel.Above="PrimarySkillOfOpponent"/>
-                        <TextBlock Name="PrimarySkillOfOpponent" Text="主技能"
+                            <TextBlock Name="PrimarySkillOfOpponent" Text="主技能"
                                    FontSize="14" Margin="10" TextWrapping="Wrap" FontFamily="Consolas"/>
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Grid.Row="13">
-                        <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2754;"
+                        <RelativePanel Grid.Row="13">
+                            <FontIcon Style="{StaticResource PropertyIconTextStyle}" Margin="10,0,0,0" Glyph="&#x2754;"
                                   RelativePanel.Above="SecondarySkillOfOpponent"/>
-                        <TextBlock Name="SecondarySkillOfOpponent" Text="次技能" 
+                            <TextBlock Name="SecondarySkillOfOpponent" Text="次技能" 
                                    FontSize="14" Margin="10" TextWrapping="Wrap" FontFamily="Consolas"/>
-                    </RelativePanel>
+                        </RelativePanel>
 
-                    <RelativePanel Name="BattleChoices" Grid.Row="14" Visibility="Visible">
-                        <Button Name="LevelUp" Content="升级赛" Click="LevelUp_Click" 
+                        <RelativePanel Name="BattleChoices" Grid.Row="14" Visibility="Visible">
+                            <Button Name="LevelUp" Content="升级赛" Click="LevelUp_Click" 
                                 Margin="20" Width="80"/>
 
-                        <Button Name="DadOrSon" Content="决斗赛" Click="DadOrSon_Click"
+                            <Button Name="DadOrSon" Content="决斗赛" Click="DadOrSon_Click"
                                 Margin="20" Width="80" RelativePanel.AlignRightWithPanel="True"/>
-                    </RelativePanel>
-                </Grid>
+                        </RelativePanel>
+                    </Grid>
+                </ScrollViewer>
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid Grid.Column="1">
