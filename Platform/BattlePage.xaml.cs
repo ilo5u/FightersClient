@@ -383,6 +383,9 @@ namespace Platform
             }
             else
             {
+                App.Client.Core.ShutdownBattle();
+
+                App.Client.IsOnBattle = false;
                 App.Client.BattleDriver.Wait();
                 Frame.Navigate(typeof(WaitPage));
             }
