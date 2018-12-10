@@ -86,7 +86,7 @@ namespace Platform
             }
             else
             {
-                BattleControl.Visibility = Visibility.Collapsed;
+                App.Client.BattleDriver = null;
             }
         }
 
@@ -367,13 +367,29 @@ namespace Platform
         /// <param name="e"></param>
         async private void BackToLobby_Click(object sender, RoutedEventArgs e)
         {
-            if (App.Client.Core.IsBattleRunning())
+            if (App.Client.BattleDriver == null)
             {
-                var msgDialog = new MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
-                msgDialog.Commands.Add(new UICommand("确定"));
-                msgDialog.Commands.Add(new UICommand("取消"));
+                App.Client.IsOnBattle = false;
+                Frame.Navigate(typeof(WaitPage));
+            }
+            else
+            {
+                if (App.Client.Core.IsBattleRunning())
+                {
+                    var msgDialog = new MessageDialog("确认要退出比赛？退出比赛后无法获得奖励。") { Title = "" };
+                    msgDialog.Commands.Add(new UICommand("确定"));
+                    msgDialog.Commands.Add(new UICommand("取消"));
 
-                if ((await msgDialog.ShowAsync()).Label == "确定")
+                    if ((await msgDialog.ShowAsync()).Label == "确定")
+                    {
+                        App.Client.Core.ShutdownBattle();
+
+                        App.Client.IsOnBattle = false;
+                        App.Client.BattleDriver.Wait();
+                        Frame.Navigate(typeof(WaitPage));
+                    }
+                }
+                else
                 {
                     App.Client.Core.ShutdownBattle();
 
@@ -381,14 +397,6 @@ namespace Platform
                     App.Client.BattleDriver.Wait();
                     Frame.Navigate(typeof(WaitPage));
                 }
-            }
-            else
-            {
-                App.Client.Core.ShutdownBattle();
-
-                App.Client.IsOnBattle = false;
-                App.Client.BattleDriver.Wait();
-                Frame.Navigate(typeof(WaitPage));
             }
         }
 
