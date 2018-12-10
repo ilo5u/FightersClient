@@ -196,7 +196,7 @@
                             <FontIcon FontFamily="Segoe UI Emoji"
                                       FontSize="16"
                                       Width="24" Height="24"
-                                      Glyph="{x:Bind Type,Converter={StaticResource STConverter}}" />
+                                      Glyph="{Binding Type,Converter={StaticResource STConverter}}" />
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
@@ -375,7 +375,7 @@
                             <FontIcon FontFamily="Segoe UI Emoji"
                                       FontSize="16"
                                       Width="24" Height="24"
-                                      Glyph="{x:Bind Type,Converter={StaticResource STConverter}}" />
+                                      Glyph="{Binding Type,Converter={StaticResource STConverter}}" />
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>

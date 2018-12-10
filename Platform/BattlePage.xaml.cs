@@ -77,7 +77,8 @@ namespace Platform
             {
                 // 启动对战信息实时接收线程
                 App.Client.IsOnBattle = true;
-                (App.Client.BattleDriver = new Task(BattleTask)).Start();
+                App.Client.BattleDriver = new Task(BattleTask);
+                App.Client.BattleDriver.Start();
                 App.Client.Core.StartBattle();
 
                 BattleControl.IsChecked = false;

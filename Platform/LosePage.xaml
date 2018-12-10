@@ -37,18 +37,18 @@
                         <TextBlock Name="NameOfPokemen"
                                        FontSize="26"
                                        FontFamily="Consolas"
-                                       Text="{x:Bind Name}"
+                                       Text="{Binding Name}"
                                        Margin="10,10,0,0"/>
 
                         <FontIcon FontSize="24" 
                                       FontFamily="Segoe UI Emoji" 
-                                      Glyph="{x:Bind Type, Converter={StaticResource PTConverter}}" 
+                                      Glyph="{Binding Type, Converter={StaticResource PTConverter}}" 
                                       Margin="0,10,10,0"
                                       RelativePanel.AlignRightWithPanel="True"
                                       RelativePanel.AlignVerticalCenterWith="NameOfPokemen"/>
 
                         <Image Name="ImageOfPokemen"
-                                   Source="{x:Bind Image}"
+                                   Source="{Binding Image}"
                                    Width="200"
                                    RelativePanel.Below="NameOfPokemen"
                                    Margin="0,5,0,5"/>
@@ -71,7 +71,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x1F9E1;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Hpoints}" 
+                                               Text="{Binding Hpoints}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -81,7 +81,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x1F5E1;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Attack}" 
+                                               Text="{Binding Attack}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -91,7 +91,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x26D1;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Defense}" 
+                                               Text="{Binding Defense}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -101,7 +101,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x1F3BF;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Agility}" 
+                                               Text="{Binding Agility}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -111,7 +111,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x1F55B;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Interval}" 
+                                               Text="{Binding Interval}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -121,7 +121,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x1F4A3;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Critical}" 
+                                               Text="{Binding Critical}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -131,7 +131,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x1F3AF;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Hitratio}" 
+                                               Text="{Binding Hitratio}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -141,7 +141,7 @@
                                                FontFamily="Segoe UI Emoji"
                                                Text="&#x1F3C3;" />
                                 <TextBlock FontSize="24"
-                                               Text="{x:Bind Parryratio}" 
+                                               Text="{Binding Parryratio}" 
                                                RelativePanel.AlignRightWithPanel="True"
                                                Margin="0,0,10,0"/>
                             </RelativePanel>
@@ -149,7 +149,7 @@
 
                         <StackPanel Orientation="Horizontal" RelativePanel.Below="PropertyGrid">
                             <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F3C6;" Margin="9,5,9,5" />
-                            <TextBlock FontSize="24" FontFamily="Consolas" Margin="10" Text="{x:Bind Level}" />
+                            <TextBlock FontSize="24" FontFamily="Consolas" Margin="10" Text="{Binding Level}" />
                         </StackPanel>
                     </RelativePanel>
                 </DataTemplate>
