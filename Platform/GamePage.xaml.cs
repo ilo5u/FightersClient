@@ -245,7 +245,8 @@ namespace Platform
 
                     case Kernel.MsgType.PVP_MESSAGE:
                         {
-                            if (App.Client.IsOnBattle)
+                            if (App.Client.IsOnBattle
+                                && (BattlePage.Current != null && LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.PVP))
                             {
                                 string[] infos = message.data.Split('\n');
                                 if (infos[0] == "R")
@@ -278,9 +279,10 @@ namespace Platform
 
                     case Kernel.MsgType.PVP_RESULT:
                         {
-                            if (App.Client.IsOnBattle)
+                            string[] infos = message.data.Split('\n');
+                            if (App.Client.IsOnBattle
+                                && (BattlePage.Current != null && LobbyPage.Current.TypeOfBattle == LobbyPage.BattleType.PVP))
                             {
-                                string[] infos = message.data.Split('\n');
                                 if (infos[0].Equals("F"))
                                     infos[0] = "S";
                                 else

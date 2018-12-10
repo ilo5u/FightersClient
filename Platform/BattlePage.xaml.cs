@@ -86,7 +86,11 @@ namespace Platform
             }
             else
             {
+                App.Client.IsOnBattle = true;
                 App.Client.BattleDriver = null;
+
+                BattleControl.Visibility = Visibility.Collapsed;
+                BackToLobby.Visibility = Visibility.Visible;
             }
         }
 
