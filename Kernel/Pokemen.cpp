@@ -513,6 +513,7 @@ namespace Pokemen
 	void BattleStage::Clear()
 	{
 		m_isBattleRunnig = false;
+		SetEvent(m_stateControl);
 		if (m_battleDriver.joinable())
 			m_battleDriver.join();
 		m_roundsCnt = 0;
@@ -578,6 +579,8 @@ namespace Pokemen
 		{
 			WaitForSingleObject(m_stateControl, INFINITE);
 			SetEvent(m_stateControl);
+			if (!m_isBattleRunnig)
+				break;
 
 			++m_roundsCnt;
 

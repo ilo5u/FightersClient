@@ -500,8 +500,7 @@ namespace Platform
         /* 发起或接受在线对战请求 */
         async private void OnlineBattle_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock onlineuser = ((Button)sender).DataContext as TextBlock;
-            OpponentUserName = onlineuser.Text;
+            OpponentUserName = ((Button)sender).DataContext as string;
             try
             {
                 if (App.Client.OnlineUsers.First(user => user.Name.Equals(OpponentUserName)).BattleType)

@@ -570,18 +570,18 @@
                                             <Button.Flyout>
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem Name="OnlineUserName"
-                                                                    Text="{Binding Name}" 
+                                                                    Text="{x:Bind Name}" 
                                                                     FontSize="24"/>
                                                 </MenuFlyout>
                                             </Button.Flyout>
                                         </Button>
                                         <Button Name="OnlineBattle"
                                                 Background="White"
-                                                Content="{Binding BattleType,Converter={StaticResource BTConverter}}"
+                                                Content="{x:Bind BattleType,Converter={StaticResource BTConverter}}"
                                                 FontSize="24"
                                                 FontFamily="Segoe UI Emoji" 
                                                 Click="OnlineBattle_Click"
-                                                DataContext="{Binding ElementName=OnlineUser}"/>
+                                                DataContext="{x:Bind Name}"/>
                                         <TextBlock Name="OnlineUser"
                                                    Text="{Binding ElementName=OnlineUserName, Path=Text, Converter={StaticResource SNConverter}}" 
                                                    Width="180" 

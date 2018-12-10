@@ -282,10 +282,13 @@ namespace Platform
                                 infos[0] = "F";
 
                             App.Client.IsOnBattle = false;
-                            await Dispatcher.RunAsync(
-                                Windows.UI.Core.CoreDispatcherPriority.Normal,
-                                () => BattlePage.Current.OnResultCallBack(infos)
-                                );
+                            if (BattlePage.Current != null)
+                            {
+                                await Dispatcher.RunAsync(
+                                    Windows.UI.Core.CoreDispatcherPriority.Normal,
+                                    () => BattlePage.Current.OnResultCallBack(infos)
+                                    );
+                            }
                         }
                         break;
 
