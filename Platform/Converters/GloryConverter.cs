@@ -16,11 +16,11 @@ namespace Platform.Converters
             }
             else if (top < 5)
             {
-                return "斗宗强者 🌓";
+                return "无名之辈 🌓";
             }
             else
             {
-                return "誉满天下 🌕";
+                return "斗宗强者 🌕";
             }
         }
     }

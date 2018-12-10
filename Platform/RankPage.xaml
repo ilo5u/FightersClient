@@ -69,7 +69,7 @@
                                         <FontIcon FontFamily="Segoe UI Emoji" 
                                           Glyph="&#x1f642;"
                                           Margin="5" />
-                                        <TextBlock Text="{Binding Name}"
+                                        <TextBlock Text="{x:Bind Name}"
                                            Margin="5"
                                            VerticalAlignment="Bottom"/>
                                     </StackPanel>
@@ -78,7 +78,7 @@
                                         <TextBlock Text="胜率"
                                            Margin="5" 
                                            VerticalAlignment="Bottom"/>
-                                        <TextBlock Text="{Binding Rate}" 
+                                        <TextBlock Text="{x:Bind Rate}" 
                                            Margin="5"
                                            VerticalAlignment="Bottom"/>
                                     </StackPanel>
@@ -89,10 +89,10 @@
                                     <TextBlock Text="精灵数目" 
                                        Margin="5"
                                        VerticalAlignment="Bottom"/>
-                                    <TextBlock Text="{Binding NumberOfPokemens}"
+                                    <TextBlock Text="{x:Bind NumberOfPokemens}"
                                        Margin="5"
                                        VerticalAlignment="Bottom"/>
-                                    <TextBlock Text="{Binding Honor}"
+                                    <TextBlock Text="{x:Bind Honor}"
                                        Margin="5"
                                        VerticalAlignment="Bottom"/>
                                 </StackPanel>
@@ -101,7 +101,7 @@
                                     Grid.Row="2">
                                     <TextBlock Text="称号"
                                        Margin="5" />
-                                    <TextBlock Text="{Binding Glory}"
+                                    <TextBlock Text="{x:Bind Glory}"
                                        Margin="5" 
                                                Foreground="DarkGreen"/>
                                 </StackPanel>
