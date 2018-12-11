@@ -47,13 +47,6 @@ namespace Platform
             }
             else if (result.Equals("S"))
             {
-                App.Client.Core.SendMessage(
-                    new Kernel.Message
-                    {
-                        type = Kernel.MsgType.SUB_POKEMEN,
-                        data = "0"
-                    }
-                    );
                 ResultInfo.Text = "失败";
                 ResultInfo.Foreground = new SolidColorBrush(Colors.DarkRed);
                 ResultFrame.Navigate(typeof(LosePage));

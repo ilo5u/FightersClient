@@ -262,6 +262,12 @@ namespace Platform
             {
                 if (UserPlayerId != -1)
                 {
+                    App.Client.Core.SendMessage(new Kernel.Message
+                    {
+                        type = Kernel.MsgType.SUB_POKEMEN,
+                        data = "0"
+                    }); // 置当前抛弃位为真
+
                     TypeOfBattle = BattleType.DADORSON;
                     App.Client.Core.SetBattlePlayersAndType(UserPlayer.Id, AIPlayer, PrimarySkillType, false);
                     BattleFrame.Navigate(typeof(BattlePage));
