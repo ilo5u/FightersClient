@@ -200,6 +200,10 @@ namespace Platform
         {
             Saving.Visibility = Visibility.Collapsed;
             SubFrame.Navigate(typeof(LoginPage));
+            if (App.Client.BackgroundMusic.PlaybackSession.PlaybackState == Windows.Media.Playback.MediaPlaybackState.Playing)
+            {
+                App.Client.BackgroundMusic.Pause();
+            }
         }
     }
 }

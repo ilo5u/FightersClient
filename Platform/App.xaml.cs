@@ -44,6 +44,7 @@ namespace Platform
             public string Password;
         }
         public List<Record> LocalRecords;
+        public Windows.Media.Playback.MediaPlayer BackgroundMusic = new Windows.Media.Playback.MediaPlayer();
 
         /// <summary>
         /// 观察集

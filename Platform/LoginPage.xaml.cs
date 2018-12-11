@@ -177,6 +177,17 @@ namespace Platform
                     new Task(WriteBackPasswords).Start();
                 }
             }
+
+            if (App.Client.BackgroundMusic.PlaybackSession.PlaybackState != Windows.Media.Playback.MediaPlaybackState.Playing)
+            {
+                if (Username.Text.Equals("xuyixiang"))
+                {
+                    App.Client.BackgroundMusic.Source
+                        = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/baojiang.flac"));
+                    App.Client.BackgroundMusic.Play();
+                }
+            }
+
             Frame.Navigate(typeof(GamePage), numberOfPokemens);
         }
 

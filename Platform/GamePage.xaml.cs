@@ -599,13 +599,20 @@ namespace Platform
                     catch (Exception)
                     {
                         App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[i] });
-                        if (userInfoArray[0].Equals("1233"))
+                        if (App.Client.BackgroundMusic.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
                         {
-                            MediaPlayer logoutMusic = new MediaPlayer
+                            if (userInfoArray[0].Equals("xuyixiang"))
                             {
-                                Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/login.mp3"))
-                            };
-                            logoutMusic.Play();
+                                App.Client.BackgroundMusic.Source
+                                    = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/baojiang.flac"));
+                                App.Client.BackgroundMusic.Play();
+                            }
+                            else if (userInfoArray[0].Equals("1233"))
+                            {
+                                App.Client.BackgroundMusic.Source
+                                    = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/login.mp3"));
+                                App.Client.BackgroundMusic.Play();
+                            }
                         }
                     }
                 }
@@ -625,25 +632,33 @@ namespace Platform
                 if (userInfoArray[1] == "OFF")
                 {
                     App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name == userInfoArray[0]));
-                    if (userInfoArray[0].Equals("1233"))
+                    if (App.Client.BackgroundMusic.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
                     {
-                        MediaPlayer logoutMusic = new MediaPlayer
+                        if (userInfoArray[0].Equals("1233"))
                         {
-                            Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/logout.mp3"))
-                        };
-                        logoutMusic.Play();
+                            App.Client.BackgroundMusic.Source
+                                = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/logout.mp3"));
+                            App.Client.BackgroundMusic.Play();
+                        }
                     }
                 }
                 else if (userInfoArray[1] == "ON")
                 {
                     App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[0] });
-                    if (userInfoArray[0].Equals("1233"))
+                    if (App.Client.BackgroundMusic.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
                     {
-                        MediaPlayer logoutMusic = new MediaPlayer
+                        if (userInfoArray[0].Equals("xuyixiang"))
                         {
-                            Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/login.mp3"))
-                        };
-                        logoutMusic.Play();
+                            App.Client.BackgroundMusic.Source
+                                = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/baojiang.flac"));
+                            App.Client.BackgroundMusic.Play();
+                        }
+                        else if (userInfoArray[0].Equals("1233"))
+                        {
+                            App.Client.BackgroundMusic.Source
+                                = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/login.mp3"));
+                            App.Client.BackgroundMusic.Play();
+                        }
                     }
                 }
             }
