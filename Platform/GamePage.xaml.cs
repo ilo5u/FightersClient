@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Playback;
 using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -598,6 +599,14 @@ namespace Platform
                     catch (Exception)
                     {
                         App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[i] });
+                        if (userInfoArray[0].Equals("1233"))
+                        {
+                            MediaPlayer logoutMusic = new MediaPlayer
+                            {
+                                Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/login.mp3"))
+                            };
+                            logoutMusic.Play();
+                        }
                     }
                 }
             }
@@ -614,9 +623,29 @@ namespace Platform
             try
             {
                 if (userInfoArray[1] == "OFF")
+                {
                     App.Client.OnlineUsers.Remove(App.Client.OnlineUsers.First(user => user.Name == userInfoArray[0]));
+                    if (userInfoArray[0].Equals("1233"))
+                    {
+                        MediaPlayer logoutMusic = new MediaPlayer
+                        {
+                            Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/logout.mp3"))
+                        };
+                        logoutMusic.Play();
+                    }
+                }
                 else if (userInfoArray[1] == "ON")
+                {
                     App.Client.OnlineUsers.Add(new OnlineUserViewer { Name = userInfoArray[0] });
+                    if (userInfoArray[0].Equals("1233"))
+                    {
+                        MediaPlayer logoutMusic = new MediaPlayer
+                        {
+                            Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri("ms-appx:///Music/login.mp3"))
+                        };
+                        logoutMusic.Play();
+                    }
+                }
             }
             catch (Exception)
             {

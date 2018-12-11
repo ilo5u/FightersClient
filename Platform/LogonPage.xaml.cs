@@ -49,14 +49,14 @@ namespace Platform
         {
             if (e.Key >= Windows.System.VirtualKey.Number0
                 && e.Key <= Windows.System.VirtualKey.Number9
-                && Username.Text.Length < 10
+                && Username.Text.Length < 15
                 && IsShiftPressed == false)
             {
 
             }
             else if (e.Key >= Windows.System.VirtualKey.A
                 && e.Key <= Windows.System.VirtualKey.Z
-                && Username.Text.Length < 10)
+                && Username.Text.Length < 15)
             {
 
             }

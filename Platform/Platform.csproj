@@ -234,6 +234,8 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Music\login.mp3" />
+    <Content Include="Music\logout.mp3" />
     <Content Include="Pictures\Ares.png" />
     <Content Include="Pictures\Assassin.png" />
     <Content Include="Pictures\Athena.png" />
