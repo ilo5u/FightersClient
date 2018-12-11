@@ -10,17 +10,25 @@ namespace Platform.Converters
     {
         static public string Convert(int top)
         {
-            if (top < 1)
+            if (top < 2)
             {
-                return "初出茅庐 🌑";
+                return "无名之辈";
             }
-            else if (top < 5)
+            else if (top == 3)
             {
-                return "无名之辈 🌓";
+                return "初出茅庐";
+            }
+            else if (top == 4)
+            {
+                return "登堂入室 🌑";
+            }
+            else if (top == 5)
+            {
+                return "绝代宗师 🌓";
             }
             else
             {
-                return "斗宗强者 🌕";
+                return "破碎虚空 🌕";
             }
         }
     }
