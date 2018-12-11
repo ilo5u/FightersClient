@@ -263,8 +263,8 @@ namespace Pokemen
 			struct Lighter
 			{
 				const static Value healingIncIndex = +50;
-				const static Value selfHealingChanceIncIndex = +20;
-				const static Value damageDecIndex = -10;
+				const static Value selfHealingChanceIncIndex = +30;
+				const static Value damageDecIndex = -20;
 				const static Value hpointsIncIndex = +20;
 				const static Value weakenDecIndex = -50;
 			};
@@ -310,7 +310,7 @@ namespace Pokemen
 		{
 			static const Value hitpoints = 960;
 			static const Value attack = 36;
-			static const Value defense = 40;
+			static const Value defense = 50;
 			static const Value agility = 24;
 		};
 
@@ -401,11 +401,11 @@ namespace Pokemen
 	private:
 		struct BasicProperties
 		{
-			static const Value	hitpoints = 640;
-			static const Value	attack = 50;
+			static const Value	hitpoints = 600;
+			static const Value	attack = 64;
 			static const Value	defense = 36;
-			static const Value	agility = 36;
-			static const Value  avatarRounds = 3;
+			static const Value	agility = 32;
+			static const Value  avatarRounds = 4;
 		};
 
 	private:
@@ -454,16 +454,16 @@ namespace Pokemen
 				const static Value damageDecIndex = -10;
 				const static Value sunkInSilenceChanceIncIndex = +50;
 				const static Value reboundDamageChanceDecIndex = -20;
-				const static Value reboundDamageIncIndex = +100;
-				const static Value agilityDecIndex = -20;
+				const static Value reboundDamageIncIndex = +150;
+				const static Value agilityDecIndex = -40;
 			};
 
 			// 异面行者·小丑
 			struct Joker
 			{
 				const static Value sunkInSilenceChanceIncIndex = +300;
-				const static Value silentRoundsIncIndex = +1;
-				const static Value reboundDamageChanceIncIndex = +50;
+				const static Value silentRoundsIncIndex = +3;
+				const static Value reboundDamageChanceIncIndex = +100;
 				const static Value defenseDecIndex = -10;
 			};
 
@@ -497,7 +497,7 @@ namespace Pokemen
 		{
 			static const Value	hitpoints = 800;
 			static const Value	attack = 36;
-			static const Value	defense = 70;
+			static const Value	defense = 80;
 			static const Value	agility = 24;
 			static const Value  armorRounds = 4;
 		};
@@ -559,7 +559,7 @@ namespace Pokemen
 			struct Michelle
 			{
 				const static Value slowChanceIncIndex = +400;
-				const static Value slowRoundsIncIndex = +2;
+				const static Value slowRoundsIncIndex = +1;
 				const static Value damageIncIndex = +50;
 				const static Value defenseIncIndex = +50;
 				const static Value stolenDecIndex = -20;
