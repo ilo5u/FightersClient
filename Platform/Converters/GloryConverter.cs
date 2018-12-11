@@ -10,19 +10,19 @@ namespace Platform.Converters
     {
         static public string Convert(int top)
         {
-            if (top < 2)
+            if (top <= 1)
             {
                 return "无名之辈";
             }
-            else if (top == 3)
+            else if (top >= 2 && top <= 3)
             {
                 return "初出茅庐";
             }
-            else if (top == 4)
+            else if (top >= 4 && top <= 5)
             {
                 return "登堂入室 🌑";
             }
-            else if (top == 5)
+            else if (top >= 6 && top <= 8)
             {
                 return "绝代宗师 🌓";
             }
