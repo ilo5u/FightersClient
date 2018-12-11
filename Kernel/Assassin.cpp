@@ -277,7 +277,8 @@ namespace Pokemen
 				case Skill::Type::SLOW:
 				{
 					/* Ö÷ĞŞ¼õËÙ */
-					if (_Hit_Target(slowChance, 0))
+					if (_Hit_Target(slowChance, 0)
+						&& !opponent.InState(State::SLOWED))
 					{
 						/* ¼õËÙ */
 						sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
@@ -287,7 +288,8 @@ namespace Pokemen
 						opponent.SetSlowedRounds(slowRounds);
 						opponent.AddState(State::SLOWED);
 					}
-					else if (_Hit_Target(tearingChance, 5))
+					else if (_Hit_Target(tearingChance, 5)
+						&& !opponent.InState(State::BLEED))
 					{
 						/* ËºÁÑ */
 						sprintf(this->m_battleMessage + std::strlen(this->m_battleMessage),
