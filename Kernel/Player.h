@@ -166,7 +166,7 @@ namespace Pokemen
 
 			static const Value bleedRounds = 4;
 			static const Value weakenRounds = 3;
-			static const Value dizzyingRounds = 3;
+			static const Value dizzyingRounds = 4;
 			static const Value sunderedRounds = 4;
 			static const Value silentRounds = 4;
 			static const Value slowedRounds = 5;
@@ -358,8 +358,8 @@ namespace Pokemen
 			// Õ½Éñ¡¤°¢ÈðË¹
 			struct Ares
 			{
-				const static Value sunderArmChanceIncIndex = +20;
-				const static Value sunderArmIncIndex = +10;
+				const static Value sunderArmChanceIncIndex = +30;
+				const static Value sunderArmIncIndex = +50;
 				const static Value damageIncIndex = +25;
 				const static Value intervalIncIndex = +200;
 			};
@@ -405,7 +405,7 @@ namespace Pokemen
 			static const Value	attack = 64;
 			static const Value	defense = 36;
 			static const Value	agility = 32;
-			static const Value  avatarRounds = 4;
+			static const Value  avatarRounds = 5;
 		};
 
 	private:

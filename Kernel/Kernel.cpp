@@ -183,6 +183,10 @@ namespace Kernel
 			}
 			break;
 
+		case MsgType::UPDATE_POKEMENS:
+			sendPacket.type = PacketType::UPDATE_POKEMENS;
+			break;
+
 		case MsgType::UPDATE_RANKLIST:
 			sendPacket.type = PacketType::UPDATE_RANKLIST;
 			break;

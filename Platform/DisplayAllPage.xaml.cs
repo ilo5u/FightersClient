@@ -32,5 +32,14 @@ namespace Platform
         {
             Frame.Navigate(typeof(DisplaySinglePage), (PokemenViewer)e.ClickedItem);
         }
+
+        private void RefreshProfile_Click(object sender, RoutedEventArgs e)
+        {
+            App.Client.Core.SendMessage(new Kernel.Message
+            {
+                type = Kernel.MsgType.UPDATE_POKEMENS,
+                data = ""
+            });
+        }
     }
 }

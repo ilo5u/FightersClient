@@ -209,7 +209,7 @@ namespace Pokemen
 					+= ConvertValueByPercent(sunderArmChance, Career::Ares::sunderArmChanceIncIndex);
 				sunderArmIndex
 					+= ConvertValueByPercent(sunderArmIndex, Career::Ares::sunderArmIncIndex);
-				this->m_skill.avatarIndex = +120;
+				this->m_skill.avatarIndex = +150;
 				break;
 
 			case Career::Type::Athena:
@@ -517,6 +517,6 @@ namespace Pokemen
 		this->m_skill.sunderArmChance = +30;
 		this->m_skill.makeDizzyChance = +10;
 		this->m_skill.sunderArmIndex = -20;
-		this->m_skill.avatarIndex = +100;
+		this->m_skill.avatarIndex = +150;
 	}
 }
