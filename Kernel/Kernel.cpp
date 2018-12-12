@@ -430,6 +430,33 @@ namespace Kernel
 				};
 
 			case PacketType::ADD_POKEMEN:
+				{
+					::Pokemen::Property prop;
+					int carrer;
+					char name[BUFSIZ];
+					sscanf(recvPacket.data,
+						"%d\n%d\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n",
+						&prop.m_id, (int*)&prop.m_type, name,
+						&prop.m_hpoints, &prop.m_attack, &prop.m_defense, &prop.m_agility,
+						&prop.m_interval, &prop.m_critical, &prop.m_hitratio, &prop.m_parryratio,
+						&carrer, &prop.m_exp, &prop.m_level
+					);
+					prop.m_name.assign(name);
+					Pokemens::iterator it = std::find_if(pokemens.begin(),
+						pokemens.end(), [&prop](const HPokemen& pokemen) {
+						return pokemen->GetId() == prop.m_id;
+					});
+					if (it == pokemens.end())
+					{
+						pokemens.push_back(new ::Pokemen::Pokemen(
+							prop, carrer
+						));
+					}
+					else
+					{
+						(*it)->RenewProperty(prop, carrer);
+					}
+				}	
 				return {
 					MsgType::ADD_POKEMEN,
 					ref new Platform::String(StringToWString(recvPacket.data).c_str())
