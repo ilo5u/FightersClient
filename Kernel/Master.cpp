@@ -211,7 +211,7 @@ namespace Pokemen
 						break;
 
 					case Career::Type::GreatMasterOfLight:
-						inc = static_cast<Value>((double)this->m_property.m_attack / 20.0);
+						inc = static_cast<Value>((double)this->m_property.m_attack / 5.0);
 						break;
 
 					case Career::Type::GreatMasterOfDark:
@@ -387,7 +387,7 @@ namespace Pokemen
 			}
 			else
 			{
-				this->m_anger = std::min<Value>(CommonBasicValues::angerLimitation, this->m_anger + CommonBasicValues::angerInc);
+				this->m_anger = std::min<Value>(CommonBasicValues::angerLimitation, this->m_anger + 2 * CommonBasicValues::angerInc);
 			}
 
 			if (this->m_anger == CommonBasicValues::angerLimitation)
