@@ -230,10 +230,12 @@ namespace Pokemen
 					// 治愈系技能
 					sprintf(m_battleMessage + std::strlen(m_battleMessage),
 						"死者苏生，恢复%d点生命值。",
-						static_cast<Value>((double)this->m_property.m_hpoints / ((double)this->m_angriedCnt * (double)this->m_angriedCnt)));
+						static_cast<Value>((double)this->m_property.m_hpoints / (double)this->m_angriedCnt));
 					this->m_property.m_hpoints = std::min<Value>(
 						this->m_hpointsLimitation,
-						this->m_property.m_hpoints + (this->m_career.type == Career::Type::GreatMasterOfLight ? 2 : 1) * static_cast<Value>((double)this->m_property.m_hpoints / ((double)this->m_angriedCnt * (double)this->m_angriedCnt))
+						this->m_property.m_hpoints + 
+						(this->m_career.type == Career::Type::GreatMasterOfLight 
+							? 2 : 1) * static_cast<Value>((double)this->m_property.m_hpoints / (double)this->m_angriedCnt)
 						);
 					switch (this->m_career.type)
 					{

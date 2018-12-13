@@ -267,7 +267,7 @@ namespace Pokemen
 	/// </summary>
 	Value BasePlayer::BloodingDamageCalculator(Value primary_affect, Value secondary_affect)
 	{
-		return static_cast<Value>(((double)primary_affect * 15.0) / std::sqrt((double)secondary_affect));
+		return static_cast<Value>(((double)primary_affect * 5.0) / std::sqrt((double)secondary_affect));
 	}
 
 	Value BasePlayer::ConvertValueByPercent(Value base, Value index)

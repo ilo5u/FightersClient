@@ -291,7 +291,7 @@ namespace Pokemen
 							"ÖÂ²Ð¡£");
 
 						this->m_skill.sunderArmChance
-							= std::min<Value>(20, this->m_skill.sunderArmChance + 1);
+							= std::min<Value>(40, this->m_skill.sunderArmChance + 1);
 					}
 					else if (_Hit_Target(makeDizzyChance, 5)
 						&& !opponent.InState(State::DIZZYING))
@@ -302,7 +302,7 @@ namespace Pokemen
 							"¼ùÌ¤¡£");
 
 						this->m_skill.makeDizzyChance
-							= std::max<Value>(5, this->m_skill.makeDizzyChance - 2);
+							= std::max<Value>(10, this->m_skill.makeDizzyChance - 1);
 					}
 				}
 				break;
@@ -318,7 +318,7 @@ namespace Pokemen
 							"¼ùÌ¤¡£");
 
 						this->m_skill.sunderArmChance
-							= std::min<Value>(15, this->m_skill.sunderArmChance + 1);
+							= std::min<Value>(50, this->m_skill.sunderArmChance + 1);
 					}
 					else if (_Hit_Target(sunderArmChance, 5)
 						&& !opponent.InState(State::SUNDERED))
@@ -333,7 +333,7 @@ namespace Pokemen
 							"ÖÂ²Ð¡£");
 
 						this->m_skill.makeDizzyChance
-							= std::max<Value>(5, this->m_skill.makeDizzyChance - 1);
+							= std::max<Value>(10, this->m_skill.makeDizzyChance - 1);
 					}
 				}
 				break;
