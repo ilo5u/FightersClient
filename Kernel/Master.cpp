@@ -383,7 +383,7 @@ namespace Pokemen
 			if (this->InState(State::RAGED))
 			{
 				this->m_anger = std::min<Value>(
-					CommonBasicValues::angerLimitation, this->m_anger + CommonBasicValues::angerInc * (Value)2
+					CommonBasicValues::angerLimitation, this->m_anger + CommonBasicValues::angerInc * (Value)3
 					);
 				this->SubState(State::RAGED);
 			}

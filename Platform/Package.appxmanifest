@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="41278ilo5u.46671F992E062" Publisher="CN=A2A596E7-E986-4A63-842C-AA7A0746FE4D" Version="1.0.21.0" />
+  <Identity Name="41278ilo5u.46671F992E062" Publisher="CN=A2A596E7-E986-4A63-842C-AA7A0746FE4D" Version="1.0.24.0" />
   <mp:PhoneIdentity PhoneProductId="155db10b-8d7f-43d4-81df-40b47d52c553" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>精灵大乱斗</DisplayName>

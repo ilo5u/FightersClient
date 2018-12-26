@@ -215,7 +215,7 @@ namespace Pokemen
 			case Career::Type::Athena:
 				makeDizzyChance
 					+= ConvertValueByPercent(makeDizzyChance, Career::Athena::makeDizzyChanceIncIndex);
-				this->m_skill.avatarIndex = +80;
+				this->m_skill.avatarIndex = +120;
 				break;
 
 			default:

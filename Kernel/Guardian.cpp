@@ -465,8 +465,8 @@ namespace Pokemen
 	{
 		this->m_skill.sunkInSilenceChance = +20;
 		this->m_skill.reboundDamageChance = +40;
-		this->m_skill.reboundDamageIndex = +50;
-		this->m_skill.defenseIndex = +100;
+		this->m_skill.reboundDamageIndex = +120;
+		this->m_skill.defenseIndex = +150;
 	}
 
 }
